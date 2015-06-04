@@ -1,0 +1,11 @@
+.gradle
+/local.properties
+.DS_Store
+/build
+/captures
+
+backend/build
+backend/backend.iml
+Recipes.iml
+app/app.iml
+.idea
