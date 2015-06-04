@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.tokko.recipes.backend.recipeApi.model.Recipe;
-import com.tokko.recipes.dummy.DummyContent;
 import com.tokko.recipes.utils.RecipeLoader;
 
 import java.util.List;
@@ -111,7 +110,6 @@ public class RecipeListFragment extends ListFragment implements LoaderManager.Lo
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
     }
 
     @Override
