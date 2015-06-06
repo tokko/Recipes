@@ -1,34 +1,41 @@
-package com.tokko.recipes;
+package com.tokko.recipes.abstractlistdetailedits;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.google.inject.Inject;
+import com.tokko.recipes.R;
+import com.tokko.recipes.backend.recipeApi.model.Recipe;
+
+import roboguice.activity.RoboActivity;
 
 
 /**
  * An activity representing a list of Recipes. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link RecipeDetailActivity} representing
+ * lead to a {@link AbstractDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  * <p/>
  * The activity makes heavy use of fragments. The list of items is a
- * {@link RecipeListFragment} and the item details
- * (if present) is a {@link RecipeDetailFragment}.
+ * {@link GenericListFragment} and the item details
+ * (if present) is a {@link AbstractDetailFragment}.
  * <p/>
  * This activity also implements the required
- * {@link RecipeListFragment.Callbacks} interface
+ * {@link GenericListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class RecipeListActivity extends Activity
-        implements RecipeListFragment.Callbacks {
+public class AbstractListActivity extends RoboActivity
+        implements GenericListFragment.Callbacks {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
+    @Inject
+    private GenericListFragment<Recipe> genericListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +51,22 @@ public class RecipeListActivity extends Activity
 
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            ((RecipeListFragment) getFragmentManager()
-                    .findFragmentById(R.id.recipe_list))
-                    .setActivateOnItemClick(true);
+            //  ((GenericListFragment) getFragmentManager()
+            //         .findFragmentById(R.id.recipe_list))
         }
 
         // TODO: If exposing deep links into your app, handle intents here.
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getFragmentManager().beginTransaction().replace(R.id.recipe_list, genericListFragment).commit();
+//        genericListFragment.setActivateOnItemClick(true);
+    }
+
     /**
-     * Callback method from {@link RecipeListFragment.Callbacks}
+     * Callback method from {@link GenericListFragment.Callbacks}
      * indicating that the item with the given ID was selected.
      */
     @Override
@@ -63,8 +76,8 @@ public class RecipeListActivity extends Activity
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, id);
-            RecipeDetailFragment fragment = new RecipeDetailFragment();
+            arguments.putString(AbstractDetailFragment.ARG_ITEM_ID, id);
+            AbstractDetailFragment fragment = new AbstractDetailFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()
                     .replace(R.id.recipe_detail_container, fragment)
@@ -73,8 +86,8 @@ public class RecipeListActivity extends Activity
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
-            Intent detailIntent = new Intent(this, RecipeDetailActivity.class);
-            detailIntent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, id);
+            Intent detailIntent = new Intent(this, AbstractDetailActivity.class);
+            detailIntent.putExtra(AbstractDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
     }

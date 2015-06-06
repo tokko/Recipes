@@ -14,12 +14,13 @@
     <uses-permission android:name="com.example.gcm.permission.C2D_MESSAGE" />
 
     <application
+        android:name=".RecipeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".RecipeListActivity"
+            android:name=".abstractlistdetailedits.AbstractListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,13 +29,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RecipeDetailActivity"
+            android:name=".abstractlistdetailedits.AbstractDetailActivity"
             android:label="@string/title_recipe_detail"
-            android:parentActivityName=".RecipeListActivity">
+            android:parentActivityName=".abstractlistdetailedits.AbstractListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RecipeListActivity" />
+                android:value=".abstractlistdetailedits.AbstractListActivity" />
         </activity>
+
+        <meta-data
+            android:name="roboguice.modules"
+            android:value="com.tokko.recipes.utils.LoaderBindModule" />
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.tokko.recipes.utils;
 
 import android.content.Context;
 
+import com.google.inject.Inject;
 import com.tokko.recipes.backend.recipeApi.RecipeApi;
 import com.tokko.recipes.backend.recipeApi.model.Recipe;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class RecipeLoader extends AbstractLoader<List<Recipe>> {
     private final RecipeApi api;
 
+    @Inject
     public RecipeLoader(Context context) {
         super(context);
         api = ApiFactory.createRecipeApi();

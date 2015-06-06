@@ -61,4 +61,8 @@ public class Recipe implements Iterable<Ingredient> {
         };
     }
 
+    @Override
+    public String toString() {
+        return getTitle();
+    }
 }

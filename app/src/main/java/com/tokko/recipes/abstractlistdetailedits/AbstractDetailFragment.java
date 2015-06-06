@@ -1,4 +1,4 @@
-package com.tokko.recipes;
+package com.tokko.recipes.abstractlistdetailedits;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -6,14 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tokko.recipes.R;
+
 
 /**
  * A fragment representing a single Recipe detail screen.
- * This fragment is either contained in a {@link RecipeListActivity}
- * in two-pane mode (on tablets) or a {@link RecipeDetailActivity}
+ * This fragment is either contained in a {@link AbstractListActivity}
+ * in two-pane mode (on tablets) or a {@link AbstractDetailActivity}
  * on handsets.
  */
-public class RecipeDetailFragment extends Fragment {
+public class AbstractDetailFragment extends Fragment {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -28,9 +30,8 @@ public class RecipeDetailFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public RecipeDetailFragment() {
+    public AbstractDetailFragment() {
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
