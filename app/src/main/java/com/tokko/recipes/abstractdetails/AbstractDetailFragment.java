@@ -39,7 +39,6 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         if (getArguments().containsKey("entity")) {
             //noinspection unchecked
             Class<T> clz = (Class<T>) getArguments().getSerializable("clazz");
@@ -48,7 +47,14 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.detail_menu, menu);
     }
 

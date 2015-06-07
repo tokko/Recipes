@@ -37,13 +37,12 @@ public class GenericListActivity extends RoboActivity
      */
     private boolean mTwoPane;
     private GenericListFragment listFragment;
-    private int resource;
+    private int resource = ResourceResolver.RESOURCE_RECIPES;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
-
         if (findViewById(R.id.recipe_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-large and
