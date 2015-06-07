@@ -8,11 +8,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.inject.Key;
 import com.tokko.recipes.abstractlistdetailedits.AbstractDetailFragment;
+import com.tokko.recipes.utils.AbstractLoader;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import roboguice.RoboGuice;
 import roboguice.fragment.provided.RoboListFragment;
 
 
@@ -25,7 +27,7 @@ import roboguice.fragment.provided.RoboListFragment;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public abstract class GenericListFragment<T> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
+public class GenericListFragment<T> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
 
 
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
@@ -39,25 +41,23 @@ public abstract class GenericListFragment<T> extends RoboListFragment implements
     private Callbacks mCallbacks = sDummyCallbacks;
 
     private int mActivatedPosition = ListView.INVALID_POSITION;
+    private Class<? extends AbstractLoader<List<T>>> clz;
 
 
     public GenericListFragment() {
     }
 
-    public static <T> GenericListFragment<T> newInstance(Class<GenericListFragment<T>> cls) {
-        try {
-            GenericListFragment<T> f = cls.getConstructor().newInstance();
-            Bundle b = new Bundle();
-            f.setArguments(b);
-            return f;
-        } catch (java.lang.InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public static <T> GenericListFragment<T> newInstance(Class<? extends AbstractLoader<List<T>>> clz) {
+        GenericListFragment<T> f = new GenericListFragment<>(); // cls.getConstructor().newInstance();
+        Bundle b = new Bundle();
+        b.putSerializable("test", clz);
+        f.setArguments(b);
+        return f;
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        clz = (Class<? extends AbstractLoader<List<T>>>) getArguments().getSerializable("test");
     }
 
     @Override
@@ -131,6 +131,11 @@ public abstract class GenericListFragment<T> extends RoboListFragment implements
         }
 
         mActivatedPosition = position;
+    }
+
+    @Override
+    public Loader<List<T>> onCreateLoader(int id, Bundle args) {
+        return (Loader<List<T>>) RoboGuice.getInjector(getActivity()).getInstance(Key.<AbstractLoader<T>>get(clz));
     }
 
     @Override

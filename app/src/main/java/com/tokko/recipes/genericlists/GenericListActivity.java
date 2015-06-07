@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.tokko.recipes.R;
 import com.tokko.recipes.abstractlistdetailedits.AbstractDetailActivity;
 import com.tokko.recipes.abstractlistdetailedits.AbstractDetailFragment;
+import com.tokko.recipes.utils.RecipeLoader;
 
 import roboguice.activity.RoboActivity;
 
@@ -26,14 +27,17 @@ import roboguice.activity.RoboActivity;
  * {@link GenericListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public abstract class GenericListActivity extends RoboActivity
+public class GenericListActivity extends RoboActivity
         implements GenericListFragment.Callbacks {
+    public static final String RESOURCE_EXTRA = "resource";
 
+    public static final int RESOURCE_RECIPES = 0;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
+    private GenericListFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +57,19 @@ public abstract class GenericListActivity extends RoboActivity
             //         .findFragmentById(R.id.recipe_list))
         }
 
+        switch (getIntent().getIntExtra(RESOURCE_EXTRA, RESOURCE_RECIPES)) {
+            case RESOURCE_RECIPES:
+                listFragment = GenericListFragment.newInstance(RecipeLoader.class);
+                break;
+        }
         // TODO: If exposing deep links into your app, handle intents here.
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        getFragmentManager().beginTransaction().replace(R.id.recipe_list, GenericListFragment.newInstance(getAbstractListFragmentClass())).commit();
+        //   getFragmentManager().beginTransaction().replace(R.id.recipe_list, GenericListFragment.newInstance(getAbstractListFragmentClass())).commit();
+        getFragmentManager().beginTransaction().replace(R.id.recipe_list, listFragment).commit();
 //        genericListFragment.setActivateOnItemClick(true);
     }
 
@@ -70,7 +80,7 @@ public abstract class GenericListActivity extends RoboActivity
     @Override
     public void onItemSelected(Long id) {
         if (mTwoPane) {
-            AbstractDetailFragment fragment = AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
+            AbstractDetailFragment fragment = null; // AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
             getFragmentManager().beginTransaction()
                     .replace(R.id.recipe_detail_container, fragment)
                     .commit();
@@ -82,7 +92,7 @@ public abstract class GenericListActivity extends RoboActivity
         }
     }
 
-    public abstract <T> Class<GenericListFragment<T>> getAbstractListFragmentClass();
+    // public abstract <T> Class<GenericListFragment<T>> getAbstractListFragmentClass();
 
-    public abstract Class<AbstractDetailFragment> getAbstractDetailFragmentClass();
+    // public abstract Class<AbstractDetailFragment> getAbstractDetailFragmentClass();
 }
