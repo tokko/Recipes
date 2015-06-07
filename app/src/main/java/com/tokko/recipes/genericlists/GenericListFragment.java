@@ -8,10 +8,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.api.client.json.GenericJson;
 import com.google.inject.Key;
 import com.tokko.recipes.abstractdetails.AbstractDetailFragment;
 import com.tokko.recipes.utils.AbstractLoader;
+import com.tokko.recipes.utils.AbstractWrapper;
 
 import java.util.List;
 
@@ -28,18 +28,13 @@ import roboguice.fragment.provided.RoboListFragment;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class GenericListFragment<T extends GenericJson> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
+public class GenericListFragment<T extends AbstractWrapper<?>> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
 
 
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
 
-    private Callbacks sDummyCallbacks = new Callbacks() {
-        @Override
-        public void onItemSelected(GenericJson entity) {
-        }
-    };
 
-    private Callbacks mCallbacks = sDummyCallbacks;
+    private Callbacks mCallbacks;
 
     private int mActivatedPosition = ListView.INVALID_POSITION;
     private Class<? extends AbstractLoader<List<T>>> clz;
@@ -49,7 +44,7 @@ public class GenericListFragment<T extends GenericJson> extends RoboListFragment
     public GenericListFragment() {
     }
 
-    public static <T extends GenericJson> GenericListFragment<T> newInstance(Class<? extends AbstractLoader<List<T>>> clz) {
+    public static <T extends AbstractWrapper<?>> GenericListFragment<T> newInstance(Class<? extends AbstractLoader<List<T>>> clz) {
         GenericListFragment<T> f = new GenericListFragment<>(); // cls.getConstructor().newInstance();
         Bundle b = new Bundle();
         b.putSerializable("test", clz);
@@ -62,7 +57,7 @@ public class GenericListFragment<T extends GenericJson> extends RoboListFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         clz = (Class<? extends AbstractLoader<List<T>>>) getArguments().getSerializable("test");
-        adapter = new ArrayAdapter<>(
+        adapter = new ArrayAdapter(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1);
@@ -106,7 +101,6 @@ public class GenericListFragment<T extends GenericJson> extends RoboListFragment
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = sDummyCallbacks;
     }
 
     @Override
@@ -165,10 +159,10 @@ public class GenericListFragment<T extends GenericJson> extends RoboListFragment
      * implement. This mechanism allows activities to be notified of item
      * selections.
      */
-    public interface Callbacks {
+    public interface Callbacks<T extends AbstractWrapper<?>> {
         /**
          * Callback for when an item has been selected.
          */
-        void onItemSelected(GenericJson entity);
+        void onItemSelected(T entity);
     }
 }

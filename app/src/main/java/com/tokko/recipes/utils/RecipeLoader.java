@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeLoader extends AbstractLoader<List<Recipe>> {
+public class RecipeLoader extends AbstractLoader<List<RecipeWrapper>> {
     private final RecipeApi api;
 
     @Inject
@@ -20,9 +20,13 @@ public class RecipeLoader extends AbstractLoader<List<Recipe>> {
     }
 
     @Override
-    public List<Recipe> loadInBackground() {
+    public List<RecipeWrapper> loadInBackground() {
         try {
-            return api.list().execute().getItems();
+            List<RecipeWrapper> wrappers = new ArrayList<>();
+            for (Recipe recipe : api.list().execute().getItems()) {
+                wrappers.add(new RecipeWrapper(recipe));
+            }
+            return wrappers;
         } catch (IOException e) {
             e.printStackTrace();
         }

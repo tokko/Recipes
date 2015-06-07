@@ -3,12 +3,11 @@ package com.tokko.recipes.genericlists;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.api.client.json.GenericJson;
-import com.google.gson.Gson;
 import com.tokko.recipes.R;
 import com.tokko.recipes.abstractdetails.AbstractDetailActivity;
 import com.tokko.recipes.abstractdetails.AbstractDetailFragment;
 import com.tokko.recipes.abstractdetails.ResourceResolver;
+import com.tokko.recipes.utils.AbstractWrapper;
 
 import roboguice.activity.RoboActivity;
 
@@ -30,7 +29,7 @@ import roboguice.activity.RoboActivity;
  * to listen for item selections.
  */
 public class GenericListActivity extends RoboActivity
-        implements GenericListFragment.Callbacks {
+        implements GenericListFragment.Callbacks<AbstractWrapper<?>> {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -78,7 +77,7 @@ public class GenericListActivity extends RoboActivity
      * indicating that the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(GenericJson entity) {
+    public void onItemSelected(AbstractWrapper entity) {
         if (mTwoPane) {
             AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource); // AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
             getFragmentManager().beginTransaction()
@@ -87,7 +86,7 @@ public class GenericListActivity extends RoboActivity
 
         } else {
             Intent detailIntent = new Intent(this, AbstractDetailActivity.class);
-            detailIntent.putExtra(AbstractDetailFragment.ARG_ITEM_ID, new Gson().toJson(entity));
+            //  detailIntent.putExtra(AbstractDetailFragment.ARG_ITEM_ID, new Gson().toJson(entity));
             startActivity(detailIntent);
         }
     }

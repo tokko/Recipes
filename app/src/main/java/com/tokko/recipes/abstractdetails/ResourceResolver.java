@@ -1,8 +1,8 @@
 package com.tokko.recipes.abstractdetails;
 
-import com.google.api.client.json.GenericJson;
 import com.tokko.recipes.genericlists.GenericListFragment;
 import com.tokko.recipes.recipes.RecipeDetailFragment;
+import com.tokko.recipes.utils.AbstractWrapper;
 import com.tokko.recipes.utils.RecipeLoader;
 
 public class ResourceResolver {
@@ -19,7 +19,7 @@ public class ResourceResolver {
         }
     }
 
-    public static <T extends GenericJson> AbstractDetailFragment getDetailFragment(T entity, int resource) {
+    public static <T extends AbstractWrapper<?>> AbstractDetailFragment getDetailFragment(T entity, int resource) {
         switch (resource) {
             case RESOURCE_RECIPES:
                 return AbstractDetailFragment.newInstance(entity, RecipeDetailFragment.class);
