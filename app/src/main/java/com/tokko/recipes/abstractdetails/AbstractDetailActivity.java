@@ -1,4 +1,4 @@
-package com.tokko.recipes.abstractlistdetailedits;
+package com.tokko.recipes.abstractdetails;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,7 +18,7 @@ import com.tokko.recipes.genericlists.GenericListActivity;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link AbstractDetailFragment}.
  */
-public abstract class AbstractDetailActivity extends Activity {
+public class AbstractDetailActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public abstract class AbstractDetailActivity extends Activity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            AbstractDetailFragment fragment = AbstractDetailFragment.newInstance(getIntent().getLongExtra(AbstractDetailFragment.ARG_ITEM_ID, -1), getDetailsFragmentClass());
+            AbstractDetailFragment fragment = null; //AbstractDetailFragment.newInstance(getIntent().getLongExtra(AbstractDetailFragment.ARG_ITEM_ID, -1), null);
             getFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, fragment)
                     .commit();
@@ -63,5 +63,5 @@ public abstract class AbstractDetailActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public abstract Class<AbstractDetailFragment> getDetailsFragmentClass();
+    // public abstract Class<AbstractDetailFragment> getDetailsFragmentClass();
 }

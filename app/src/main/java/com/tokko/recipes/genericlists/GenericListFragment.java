@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.api.client.json.GenericJson;
 import com.google.inject.Key;
-import com.tokko.recipes.abstractlistdetailedits.AbstractDetailFragment;
+import com.tokko.recipes.abstractdetails.AbstractDetailFragment;
 import com.tokko.recipes.utils.AbstractLoader;
 
 import java.util.List;
@@ -27,14 +28,14 @@ import roboguice.fragment.provided.RoboListFragment;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class GenericListFragment<T> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
+public class GenericListFragment<T extends GenericJson> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
 
 
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
 
-    private static Callbacks sDummyCallbacks = new Callbacks() {
+    private Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(Long id) {
+        public void onItemSelected(GenericJson entity) {
         }
     };
 
@@ -42,22 +43,29 @@ public class GenericListFragment<T> extends RoboListFragment implements LoaderMa
 
     private int mActivatedPosition = ListView.INVALID_POSITION;
     private Class<? extends AbstractLoader<List<T>>> clz;
+    private ArrayAdapter<T> adapter;
 
 
     public GenericListFragment() {
     }
 
-    public static <T> GenericListFragment<T> newInstance(Class<? extends AbstractLoader<List<T>>> clz) {
+    public static <T extends GenericJson> GenericListFragment<T> newInstance(Class<? extends AbstractLoader<List<T>>> clz) {
         GenericListFragment<T> f = new GenericListFragment<>(); // cls.getConstructor().newInstance();
         Bundle b = new Bundle();
         b.putSerializable("test", clz);
         f.setArguments(b);
         return f;
     }
+
+    @SuppressWarnings("unchecked")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         clz = (Class<? extends AbstractLoader<List<T>>>) getArguments().getSerializable("test");
+        adapter = new ArrayAdapter<>(
+                getActivity(),
+                android.R.layout.simple_list_item_activated_1,
+                android.R.id.text1);
     }
 
     @Override
@@ -81,6 +89,7 @@ public class GenericListFragment<T> extends RoboListFragment implements LoaderMa
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+        setListAdapter(adapter);
     }
 
     @Override
@@ -103,6 +112,7 @@ public class GenericListFragment<T> extends RoboListFragment implements LoaderMa
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
+        mCallbacks.onItemSelected(adapter.getItem(position));
     }
 
     @Override
@@ -133,6 +143,7 @@ public class GenericListFragment<T> extends RoboListFragment implements LoaderMa
         mActivatedPosition = position;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Loader<List<T>> onCreateLoader(int id, Bundle args) {
         return (Loader<List<T>>) RoboGuice.getInjector(getActivity()).getInstance(Key.<AbstractLoader<T>>get(clz));
@@ -140,11 +151,8 @@ public class GenericListFragment<T> extends RoboListFragment implements LoaderMa
 
     @Override
     public void onLoadFinished(Loader<List<T>> loader, List<T> data) {
-        setListAdapter(new ArrayAdapter<>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                data));
+        adapter.clear();
+        adapter.addAll(data);
     }
 
     @Override
@@ -161,6 +169,6 @@ public class GenericListFragment<T> extends RoboListFragment implements LoaderMa
         /**
          * Callback for when an item has been selected.
          */
-        void onItemSelected(Long id);
+        void onItemSelected(GenericJson entity);
     }
 }

@@ -3,10 +3,12 @@ package com.tokko.recipes.genericlists;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.api.client.json.GenericJson;
+import com.google.gson.Gson;
 import com.tokko.recipes.R;
-import com.tokko.recipes.abstractlistdetailedits.AbstractDetailActivity;
-import com.tokko.recipes.abstractlistdetailedits.AbstractDetailFragment;
-import com.tokko.recipes.utils.RecipeLoader;
+import com.tokko.recipes.abstractdetails.AbstractDetailActivity;
+import com.tokko.recipes.abstractdetails.AbstractDetailFragment;
+import com.tokko.recipes.abstractdetails.ResourceResolver;
 
 import roboguice.activity.RoboActivity;
 
@@ -29,15 +31,14 @@ import roboguice.activity.RoboActivity;
  */
 public class GenericListActivity extends RoboActivity
         implements GenericListFragment.Callbacks {
-    public static final String RESOURCE_EXTRA = "resource";
 
-    public static final int RESOURCE_RECIPES = 0;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
     private GenericListFragment listFragment;
+    private int resource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +57,12 @@ public class GenericListActivity extends RoboActivity
             //  ((GenericListFragment) getFragmentManager()
             //         .findFragmentById(R.id.recipe_list))
         }
-
-        switch (getIntent().getIntExtra(RESOURCE_EXTRA, RESOURCE_RECIPES)) {
-            case RESOURCE_RECIPES:
-                listFragment = GenericListFragment.newInstance(RecipeLoader.class);
-                break;
+        if (savedInstanceState != null) {
+            resource = savedInstanceState.getInt(ResourceResolver.RESOURCE_EXTRA);
+        } else if (getIntent() != null && getIntent().getExtras() != null) {
+            resource = getIntent().getIntExtra(ResourceResolver.RESOURCE_EXTRA, ResourceResolver.RESOURCE_RECIPES);
         }
-        // TODO: If exposing deep links into your app, handle intents here.
+        listFragment = ResourceResolver.getListFragment(resource);
     }
 
     @Override
@@ -78,16 +78,16 @@ public class GenericListActivity extends RoboActivity
      * indicating that the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(Long id) {
+    public void onItemSelected(GenericJson entity) {
         if (mTwoPane) {
-            AbstractDetailFragment fragment = null; // AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
+            AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource); // AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
             getFragmentManager().beginTransaction()
                     .replace(R.id.recipe_detail_container, fragment)
                     .commit();
 
         } else {
             Intent detailIntent = new Intent(this, AbstractDetailActivity.class);
-            detailIntent.putExtra(AbstractDetailFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(AbstractDetailFragment.ARG_ITEM_ID, new Gson().toJson(entity));
             startActivity(detailIntent);
         }
     }
