@@ -58,10 +58,10 @@ public class RecipeEndpoint {
     public Recipe get(@Named("id") Long id) throws NotFoundException {
         logger.info("Getting Recipe with ID: " + id);
         Recipe recipe = ofy().load().type(Recipe.class).id(id).now();
-        // if (recipe == null) {
-        //    throw new NotFoundException("Could not find Recipe with ID: " + id);
-        //  }
-        return new Recipe("test");
+        if (recipe == null) {
+            throw new NotFoundException("Could not find Recipe with ID: " + id);
+        }
+        return recipe;
     }
 
     /**

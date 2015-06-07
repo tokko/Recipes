@@ -6,6 +6,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ViewSwitcher;
 
 import com.google.gson.Gson;
@@ -14,12 +16,17 @@ import com.tokko.recipes.utils.AbstractWrapper;
 
 import java.lang.reflect.InvocationTargetException;
 
+import butterknife.OnClick;
 import roboguice.fragment.provided.RoboFragment;
+import roboguice.inject.InjectView;
 
 public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> extends RoboFragment {
     protected T entity;
 
-
+    @InjectView(R.id.edit_buttonBar)
+    private LinearLayout buttonBar;
+    @InjectView(R.id.edit_delete)
+    private Button deleteButton;
     public AbstractDetailFragment() {
     }
 
@@ -47,6 +54,34 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (entity.getId() == null)
+            deleteButton.setEnabled(false);
+    }
+
+    @OnClick(R.id.edit_ok)
+    public final void onOk_Private() {
+        onOk();
+        switchMode();
+    }
+
+    protected abstract void onOk();
+
+    @OnClick(R.id.edit_delete)
+    public final void onDelete_Private() {
+        //TODO: callback to list to remove fragment from parent container
+        onDelete();
+    }
+
+    protected abstract void onDelete();
+
+    @OnClick(R.id.edit_cancel)
+    public final void onCancel() {
+        switchMode();
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
@@ -62,17 +97,25 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_edit:
-                ViewGroup view = (ViewGroup) getView();
-                if (view == null) return true;
-                for (int i = 0; i < view.getChildCount(); i++) {
-                    View v = view.getChildAt(i);
-                    if (v instanceof ViewSwitcher) {
-                        ((ViewSwitcher) v).showNext();
-                    }
-                }
+                switchMode();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void switchMode() {
+        ViewGroup view = (ViewGroup) getView();
+        if (view == null) return;
+        for (int i = 0; i < view.getChildCount(); i++) {
+            View v = view.getChildAt(i);
+            if (v instanceof ViewSwitcher) {
+                ((ViewSwitcher) v).showNext();
+            }
+        }
+        buttonBar.setVisibility(buttonBar.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+        onSwitchMode();
+    }
+
+    protected abstract void onSwitchMode();
 }

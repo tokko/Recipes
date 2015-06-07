@@ -11,8 +11,14 @@ public class RecipeWrapper extends AbstractWrapper<Recipe> {
         super(recipe);
     }
 
+    @Override
     public Long getId() {
         return id;
+    }
+
+    @Override
+    protected Class<?> getClazz() {
+        return Recipe.class;
     }
 
     public String getTitle() {
