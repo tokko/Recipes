@@ -3,9 +3,7 @@ package com.tokko.recipes.abstractlistdetailedits;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.inject.Inject;
 import com.tokko.recipes.R;
-import com.tokko.recipes.backend.recipeApi.model.Recipe;
 
 import roboguice.activity.RoboActivity;
 
@@ -19,23 +17,21 @@ import roboguice.activity.RoboActivity;
  * item details side-by-side using two vertical panes.
  * <p/>
  * The activity makes heavy use of fragments. The list of items is a
- * {@link GenericListFragment} and the item details
+ * {@link AbstractListFragment} and the item details
  * (if present) is a {@link AbstractDetailFragment}.
  * <p/>
  * This activity also implements the required
- * {@link GenericListFragment.Callbacks} interface
+ * {@link AbstractListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class AbstractListActivity extends RoboActivity
-        implements GenericListFragment.Callbacks {
+public abstract class AbstractListActivity extends RoboActivity
+        implements AbstractListFragment.Callbacks {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
-    @Inject
-    private GenericListFragment<Recipe> genericListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +47,7 @@ public class AbstractListActivity extends RoboActivity
 
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            //  ((GenericListFragment) getFragmentManager()
+            //  ((AbstractListFragment) getFragmentManager()
             //         .findFragmentById(R.id.recipe_list))
         }
 
@@ -61,34 +57,30 @@ public class AbstractListActivity extends RoboActivity
     @Override
     protected void onStart() {
         super.onStart();
-        getFragmentManager().beginTransaction().replace(R.id.recipe_list, genericListFragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.recipe_list, AbstractListFragment.newInstance(getAbstractListFragmentClass())).commit();
 //        genericListFragment.setActivateOnItemClick(true);
     }
 
     /**
-     * Callback method from {@link GenericListFragment.Callbacks}
+     * Callback method from {@link AbstractListFragment.Callbacks}
      * indicating that the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(String id) {
+    public void onItemSelected(Long id) {
         if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(AbstractDetailFragment.ARG_ITEM_ID, id);
-            AbstractDetailFragment fragment = new AbstractDetailFragment();
-            fragment.setArguments(arguments);
+            AbstractDetailFragment fragment = AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
             getFragmentManager().beginTransaction()
                     .replace(R.id.recipe_detail_container, fragment)
                     .commit();
 
         } else {
-            // In single-pane mode, simply start the detail activity
-            // for the selected item ID.
             Intent detailIntent = new Intent(this, AbstractDetailActivity.class);
             detailIntent.putExtra(AbstractDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
     }
+
+    public abstract <T> Class<AbstractListFragment<T>> getAbstractListFragmentClass();
+
+    public abstract Class<AbstractDetailFragment> getAbstractDetailFragmentClass();
 }

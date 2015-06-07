@@ -17,7 +17,7 @@ import com.tokko.recipes.R;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link AbstractDetailFragment}.
  */
-public class AbstractDetailActivity extends Activity {
+public abstract class AbstractDetailActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +39,7 @@ public class AbstractDetailActivity extends Activity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(AbstractDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(AbstractDetailFragment.ARG_ITEM_ID));
-            AbstractDetailFragment fragment = new AbstractDetailFragment();
-            fragment.setArguments(arguments);
+            AbstractDetailFragment fragment = AbstractDetailFragment.newInstance(getIntent().getLongExtra(AbstractDetailFragment.ARG_ITEM_ID, -1), getDetailsFragmentClass());
             getFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, fragment)
                     .commit();
@@ -65,4 +61,6 @@ public class AbstractDetailActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public abstract Class<AbstractDetailFragment> getDetailsFragmentClass();
 }

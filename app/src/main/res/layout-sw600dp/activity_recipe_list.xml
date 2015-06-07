@@ -15,7 +15,7 @@
     master/detail flow.
     
     -->
-    <!-- android:name="com.tokko.recipes.abstractlistdetailedits.GenericListFragment" -->
+    <!-- android:name="com.tokko.recipes.abstractlistdetailedits.AbstractListFragmentt" -->
     <FrameLayout
         android:id="@+id/recipe_list"
         android:layout_width="0dp"

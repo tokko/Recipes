@@ -8,10 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.inject.Inject;
-import com.tokko.recipes.backend.recipeApi.model.Recipe;
-import com.tokko.recipes.utils.AbstractLoader;
-
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import roboguice.fragment.provided.RoboListFragment;
@@ -26,27 +23,36 @@ import roboguice.fragment.provided.RoboListFragment;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class GenericListFragment<T> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<Recipe>> {
+public abstract class AbstractListFragment<T> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
 
 
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id) {
+        public void onItemSelected(Long id) {
         }
     };
 
     private Callbacks mCallbacks = sDummyCallbacks;
 
     private int mActivatedPosition = ListView.INVALID_POSITION;
-    @Inject
-    private AbstractLoader<List<Recipe>> loader;
 
 
-    public GenericListFragment() {
+    public AbstractListFragment() {
     }
 
+    public static <T> AbstractListFragment<T> newInstance(Class<AbstractListFragment<T>> cls) {
+        try {
+            AbstractListFragment<T> f = cls.getConstructor().newInstance();
+            Bundle b = new Bundle();
+            f.setArguments(b);
+            return f;
+        } catch (java.lang.InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,12 +132,7 @@ public class GenericListFragment<T> extends RoboListFragment implements LoaderMa
     }
 
     @Override
-    public Loader<List<Recipe>> onCreateLoader(int id, Bundle args) {
-        return loader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<Recipe>> loader, List<Recipe> data) {
+    public void onLoadFinished(Loader<List<T>> loader, List<T> data) {
         setListAdapter(new ArrayAdapter<>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
@@ -140,8 +141,8 @@ public class GenericListFragment<T> extends RoboListFragment implements LoaderMa
     }
 
     @Override
-    public void onLoaderReset(Loader<List<Recipe>> loader) {
-
+    public void onLoaderReset(Loader<List<T>> loader) {
+        setListAdapter(null);
     }
 
     /**
@@ -153,6 +154,6 @@ public class GenericListFragment<T> extends RoboListFragment implements LoaderMa
         /**
          * Callback for when an item has been selected.
          */
-        void onItemSelected(String id);
+        void onItemSelected(Long id);
     }
 }
