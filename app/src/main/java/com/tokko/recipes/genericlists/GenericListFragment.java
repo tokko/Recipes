@@ -1,4 +1,4 @@
-package com.tokko.recipes.abstractlistdetailedits;
+package com.tokko.recipes.genericlists;
 
 import android.app.Activity;
 import android.app.LoaderManager;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.tokko.recipes.abstractlistdetailedits.AbstractDetailFragment;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -23,7 +25,7 @@ import roboguice.fragment.provided.RoboListFragment;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public abstract class AbstractListFragment<T> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
+public abstract class GenericListFragment<T> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
 
 
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
@@ -39,12 +41,12 @@ public abstract class AbstractListFragment<T> extends RoboListFragment implement
     private int mActivatedPosition = ListView.INVALID_POSITION;
 
 
-    public AbstractListFragment() {
+    public GenericListFragment() {
     }
 
-    public static <T> AbstractListFragment<T> newInstance(Class<AbstractListFragment<T>> cls) {
+    public static <T> GenericListFragment<T> newInstance(Class<GenericListFragment<T>> cls) {
         try {
-            AbstractListFragment<T> f = cls.getConstructor().newInstance();
+            GenericListFragment<T> f = cls.getConstructor().newInstance();
             Bundle b = new Bundle();
             f.setArguments(b);
             return f;

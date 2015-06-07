@@ -1,9 +1,11 @@
-package com.tokko.recipes.abstractlistdetailedits;
+package com.tokko.recipes.genericlists;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.tokko.recipes.R;
+import com.tokko.recipes.abstractlistdetailedits.AbstractDetailActivity;
+import com.tokko.recipes.abstractlistdetailedits.AbstractDetailFragment;
 
 import roboguice.activity.RoboActivity;
 
@@ -17,15 +19,15 @@ import roboguice.activity.RoboActivity;
  * item details side-by-side using two vertical panes.
  * <p/>
  * The activity makes heavy use of fragments. The list of items is a
- * {@link AbstractListFragment} and the item details
+ * {@link GenericListFragment} and the item details
  * (if present) is a {@link AbstractDetailFragment}.
  * <p/>
  * This activity also implements the required
- * {@link AbstractListFragment.Callbacks} interface
+ * {@link GenericListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public abstract class AbstractListActivity extends RoboActivity
-        implements AbstractListFragment.Callbacks {
+public abstract class GenericListActivity extends RoboActivity
+        implements GenericListFragment.Callbacks {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -47,7 +49,7 @@ public abstract class AbstractListActivity extends RoboActivity
 
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            //  ((AbstractListFragment) getFragmentManager()
+            //  ((GenericListFragment) getFragmentManager()
             //         .findFragmentById(R.id.recipe_list))
         }
 
@@ -57,12 +59,12 @@ public abstract class AbstractListActivity extends RoboActivity
     @Override
     protected void onStart() {
         super.onStart();
-        getFragmentManager().beginTransaction().replace(R.id.recipe_list, AbstractListFragment.newInstance(getAbstractListFragmentClass())).commit();
+        getFragmentManager().beginTransaction().replace(R.id.recipe_list, GenericListFragment.newInstance(getAbstractListFragmentClass())).commit();
 //        genericListFragment.setActivateOnItemClick(true);
     }
 
     /**
-     * Callback method from {@link AbstractListFragment.Callbacks}
+     * Callback method from {@link GenericListFragment.Callbacks}
      * indicating that the item with the given ID was selected.
      */
     @Override
@@ -80,7 +82,7 @@ public abstract class AbstractListActivity extends RoboActivity
         }
     }
 
-    public abstract <T> Class<AbstractListFragment<T>> getAbstractListFragmentClass();
+    public abstract <T> Class<GenericListFragment<T>> getAbstractListFragmentClass();
 
     public abstract Class<AbstractDetailFragment> getAbstractDetailFragmentClass();
 }

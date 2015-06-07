@@ -1,13 +1,13 @@
 package com.tokko.recipes.recipes;
 
 import com.tokko.recipes.abstractlistdetailedits.AbstractDetailFragment;
-import com.tokko.recipes.abstractlistdetailedits.AbstractListActivity;
-import com.tokko.recipes.abstractlistdetailedits.AbstractListFragment;
+import com.tokko.recipes.genericlists.GenericListActivity;
+import com.tokko.recipes.genericlists.GenericListFragment;
 
-public class RecipeListActivity extends AbstractListActivity {
+public class RecipeListActivity extends GenericListActivity {
 
     @Override
-    public Class<? extends AbstractListFragment<?>> getAbstractListFragmentClass() {
+    public Class<? extends GenericListFragment<?>> getAbstractListFragmentClass() {
         return RecipeListFragment.class;
     }
 

@@ -6,13 +6,14 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.tokko.recipes.R;
+import com.tokko.recipes.genericlists.GenericListActivity;
 
 
 /**
  * An activity representing a single Recipe detail screen. This
  * activity is only used on handset devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link AbstractListActivity}.
+ * in a {@link GenericListActivity}.
  * <p/>
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link AbstractDetailFragment}.
@@ -56,7 +57,7 @@ public abstract class AbstractDetailActivity extends Activity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, AbstractListActivity.class));
+            navigateUpTo(new Intent(this, GenericListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -4,12 +4,14 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import com.tokko.recipes.genericlists.GenericListActivity;
+
 import java.lang.reflect.InvocationTargetException;
 
 
 /**
  * A fragment representing a single Recipe detail screen.
- * This fragment is either contained in a {@link AbstractListActivity}
+ * This fragment is either contained in a {@link GenericListActivity}
  * in two-pane mode (on tablets) or a {@link AbstractDetailActivity}
  * on handsets.
  */
