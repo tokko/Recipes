@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.inject.Key;
-import com.tokko.recipes.abstractdetails.AbstractDetailFragment;
+import com.tokko.recipes.R;
 import com.tokko.recipes.utils.AbstractLoader;
 import com.tokko.recipes.utils.AbstractWrapper;
 
@@ -97,7 +100,30 @@ public class GenericListFragment<T extends AbstractWrapper<?>> extends RoboListF
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
-        mCallbacks.onItemSelected(adapter.getItem(position));
+        mCallbacks.onItemSelected(adapter.getItem(position), false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.abstractlistmenu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.abstract_list_add:
+                mCallbacks.onAddClicked();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -154,6 +180,8 @@ public class GenericListFragment<T extends AbstractWrapper<?>> extends RoboListF
         /**
          * Callback for when an item has been selected.
          */
-        void onItemSelected(T entity);
+        void onItemSelected(T entity, boolean edit);
+
+        void onAddClicked();
     }
 }

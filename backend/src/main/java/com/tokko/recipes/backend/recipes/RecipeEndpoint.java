@@ -7,8 +7,6 @@ import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.NotFoundException;
 import com.googlecode.objectify.ObjectifyService;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -131,9 +129,8 @@ public class RecipeEndpoint {
             path = "recipe",
             httpMethod = ApiMethod.HttpMethod.GET)
     public CollectionResponse<Recipe> list() {
-        List<Recipe> recipeList = new ArrayList<>();
-        recipeList = Arrays.asList(new Recipe("rest1"), new Recipe("Test2"));
-        return CollectionResponse.<Recipe>builder().setItems(recipeList).build();
+        List<Recipe> list = ofy().load().type(Recipe.class).list();
+        return CollectionResponse.<Recipe>builder().setItems(list).build();
     }
 
     private void checkExists(Long id) throws NotFoundException {

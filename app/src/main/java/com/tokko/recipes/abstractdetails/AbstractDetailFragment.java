@@ -30,12 +30,13 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     public AbstractDetailFragment() {
     }
 
-    public static <T extends AbstractWrapper<?>> AbstractDetailFragment newInstance(T entity, Class<? extends AbstractDetailFragment<?>> cls) {
+    public static <T extends AbstractWrapper<?>> AbstractDetailFragment newInstance(T entity, Class<? extends AbstractDetailFragment<?>> cls, boolean edit) {
         try {
             AbstractDetailFragment<?> f = cls.getConstructor().newInstance();
             Bundle b = new Bundle();
             b.putString("entity", new Gson().toJson(entity));
             b.putSerializable("clazz", entity.getClass());
+            b.putBoolean("edit", edit);
             f.setArguments(b);
             return f;
         } catch (java.lang.InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
@@ -53,11 +54,16 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         }
     }
 
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (entity.getId() == null)
             deleteButton.setEnabled(false);
+        if (savedInstanceState != null) {
+            //todo: restore save state
+        } else if (getArguments().getBoolean("edit"))
+            switchMode();
     }
 
     @OnClick(R.id.edit_ok)

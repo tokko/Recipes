@@ -5,37 +5,16 @@ import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.tokko.recipes.R;
-import com.tokko.recipes.abstractdetails.GenericDetailActivity;
 import com.tokko.recipes.abstractdetails.AbstractDetailFragment;
+import com.tokko.recipes.abstractdetails.GenericDetailActivity;
 import com.tokko.recipes.abstractdetails.ResourceResolver;
 import com.tokko.recipes.utils.AbstractWrapper;
 
 import roboguice.activity.RoboActivity;
 
-
-/**
- * An activity representing a list of Recipes. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link GenericDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- * <p/>
- * The activity makes heavy use of fragments. The list of items is a
- * {@link GenericListFragment} and the item details
- * (if present) is a {@link AbstractDetailFragment}.
- * <p/>
- * This activity also implements the required
- * {@link GenericListFragment.Callbacks} interface
- * to listen for item selections.
- */
 public class GenericListActivity extends RoboActivity
         implements GenericListFragment.Callbacks<AbstractWrapper<?>> {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
     private boolean mTwoPane;
     private GenericListFragment listFragment;
     private int resource = ResourceResolver.RESOURCE_RECIPES;
@@ -45,16 +24,7 @@ public class GenericListActivity extends RoboActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
         if (findViewById(R.id.recipe_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-large and
-            // res/values-sw600dp). If this view is present, then the
-            // activity should be in two-pane mode.
             mTwoPane = true;
-
-            // In two-pane mode, list items should be given the
-            // 'activated' state when touched.
-            //  ((GenericListFragment) getFragmentManager()
-            //         .findFragmentById(R.id.recipe_list))
         }
         if (savedInstanceState != null) {
             resource = savedInstanceState.getInt(ResourceResolver.RESOURCE_EXTRA);
@@ -67,18 +37,13 @@ public class GenericListActivity extends RoboActivity
     @Override
     protected void onStart() {
         super.onStart();
-        //   getFragmentManager().beginTransaction().replace(R.id.recipe_list, GenericListFragment.newInstance(getAbstractListFragmentClass())).commit();
         getFragmentManager().beginTransaction().replace(R.id.recipe_list, listFragment).commit();
 //        genericListFragment.setActivateOnItemClick(true);
     }
 
-    /**
-     * Callback method from {@link GenericListFragment.Callbacks}
-     * indicating that the item with the given ID was selected.
-     */
     @Override
-    public void onItemSelected(AbstractWrapper entity) {
-        AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource); // AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
+    public void onItemSelected(AbstractWrapper entity, boolean edit) {
+        AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource, edit); // AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
         if (mTwoPane) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.recipe_detail_container, fragment)
@@ -90,6 +55,23 @@ public class GenericListActivity extends RoboActivity
             detailIntent.putExtra("class", entity.getClass());
             startActivity(detailIntent);
         }
+    }
+
+    @Override
+    public void onAddClicked() {
+        try {
+            Class<? extends AbstractWrapper<?>> clz = ResourceResolver.getResourceClass(resource);
+            AbstractWrapper<?> entity = clz.newInstance();
+            onItemSelected(entity, true);
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() <= 1) finish();
+        else getFragmentManager().popBackStack();
     }
 
     // public abstract <T> Class<GenericListFragment<T>> getAbstractListFragmentClass();

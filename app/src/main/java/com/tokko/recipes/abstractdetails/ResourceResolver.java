@@ -4,6 +4,7 @@ import com.tokko.recipes.genericlists.GenericListFragment;
 import com.tokko.recipes.recipes.RecipeDetailFragment;
 import com.tokko.recipes.utils.AbstractWrapper;
 import com.tokko.recipes.utils.RecipeLoader;
+import com.tokko.recipes.utils.RecipeWrapper;
 
 public class ResourceResolver {
     public static final String RESOURCE_EXTRA = "resource";
@@ -19,10 +20,19 @@ public class ResourceResolver {
         }
     }
 
-    public static <T extends AbstractWrapper<?>> AbstractDetailFragment getDetailFragment(T entity, int resource) {
+    public static Class<? extends AbstractWrapper<?>> getResourceClass(int resource) {
         switch (resource) {
             case RESOURCE_RECIPES:
-                return AbstractDetailFragment.newInstance(entity, RecipeDetailFragment.class);
+                return RecipeWrapper.class;
+            default:
+                return RecipeWrapper.class;
+        }
+    }
+
+    public static <T extends AbstractWrapper<?>> AbstractDetailFragment getDetailFragment(T entity, int resource, boolean edit) {
+        switch (resource) {
+            case RESOURCE_RECIPES:
+                return AbstractDetailFragment.newInstance(entity, RecipeDetailFragment.class, edit);
             default:
                 return null;
         }

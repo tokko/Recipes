@@ -7,6 +7,9 @@ public class RecipeWrapper extends AbstractWrapper<Recipe> {
     private Long id;
     private String title;
 
+    public RecipeWrapper() {
+        this(null);
+    }
     public RecipeWrapper(Recipe recipe) {
         super(recipe);
     }

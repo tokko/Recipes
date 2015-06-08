@@ -22,7 +22,7 @@ public class GenericDetailActivity extends RoboActivity {
             Class<?> clz = (Class<?>) getIntent().getSerializableExtra("class");
             AbstractWrapper<?> entity = (AbstractWrapper<?>) new Gson().fromJson(getIntent().getStringExtra("entity"), clz);
             int resource = getIntent().getIntExtra(ResourceResolver.RESOURCE_EXTRA, ResourceResolver.RESOURCE_RECIPES);
-            AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource);
+            AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource, getIntent().getBooleanExtra("edit", false));
             getFragmentManager().beginTransaction()
                     .replace(android.R.id.content, fragment)
                     .commit();

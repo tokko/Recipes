@@ -6,7 +6,8 @@ import java.lang.reflect.Field;
 public abstract class AbstractWrapper<T> {
 
     public AbstractWrapper(T entity) {
-        populate(this, entity);
+        if (entity != null)
+            populate(this, entity);
     }
 
     public final T getEntity() {
