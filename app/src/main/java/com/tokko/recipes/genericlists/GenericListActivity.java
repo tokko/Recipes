@@ -3,8 +3,9 @@ package com.tokko.recipes.genericlists;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
 import com.tokko.recipes.R;
-import com.tokko.recipes.abstractdetails.AbstractDetailActivity;
+import com.tokko.recipes.abstractdetails.GenericDetailActivity;
 import com.tokko.recipes.abstractdetails.AbstractDetailFragment;
 import com.tokko.recipes.abstractdetails.ResourceResolver;
 import com.tokko.recipes.utils.AbstractWrapper;
@@ -16,7 +17,7 @@ import roboguice.activity.RoboActivity;
  * An activity representing a list of Recipes. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link AbstractDetailActivity} representing
+ * lead to a {@link GenericDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  * <p/>
@@ -77,15 +78,16 @@ public class GenericListActivity extends RoboActivity
      */
     @Override
     public void onItemSelected(AbstractWrapper entity) {
+        AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource); // AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
         if (mTwoPane) {
-            AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource); // AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
             getFragmentManager().beginTransaction()
                     .replace(R.id.recipe_detail_container, fragment)
                     .commit();
 
         } else {
-            Intent detailIntent = new Intent(this, AbstractDetailActivity.class);
-            //  detailIntent.putExtra(AbstractDetailFragment.ARG_ITEM_ID, new Gson().toJson(entity));
+            Intent detailIntent = new Intent(this, GenericDetailActivity.class).putExtra(ResourceResolver.RESOURCE_EXTRA, resource);
+            detailIntent.putExtra("entity", new Gson().toJson(entity));
+            detailIntent.putExtra("class", entity.getClass());
             startActivity(detailIntent);
         }
     }

@@ -29,16 +29,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--
-        <activity
-            android:name=".abstractlistdetailedits.AbstractDetailActivity"
+        <activity android:name=".abstractdetails.GenericDetailActivity"
             android:label="@string/title_recipe_detail"
-            android:parentActivityName=".abstractlistdetailedits.GenericListActivity">
+            android:theme="@android:style/Theme.Holo"
+            android:parentActivityName=".genericlists.GenericListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".abstractlistdetailedits.GenericListActivity" />
+                android:value=".genericlists.GenericListActivity" />
         </activity>
-        -->
+
         <meta-data
             android:name="roboguice.modules"
             android:value="com.tokko.recipes.utils.LoaderBindModule" />

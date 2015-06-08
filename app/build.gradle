@@ -25,11 +25,10 @@ android {
 
 }
 dependencies {
-    // classpath 'org.robolectric:robolectric-gradle-plugin:1.1.0'
-
+    compile project(path: ':backend', configuration: 'android-endpoints')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'org.roboguice:roboguice:3.0.1'
     provided 'org.roboguice:roboblender:3.0.1'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:support-v4:22.2.0'
     compile 'com.google.android.gms:play-services:7.5.0'
@@ -37,5 +36,4 @@ dependencies {
     compile 'com.jakewharton:butterknife:6.1.0'
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.0-rc2'
-    compile project(path: ':backend', configuration: 'android-endpoints')
 }

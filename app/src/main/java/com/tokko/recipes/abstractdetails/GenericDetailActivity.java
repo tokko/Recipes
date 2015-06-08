@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.gson.Gson;
 import com.tokko.recipes.R;
 import com.tokko.recipes.genericlists.GenericListActivity;
+import com.tokko.recipes.utils.AbstractWrapper;
+
+import roboguice.activity.RoboActivity;
 
 
 /**
@@ -18,13 +22,12 @@ import com.tokko.recipes.genericlists.GenericListActivity;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link AbstractDetailFragment}.
  */
-public class AbstractDetailActivity extends Activity {
+public class GenericDetailActivity extends RoboActivity {
 
+    private AbstractDetailFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe_detail);
-
         // Show the Up button in the action bar.
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -40,9 +43,12 @@ public class AbstractDetailActivity extends Activity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            AbstractDetailFragment fragment = null; //AbstractDetailFragment.newInstance(getIntent().getLongExtra(AbstractDetailFragment.ARG_ITEM_ID, -1), null);
+            Class<?> clz = (Class<?>) getIntent().getSerializableExtra("class");
+            AbstractWrapper<?> entity = (AbstractWrapper<?>) new Gson().fromJson(getIntent().getStringExtra("entity"), clz);
+            int resource = getIntent().getIntExtra(ResourceResolver.RESOURCE_EXTRA, ResourceResolver.RESOURCE_RECIPES);
+            AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource); //AbstractDetailFragment.newInstance(getIntent().getLongExtra(AbstractDetailFragment.ARG_ITEM_ID, -1), null);
             getFragmentManager().beginTransaction()
-                    .add(R.id.recipe_detail_container, fragment)
+                    .replace(android.R.id.content, fragment)
                     .commit();
         }
     }
