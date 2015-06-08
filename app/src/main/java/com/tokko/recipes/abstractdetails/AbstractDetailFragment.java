@@ -16,6 +16,7 @@ import com.tokko.recipes.utils.AbstractWrapper;
 
 import java.lang.reflect.InvocationTargetException;
 
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import roboguice.fragment.provided.RoboFragment;
 import roboguice.inject.InjectView;
@@ -58,6 +59,7 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.inject(this, view);
         if (entity.getId() == null)
             deleteButton.setEnabled(false);
         if (savedInstanceState != null) {
