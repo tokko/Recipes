@@ -104,14 +104,19 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         }
     }
 
-    private void switchMode() {
-        ViewGroup view = (ViewGroup) getView();
-        if (view == null) return;
-        for (int i = 0; i < view.getChildCount(); i++) {
-            View v = view.getChildAt(i);
+    private void switchMode(){
+        switchMode((ViewGroup) getView());
+    }
+
+    private void switchMode(ViewGroup viewgroup) {
+        if (viewgroup == null) return;
+        for (int i = 0; i < viewgroup.getChildCount(); i++) {
+            View v = viewgroup.getChildAt(i);
             if (v instanceof ViewSwitcher) {
                 ((ViewSwitcher) v).showNext();
             }
+            else if(v instanceof ViewGroup)
+                switchMode((ViewGroup)v);
         }
         buttonBar.setVisibility(buttonBar.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
         onSwitchMode();
