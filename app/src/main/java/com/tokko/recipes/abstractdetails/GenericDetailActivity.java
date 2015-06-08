@@ -24,7 +24,6 @@ import roboguice.activity.RoboActivity;
  */
 public class GenericDetailActivity extends RoboActivity {
 
-    private AbstractDetailFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
