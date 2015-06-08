@@ -19,15 +19,6 @@ import roboguice.RoboGuice;
 import roboguice.fragment.provided.RoboListFragment;
 
 
-/**
- * A list fragment representing a list of Recipes. This fragment
- * also supports tablet devices by allowing list items to be given an
- * 'activated' state upon selection. This helps indicate which item is
- * currently being viewed in a {@link AbstractDetailFragment}.
- * <p/>
- * Activities containing this fragment MUST implement the {@link Callbacks}
- * interface.
- */
 public class GenericListFragment<T extends AbstractWrapper<?>> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
 
 
@@ -45,7 +36,7 @@ public class GenericListFragment<T extends AbstractWrapper<?>> extends RoboListF
     }
 
     public static <T extends AbstractWrapper<?>> GenericListFragment<T> newInstance(Class<? extends AbstractLoader<List<T>>> clz) {
-        GenericListFragment<T> f = new GenericListFragment<>(); // cls.getConstructor().newInstance();
+        GenericListFragment<T> f = new GenericListFragment<>();
         Bundle b = new Bundle();
         b.putSerializable("test", clz);
         f.setArguments(b);
