@@ -41,14 +41,21 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
     @Override
     protected void onOk() {
         entity.setTitle(edit_title.getText().toString());
-        Recipe entity = this.entity.getEntity();
+        final Recipe entity = this.entity.getEntity();
         if (entity == null) return;
-        try {
-            if (entity.getId() == null) api.insert(entity);
-            else api.update(entity.getId(), entity);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    if (entity.getId() == null)
+                        api.insert(entity).execute();
+                    else api.update(entity.getId(), entity).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     @Override
