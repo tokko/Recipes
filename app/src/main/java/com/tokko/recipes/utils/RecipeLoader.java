@@ -21,15 +21,15 @@ public class RecipeLoader extends AbstractLoader<List<RecipeWrapper>> {
 
     @Override
     public List<RecipeWrapper> loadInBackground() {
+        List<RecipeWrapper> wrappers = new ArrayList<>();
         try {
-            List<RecipeWrapper> wrappers = new ArrayList<>();
-            for (Recipe recipe : api.list().execute().getItems()) {
+            List<Recipe> list = api.list().execute().getItems();
+            for (Recipe recipe : list) {
                 wrappers.add(new RecipeWrapper(recipe));
             }
-            return wrappers;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
+        return wrappers;
     }
 }

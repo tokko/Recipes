@@ -1,10 +1,8 @@
 package com.tokko.recipes.backend.quantities;
 
-import com.googlecode.objectify.annotation.Embed;
 import com.tokko.recipes.backend.units.Grams;
 import com.tokko.recipes.backend.units.Unit;
 
-@Embed
 public class Quantity implements Comparable<Quantity> {
 
     private double quantity;

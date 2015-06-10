@@ -5,11 +5,16 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.datastore.Cursor;
+import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.cmd.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
 import javax.inject.Named;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
@@ -128,11 +133,27 @@ public class RecipeEndpoint {
             name = "list",
             path = "recipe",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public CollectionResponse<Recipe> list() {
-        List<Recipe> list = ofy().load().type(Recipe.class).list();
-        return CollectionResponse.<Recipe>builder().setItems(list).build();
+    public CollectionResponse<Recipe> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+        limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
+        Query<Recipe> query = ofy().load().type(Recipe.class).limit(limit);
+        if (cursor != null) {
+            query = query.startAt(Cursor.fromWebSafeString(cursor));
+        }
+        QueryResultIterator<Recipe> queryIterator = query.iterator();
+        List<Recipe> ingredientList = new ArrayList<>(limit);
+        while (queryIterator.hasNext()) {
+            ingredientList.add(queryIterator.next());
+        }
+        return CollectionResponse.<Recipe>builder().setItems(ingredientList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
+    /*
+    public CollectionResponse<Recipe> list() {
+            List<Recipe> list = ofy().load().type(Recipe.class).list();
+            return CollectionResponse.<Recipe>builder().setItems(list).build();
+        }
+
+        */
     private void checkExists(Long id) throws NotFoundException {
         try {
             ofy().load().type(Recipe.class).id(id).safe();
