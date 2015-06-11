@@ -2,6 +2,7 @@ package com.tokko.recipes.utils;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.services.json.AbstractGoogleJsonClient;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
@@ -9,16 +10,18 @@ import com.google.api.client.json.JsonFactory;
 import com.tokko.recipes.BuildConfig;
 import com.tokko.recipes.backend.ingredients.ingredientApi.IngredientApi;
 import com.tokko.recipes.backend.recipeApi.RecipeApi;
+import com.tokko.recipes.backend.registration.Registration;
 
 import java.lang.reflect.InvocationTargetException;
 
 public class ApiFactory {
 
+    public static GoogleAccountCredential credential;
+
     public static <T extends AbstractGoogleJsonClient.Builder> AbstractGoogleJsonClient createApi(Class<T> clz) {
         try {
-
             return clz.getConstructor(HttpTransport.class, JsonFactory.class, HttpRequestInitializer.class)
-                    .newInstance(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                    .newInstance(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), credential)
                     .setRootUrl(getRootUrl()).build();
 
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -32,6 +35,10 @@ public class ApiFactory {
 
     public static IngredientApi createIngredientApi(){
         return (IngredientApi) createApi(IngredientApi.Builder.class);
+    }
+
+    public static Registration createRegistrationApi() {
+        return (Registration) createApi(Registration.Builder.class);
     }
 
     private static String getRootUrl() {

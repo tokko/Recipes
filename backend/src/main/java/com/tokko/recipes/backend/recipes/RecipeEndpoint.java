@@ -7,9 +7,13 @@ import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
+import com.google.appengine.api.users.User;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
+import com.tokko.recipes.backend.registration.MessagingEndpoint;
+import com.tokko.recipes.backend.util.Constants;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -30,6 +34,8 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
         name = "recipeApi",
         version = "v1",
         resource = "recipe",
+        clientIds = {Constants.ANDROID_CLIENT_ID},
+        audiences = {Constants.ANDROID_AUDIENCE},
         namespace = @ApiNamespace(
                 ownerDomain = "backend.recipes.tokko.com",
                 ownerName = "backend.recipes.tokko.com",
@@ -74,7 +80,7 @@ public class RecipeEndpoint {
             name = "insert",
             path = "recipe",
             httpMethod = ApiMethod.HttpMethod.POST)
-    public Recipe insert(Recipe recipe) {
+    public Recipe insert(Recipe recipe, User user) {
         // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
         // You should validate that recipe.id has not been set. If the ID type is not supported by the
         // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
@@ -82,7 +88,11 @@ public class RecipeEndpoint {
         // If your client provides the ID then you should probably use PUT instead.
         ofy().save().entity(recipe).now();
         logger.info("Created Recipe.");
-
+        try {
+            new MessagingEndpoint().sendMessage("recipe added!", user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return ofy().load().entity(recipe).now();
     }
 
@@ -133,7 +143,7 @@ public class RecipeEndpoint {
             name = "list",
             path = "recipe",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public CollectionResponse<Recipe> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<Recipe> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit, User user) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         Query<Recipe> query = ofy().load().type(Recipe.class).limit(limit);
         if (cursor != null) {

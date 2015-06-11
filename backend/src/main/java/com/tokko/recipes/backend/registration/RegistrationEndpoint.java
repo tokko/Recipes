@@ -10,6 +10,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
+import com.google.appengine.api.users.User;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -39,13 +40,14 @@ public class RegistrationEndpoint {
      * @param regId The Google Cloud Messaging registration Id to add
      */
     @ApiMethod(name = "register")
-    public void registerDevice(@Named("regId") String regId) {
+    public void registerDevice(@Named("regId") String regId, User user) {
         if (findRecord(regId) != null) {
             log.info("Device " + regId + " already registered, skipping register");
             return;
         }
         RegistrationRecord record = new RegistrationRecord();
         record.setRegId(regId);
+        record.setUserId(user.getUserId());
         ofy().save().entity(record).now();
     }
 

@@ -17,7 +17,17 @@ public class RegistrationRecord {
     private String regId;
     // you can add more fields...
 
+    private String userId;
+
     public RegistrationRecord() {
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getRegId() {

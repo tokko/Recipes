@@ -12,6 +12,7 @@ import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.appengine.api.users.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,21 +32,24 @@ import static com.tokko.recipes.backend.resourceaccess.OfyService.ofy;
  * authentication! If this app is deployed, anyone can access this endpoint! If
  * you'd like to add authentication, take a look at the documentation.
  */
-@Api(name = "messaging", version = "v1", namespace = @ApiNamespace(ownerDomain = "backend.recipes.tokko.com", ownerName = "backend.recipes.tokko.com", packagePath = ""))
+@Api(name = "messaging", version = "v1",
+        clientIds = {com.tokko.recipes.backend.util.Constants.ANDROID_CLIENT_ID},
+        audiences = {com.tokko.recipes.backend.util.Constants.ANDROID_AUDIENCE},
+        namespace = @ApiNamespace(ownerDomain = "backend.recipes.tokko.com", ownerName = "backend.recipes.tokko.com", packagePath = ""))
 public class MessagingEndpoint {
     private static final Logger log = Logger.getLogger(MessagingEndpoint.class.getName());
 
     /**
      * Api Keys can be obtained from the google cloud console
      */
-    private static final String API_KEY = System.getProperty("gcm.api.key");
+    private static final String API_KEY = "826803278070";
 
     /**
      * Send to the first 10 devices (You can modify this to send to any number of devices or a specific device)
      *
      * @param message The message to send
      */
-    public void sendMessage(@Named("message") String message) throws IOException {
+    public void sendMessage(@Named("message") String message, User user) throws IOException {
         if (message == null || message.trim().length() == 0) {
             log.warning("Not sending message because it is empty");
             return;
@@ -56,7 +60,7 @@ public class MessagingEndpoint {
         }
         Sender sender = new Sender(API_KEY);
         Message msg = new Message.Builder().addData("message", message).build();
-        List<RegistrationRecord> records = ofy().load().type(RegistrationRecord.class).limit(10).list();
+        List<RegistrationRecord> records = ofy().load().type(RegistrationRecord.class).limit(20).list(); //.filter("userId=", user.getUserId()).list();
         for (RegistrationRecord record : records) {
             Result result = sender.send(msg, record.getRegId(), 5);
             if (result.getMessageId() != null) {

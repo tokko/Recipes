@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 import com.tokko.recipes.backend.recipeApi.RecipeApi;
 import com.tokko.recipes.backend.recipeApi.model.Recipe;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class RecipeLoader extends AbstractLoader<List<RecipeWrapper>> {
             for (Recipe recipe : list) {
                 wrappers.add(new RecipeWrapper(recipe));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return wrappers;
