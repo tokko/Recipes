@@ -22,7 +22,7 @@ public class LoginActivity extends Activity {
         // Inside your Activity class onCreate method
         settings = getSharedPreferences(LoginActivity.class.getSimpleName(), 0);
         ApiFactory.credential = GoogleAccountCredential.usingAudience(this,
-                "826803278070-3doj1qincauskjc7hktd1v23d6r7h5hv.apps.googleusercontent.com");
+                getString(R.string.client_id));
         setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
         if (ApiFactory.credential.getSelectedAccountName() != null) {
             continueToNextActivity();
