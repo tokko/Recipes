@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Recipes</string>
-    <string name="client_id">826803278070-0gs94ct68qhnn9b2tpi1mnuptu5al77n.apps.googleusercontent.com</string>
+    <string name="client_id">server:client_id:826803278070-0gs94ct68qhnn9b2tpi1mnuptu5al77n.apps.googleusercontent.com</string>
     <string name="title_recipe_detail">Recipe Detail</string>
 </resources>

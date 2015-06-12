@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DebugRecipes</string>
-    <string name="client_id">826803278070-0gs94ct68qhnn9b2tpi1mnuptu5al77n.apps.googleusercontent.com</string>
+    <!--  <string name="client_id">826803278070-0gs94ct68qhnn9b2tpi1mnuptu5al77n.apps.googleusercontent.com</string> -->
 </resources>

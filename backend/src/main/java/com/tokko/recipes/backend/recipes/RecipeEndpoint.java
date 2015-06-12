@@ -34,7 +34,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
         name = "recipeApi",
         version = "v1",
         resource = "recipe",
-        clientIds = {Constants.ANDROID_CLIENT_ID},
+        clientIds = {Constants.ANDROID_CLIENT_ID, Constants.WEB_CLIENT_ID},
         audiences = {Constants.ANDROID_AUDIENCE},
         namespace = @ApiNamespace(
                 ownerDomain = "backend.recipes.tokko.com",

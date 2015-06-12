@@ -23,7 +23,6 @@ public class ApiFactory {
             return clz.getConstructor(HttpTransport.class, JsonFactory.class, HttpRequestInitializer.class)
                     .newInstance(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), credential)
                     .setRootUrl(getRootUrl()).build();
-
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }

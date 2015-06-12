@@ -30,9 +30,13 @@ import static com.tokko.recipes.backend.resourceaccess.OfyService.ofy;
  * authentication! If this app is deployed, anyone can access this endpoint! If
  * you'd like to add authentication, take a look at the documentation.
  */
-@Api(name = "registration", version = "v1",
-        clientIds = {Constants.ANDROID_CLIENT_ID},
-        audiences = {Constants.ANDROID_AUDIENCE},namespace = @ApiNamespace(ownerDomain = "backend.recipes.tokko.com", ownerName = "backend.recipes.tokko.com", packagePath = ""))
+@Api(name = "registration",
+        version = "v1",
+        clientIds = {Constants.ANDROID_CLIENT_ID, Constants.WEB_CLIENT_ID},
+        audiences = {Constants.ANDROID_AUDIENCE},
+        namespace = @ApiNamespace(ownerDomain = "backend.recipes.tokko.com",
+                ownerName = "backend.recipes.tokko.com",
+                packagePath = ""))
 public class RegistrationEndpoint {
 
     private static final Logger log = Logger.getLogger(RegistrationEndpoint.class.getName());
