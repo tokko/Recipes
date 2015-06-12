@@ -37,7 +37,7 @@ appengine {
     downloadSdk = true
     httpAddress = "0.0.0.0"
     appcfg {
-        oauth2 = false
+        oauth2 = true
     }
     endpoints {
         //   exportClientLibsOnBuild = true

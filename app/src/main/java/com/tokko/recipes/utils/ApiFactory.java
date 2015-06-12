@@ -10,7 +10,7 @@ import com.google.api.client.json.JsonFactory;
 import com.tokko.recipes.BuildConfig;
 import com.tokko.recipes.backend.ingredients.ingredientApi.IngredientApi;
 import com.tokko.recipes.backend.recipeApi.RecipeApi;
-import com.tokko.recipes.backend.registration.Registration;
+import com.tokko.recipes.backend.registration.registrationApi.RegistrationApi;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -36,8 +36,8 @@ public class ApiFactory {
         return (IngredientApi) createApi(IngredientApi.Builder.class);
     }
 
-    public static Registration createRegistrationApi() {
-        return (Registration) createApi(Registration.Builder.class);
+    public static RegistrationApi createRegistrationApi() {
+        return (RegistrationApi) createApi(RegistrationApi.Builder.class);
     }
 
     private static String getRootUrl() {

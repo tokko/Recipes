@@ -6,7 +6,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.tokko.recipes.backend.ingredients.Grocery;
 import com.tokko.recipes.backend.ingredients.Ingredient;
 import com.tokko.recipes.backend.recipes.Recipe;
-import com.tokko.recipes.backend.registration.RegistrationRecord;
+import com.tokko.recipes.backend.registration.Registration;
 
 /**
  * Objectify service wrapper so we can statically register our persistence classes
@@ -15,7 +15,7 @@ import com.tokko.recipes.backend.registration.RegistrationRecord;
 public class OfyService {
 
     static {
-        ObjectifyService.register(RegistrationRecord.class);
+        ObjectifyService.register(Registration.class);
         ObjectifyService.register(Recipe.class);
         ObjectifyService.register(Grocery.class);
         ObjectifyService.register(Ingredient.class);

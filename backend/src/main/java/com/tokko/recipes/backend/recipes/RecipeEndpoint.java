@@ -10,10 +10,9 @@ import com.google.appengine.api.datastore.QueryResultIterator;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
-import com.tokko.recipes.backend.registration.MessagingEndpoint;
+import com.tokko.recipes.backend.registration.MessageSender;
 import com.tokko.recipes.backend.util.Constants;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -88,11 +87,7 @@ public class RecipeEndpoint {
         // If your client provides the ID then you should probably use PUT instead.
         ofy().save().entity(recipe).now();
         logger.info("Created Recipe.");
-        try {
-            new MessagingEndpoint().sendMessage("recipe added!", user);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MessageSender.sendMessage("recipe added!", user);
         return ofy().load().entity(recipe).now();
     }
 
