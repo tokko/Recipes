@@ -41,7 +41,7 @@ android {
         javaMaxHeapSize "4g"
     }
 }
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
 dependencies {
     compile project(path: ':backend', configuration: 'android-endpoints')
     compile fileTree(include: ['*.jar'], dir: 'libs')
