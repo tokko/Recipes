@@ -17,17 +17,17 @@ public class Registration {
     private String regId;
     // you can add more fields...
 
-    private String userId;
+    private String userEmail;
 
     public Registration() {
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getRegId() {

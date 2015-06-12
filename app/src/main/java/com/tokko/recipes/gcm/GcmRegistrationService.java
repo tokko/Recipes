@@ -2,7 +2,6 @@ package com.tokko.recipes.gcm;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -26,7 +25,7 @@ public class GcmRegistrationService extends IntentService {
             Registration reg1 = new Registration();
             reg1.setRegId(token);
             Registration reg = ApiFactory.createRegistrationApi().insert(reg1).execute();
-            Toast.makeText(this, "Registration token: " + reg.getRegId() + " for user " + reg.getUserId(), Toast.LENGTH_SHORT).show();
+            getSharedPreferences("RegistrationData", MODE_PRIVATE).edit().putString("regid", reg.getRegId()).apply();
         } catch (IOException e) {
             e.printStackTrace();
         }

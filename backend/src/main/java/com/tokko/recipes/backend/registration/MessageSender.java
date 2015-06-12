@@ -15,7 +15,7 @@ public class MessageSender {
     public static void sendMessage(String message, User user) {
         Sender sender = new Sender(API_KEY);
         Message msg = new Message.Builder().addData("message", message).build();
-        List<Registration> records = ofy().load().type(Registration.class).list(); //filter("userId=", user.getEmail()).list(); //.filter("userId=", user.getUserId()).list();
+        List<Registration> records = ofy().load().type(Registration.class).list(); //filter("userId=", user.getEmail()).list(); //.filter("userId=", user.getUserEmail()).list();
         Registration record = records.get(0);
         try {
             sender.send(msg, record.getRegId(), 5);
