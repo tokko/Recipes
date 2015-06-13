@@ -1,26 +1,41 @@
 package com.tokko.recipes.utils;
 
 import android.content.AsyncTaskLoader;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+
+import com.google.gson.Gson;
+
+import java.util.List;
 
 
-public abstract class AbstractLoader<T> extends AsyncTaskLoader<T> {
+public abstract class AbstractLoader<T extends AbstractWrapper<?>> extends AsyncTaskLoader<List<T>> {
 
-    private T data;
+    private final IntentFilter intentFilter;
+    protected List<T> data;
+    private BroadcastReceiver onChangeReceiver;
+    private Context context;
+    private Class<? extends AbstractWrapper<?>> clz;
 
-    public AbstractLoader(Context context) {
+    public AbstractLoader(Context context, Class<? extends AbstractWrapper<?>> clz) {
         super(context);
+        this.context = context;
+        this.clz = clz;
         onContentChanged();
+        intentFilter = new IntentFilter("com.google.android.c2dm.intent.RECEIVE");
+        onChangeReceiver = new OnChangeReceiver();
     }
 
     @Override
-    public void deliverResult(T result) {
+    public void deliverResult(List<T> result) {
         if (isReset()) {
             releaseResources(result);
             return;
         }
 
-        T oldResult = data;
+        List<T> oldResult = data;
         data = result;
 
         if (isStarted()) {
@@ -33,7 +48,7 @@ public abstract class AbstractLoader<T> extends AsyncTaskLoader<T> {
     }
 
     @Override
-    public void onCanceled(T result) {
+    public void onCanceled(List<T> result) {
         super.onCanceled(result);
         releaseResources(result);
     }
@@ -44,6 +59,8 @@ public abstract class AbstractLoader<T> extends AsyncTaskLoader<T> {
 
         // Ensure the loader is stopped
         onStopLoading();
+        if (onChangeReceiver != null)
+            context.unregisterReceiver(onChangeReceiver);
 
         releaseResources(data);
         data = null;
@@ -57,6 +74,9 @@ public abstract class AbstractLoader<T> extends AsyncTaskLoader<T> {
         if (takeContentChanged() || data == null) {
             forceLoad();
         }
+        if (onChangeReceiver != null)
+            context.registerReceiver(onChangeReceiver, intentFilter);
+
     }
 
     @Override
@@ -64,6 +84,27 @@ public abstract class AbstractLoader<T> extends AsyncTaskLoader<T> {
         cancelLoad();
     }
 
-    protected void releaseResources(T result) {
+    protected void releaseResources(List<T> result) {
+    }
+
+    protected void onNewData(T t) {
+        for (T t1 : data) {
+            if (t.equals(t1)) {
+                t1.populateWith(t);
+                return;
+            }
+        }
+        data.add(t);
+    }
+
+    private class OnChangeReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            @SuppressWarnings("unchecked")
+            T t = (T) new Gson().fromJson(message, clz);
+            onNewData(t);
+        }
     }
 }

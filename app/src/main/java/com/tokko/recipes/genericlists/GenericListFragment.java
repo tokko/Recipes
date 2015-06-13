@@ -31,14 +31,14 @@ public class GenericListFragment<T extends AbstractWrapper<?>> extends RoboListF
     private Callbacks mCallbacks;
 
     private int mActivatedPosition = ListView.INVALID_POSITION;
-    private Class<? extends AbstractLoader<List<T>>> clz;
+    private Class<? extends AbstractLoader<T>> clz;
     private ArrayAdapter<T> adapter;
 
 
     public GenericListFragment() {
     }
 
-    public static <T extends AbstractWrapper<?>> GenericListFragment<T> newInstance(Class<? extends AbstractLoader<List<T>>> clz) {
+    public static <T extends AbstractWrapper<?>> GenericListFragment<T> newInstance(Class<? extends AbstractLoader<T>> clz) {
         GenericListFragment<T> f = new GenericListFragment<>();
         Bundle b = new Bundle();
         b.putSerializable("test", clz);
@@ -50,7 +50,7 @@ public class GenericListFragment<T extends AbstractWrapper<?>> extends RoboListF
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        clz = (Class<? extends AbstractLoader<List<T>>>) getArguments().getSerializable("test");
+        clz = (Class<? extends AbstractLoader<T>>) getArguments().getSerializable("test");
         adapter = new ArrayAdapter(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,

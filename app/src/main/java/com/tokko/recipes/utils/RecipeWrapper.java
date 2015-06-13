@@ -36,4 +36,11 @@ public class RecipeWrapper extends AbstractWrapper<Recipe> {
     public String toString() {
         return getTitle();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof RecipeWrapper)) return false;
+        RecipeWrapper other = (RecipeWrapper) o;
+        return id.equals(other.getId());
+    }
 }

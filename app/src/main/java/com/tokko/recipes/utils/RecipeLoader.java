@@ -9,12 +9,12 @@ import com.tokko.recipes.backend.recipeApi.model.Recipe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeLoader extends AbstractLoader<List<RecipeWrapper>> {
+public class RecipeLoader extends AbstractLoader<RecipeWrapper> {
     private final RecipeApi api;
 
     @Inject
     public RecipeLoader(Context context) {
-        super(context);
+        super(context, RecipeWrapper.class);
         api = ApiFactory.createRecipeApi();
     }
 
@@ -30,5 +30,10 @@ public class RecipeLoader extends AbstractLoader<List<RecipeWrapper>> {
             e.printStackTrace();
         }
         return wrappers;
+    }
+
+    @Override
+    protected void onNewData(RecipeWrapper recipeWrapper) {
+
     }
 }

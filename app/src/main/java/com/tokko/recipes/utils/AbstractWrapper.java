@@ -43,4 +43,7 @@ public abstract class AbstractWrapper<T> {
         }
     }
 
+    public <E extends AbstractWrapper<?>> void populateWith(E t) {
+        populate(this, t);
+    }
 }
