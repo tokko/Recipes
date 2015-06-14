@@ -5,6 +5,7 @@ import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 import com.google.appengine.api.users.User;
 import com.google.appengine.repackaged.com.google.gson.Gson;
+import com.tokko.recipes.backend.recipes.RecipeUser;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,7 +18,10 @@ public class MessageSender {
     public static <T> void sendMessage(T entity, User user) {
         Sender sender = new Sender(API_KEY);
         Message msg = new Message.Builder().addData("message", new Gson().toJson(entity)).build();
-        List<Registration> records = ofy().load().type(Registration.class).filter("userEmail=", user.getEmail()).list();
+        RecipeUser recipeUser = ofy().load().type(RecipeUser.class).filterKey(user.getEmail()).first().now();
+
+        List<Registration> records = ofy().load().type(Registration.class).ancestor(recipeUser).list();
+        List<Registration> records1 = ofy().load().type(Registration.class).list();
         try {
             for (Registration record : records) {
                 Result res = sender.send(msg, record.getRegId(), 5);

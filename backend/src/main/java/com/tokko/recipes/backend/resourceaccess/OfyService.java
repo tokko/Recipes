@@ -6,6 +6,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.tokko.recipes.backend.ingredients.Grocery;
 import com.tokko.recipes.backend.ingredients.Ingredient;
 import com.tokko.recipes.backend.recipes.Recipe;
+import com.tokko.recipes.backend.recipes.RecipeUser;
 import com.tokko.recipes.backend.registration.Registration;
 
 /**
@@ -19,6 +20,7 @@ public class OfyService {
         ObjectifyService.register(Recipe.class);
         ObjectifyService.register(Grocery.class);
         ObjectifyService.register(Ingredient.class);
+        ObjectifyService.register(RecipeUser.class);
     }
 
     public static Objectify ofy() {

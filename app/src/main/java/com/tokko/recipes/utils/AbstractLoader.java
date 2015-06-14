@@ -95,6 +95,7 @@ public abstract class AbstractLoader<T extends AbstractWrapper<?>> extends Async
             }
         }
         data.add(t);
+        onContentChanged();
     }
 
     private class OnChangeReceiver extends BroadcastReceiver {
@@ -110,7 +111,6 @@ public abstract class AbstractLoader<T extends AbstractWrapper<?>> extends Async
             }
             if (t != null) {
                 onNewData(t);
-                onContentChanged();
             }
         }
     }
