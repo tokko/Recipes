@@ -31,9 +31,4 @@ public class RecipeLoader extends AbstractLoader<RecipeWrapper> {
         }
         return wrappers;
     }
-
-    @Override
-    protected void onNewData(RecipeWrapper recipeWrapper) {
-
-    }
 }

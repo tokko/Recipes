@@ -102,9 +102,16 @@ public abstract class AbstractLoader<T extends AbstractWrapper<?>> extends Async
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
-            @SuppressWarnings("unchecked")
-            T t = (T) new Gson().fromJson(message, clz);
-            onNewData(t);
+            T t = null;
+            try {
+                //noinspection unchecked
+                t = (T) new Gson().fromJson(message, clz);
+            } catch (ClassCastException ignored) {
+            }
+            if (t != null) {
+                onNewData(t);
+                onContentChanged();
+            }
         }
     }
 }

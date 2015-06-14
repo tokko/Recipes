@@ -87,7 +87,7 @@ public class RecipeEndpoint {
         // If your client provides the ID then you should probably use PUT instead.
         ofy().save().entity(recipe).now();
         logger.info("Created Recipe.");
-        MessageSender.sendMessage("recipe added!", user);
+        MessageSender.sendMessage(recipe, user);
         return ofy().load().entity(recipe).now();
     }
 
