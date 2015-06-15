@@ -1,6 +1,7 @@
-package com.tokko.recipes.backend.recipes;
+package com.tokko.recipes.backend.collections;
 
-import com.tokko.recipes.backend.ingredients.Ingredient;
+import com.tokko.recipes.backend.entities.Ingredient;
+import com.tokko.recipes.backend.entities.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;

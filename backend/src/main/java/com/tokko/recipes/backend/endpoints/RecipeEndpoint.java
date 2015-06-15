@@ -11,7 +11,7 @@ import com.google.appengine.api.users.User;
 import com.google.inject.Inject;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
-import com.tokko.recipes.backend.recipes.Recipe;
+import com.tokko.recipes.backend.entities.Recipe;
 import com.tokko.recipes.backend.registration.MessageSender;
 import com.tokko.recipes.backend.util.Constants;
 

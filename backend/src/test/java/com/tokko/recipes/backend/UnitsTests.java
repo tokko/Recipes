@@ -1,6 +1,6 @@
 package com.tokko.recipes.backend;
 
-import com.tokko.recipes.backend.quantities.Quantity;
+import com.tokko.recipes.backend.entities.Quantity;
 import com.tokko.recipes.backend.units.HectoGram;
 
 import org.junit.Assert;

@@ -1,7 +1,7 @@
 package com.tokko.recipes.backend;
 
-import com.tokko.recipes.backend.ingredients.Ingredient;
-import com.tokko.recipes.backend.ingredients.ShoppingList;
+import com.tokko.recipes.backend.entities.Ingredient;
+import com.tokko.recipes.backend.collections.ShoppingList;
 
 import org.junit.Assert;
 import org.junit.Test;

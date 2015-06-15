@@ -1,4 +1,4 @@
-package com.tokko.recipes.backend.quantities;
+package com.tokko.recipes.backend.entities;
 
 import com.tokko.recipes.backend.units.Grams;
 import com.tokko.recipes.backend.units.Unit;

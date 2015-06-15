@@ -1,9 +1,8 @@
-package com.tokko.recipes.backend.ingredients;
+package com.tokko.recipes.backend.entities;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.tokko.recipes.backend.quantities.Quantity;
 
 @Entity
 public class Ingredient implements Comparable<Ingredient> {

@@ -1,9 +1,7 @@
 package com.tokko.recipes.backend;
 
-import com.googlecode.objectify.Objectify;
-import com.tokko.recipes.backend.recipes.RecipeUser;
-import com.tokko.recipes.backend.registration.Registration;
-import com.tokko.recipes.backend.resourceaccess.OfyService;
+import com.tokko.recipes.backend.entities.RecipeUser;
+import com.tokko.recipes.backend.entities.Registration;
 
 import org.junit.Before;
 

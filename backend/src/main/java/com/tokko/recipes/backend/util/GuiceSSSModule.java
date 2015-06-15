@@ -2,7 +2,7 @@ package com.tokko.recipes.backend.util;
 
 import com.google.api.server.spi.guice.GuiceSystemServiceServletModule;
 import com.tokko.recipes.backend.endpoints.RecipeEndpoint;
-import com.tokko.recipes.backend.registration.Registration;
+import com.tokko.recipes.backend.entities.Registration;
 
 import java.util.HashSet;
 import java.util.Set;

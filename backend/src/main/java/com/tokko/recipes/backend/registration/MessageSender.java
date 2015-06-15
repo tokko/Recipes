@@ -5,7 +5,8 @@ import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 import com.google.appengine.api.users.User;
 import com.google.appengine.repackaged.com.google.gson.Gson;
-import com.tokko.recipes.backend.recipes.RecipeUser;
+import com.tokko.recipes.backend.entities.Registration;
+import com.tokko.recipes.backend.entities.RecipeUser;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,7 +1,7 @@
-package com.tokko.recipes.backend.ingredients;
+package com.tokko.recipes.backend.collections;
 
-import com.tokko.recipes.backend.recipes.Recipe;
-import com.tokko.recipes.backend.recipes.RecipeList;
+import com.tokko.recipes.backend.entities.Ingredient;
+import com.tokko.recipes.backend.entities.Recipe;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,4 +46,6 @@ public class ShoppingList extends ArrayList<Ingredient> {
         }
         return ingredients;
     }
+
+
 }

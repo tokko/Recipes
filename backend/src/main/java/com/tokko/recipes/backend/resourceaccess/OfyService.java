@@ -3,11 +3,11 @@ package com.tokko.recipes.backend.resourceaccess;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
-import com.tokko.recipes.backend.ingredients.Grocery;
-import com.tokko.recipes.backend.ingredients.Ingredient;
-import com.tokko.recipes.backend.recipes.Recipe;
-import com.tokko.recipes.backend.recipes.RecipeUser;
-import com.tokko.recipes.backend.registration.Registration;
+import com.tokko.recipes.backend.entities.Grocery;
+import com.tokko.recipes.backend.entities.Ingredient;
+import com.tokko.recipes.backend.entities.Recipe;
+import com.tokko.recipes.backend.entities.RecipeUser;
+import com.tokko.recipes.backend.entities.Registration;
 
 /**
  * Objectify service wrapper so we can statically register our persistence classes

@@ -2,11 +2,12 @@ package com.tokko.recipes.backend;
 
 import com.google.inject.Inject;
 import com.googlecode.objectify.Objectify;
-import com.tokko.recipes.backend.ingredients.Grocery;
-import com.tokko.recipes.backend.ingredients.Ingredient;
-import com.tokko.recipes.backend.quantities.Quantity;
-import com.tokko.recipes.backend.recipes.Recipe;
-import com.tokko.recipes.backend.recipes.RecipeList;
+import com.tokko.recipes.backend.collections.RecipeList;
+import com.tokko.recipes.backend.collections.ShoppingList;
+import com.tokko.recipes.backend.entities.Grocery;
+import com.tokko.recipes.backend.entities.Ingredient;
+import com.tokko.recipes.backend.entities.Quantity;
+import com.tokko.recipes.backend.entities.Recipe;
 import com.tokko.recipes.backend.units.Grams;
 
 import java.util.ArrayList;

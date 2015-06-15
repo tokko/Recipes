@@ -1,9 +1,9 @@
-package com.tokko.recipes.backend.recipes;
+package com.tokko.recipes.backend.entities;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.tokko.recipes.backend.ingredients.Ingredient;
+import com.tokko.recipes.backend.entities.Ingredient;
 
 import java.util.ArrayList;
 import java.util.Iterator;

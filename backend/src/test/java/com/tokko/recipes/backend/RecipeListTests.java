@@ -1,6 +1,6 @@
 package com.tokko.recipes.backend;
 
-import com.tokko.recipes.backend.ingredients.Ingredient;
+import com.tokko.recipes.backend.entities.Ingredient;
 
 import org.junit.Assert;
 import org.junit.Test;
