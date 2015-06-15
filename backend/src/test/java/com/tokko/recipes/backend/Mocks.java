@@ -1,5 +1,6 @@
-package com.tokko.recipes.backend.util;
+package com.tokko.recipes.backend;
 
+import com.google.inject.Inject;
 import com.googlecode.objectify.Objectify;
 import com.tokko.recipes.backend.ingredients.Grocery;
 import com.tokko.recipes.backend.ingredients.Ingredient;
@@ -16,7 +17,8 @@ public class Mocks {
     private final RecipeList recipes;
     private final List<Grocery> groceries;
     private final List<Ingredient> ingredients;
-
+    @Inject
+    private Objectify ofy;
     public Mocks(Objectify ofy) {
         this(ofy, 1);
     }

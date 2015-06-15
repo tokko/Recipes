@@ -1,24 +1,15 @@
 package com.tokko.recipes.backend;
 
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalMemcacheServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.googlecode.objectify.Objectify;
 import com.tokko.recipes.backend.ingredients.Ingredient;
 import com.tokko.recipes.backend.ingredients.ShoppingList;
-import com.tokko.recipes.backend.resourceaccess.OfyService;
-import com.tokko.recipes.backend.util.Mocks;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
-public class ShoppingListTest extends TestsWithObjectifyStorage{
+public class ShoppingListTest extends TestsWithObjectifyStorageAndRecipeMocks{
 
     @Test
     public void getShoppingList_AggregationSuccessful() {
