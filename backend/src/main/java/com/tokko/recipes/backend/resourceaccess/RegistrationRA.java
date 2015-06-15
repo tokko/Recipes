@@ -7,6 +7,10 @@ import com.googlecode.objectify.Objectify;
 import com.tokko.recipes.backend.entities.RecipeUser;
 import com.tokko.recipes.backend.entities.Registration;
 
+import java.util.List;
+
+import static com.tokko.recipes.backend.resourceaccess.OfyService.ofy;
+
 public class RegistrationRA {
     Objectify ofy;
 
@@ -24,12 +28,16 @@ public class RegistrationRA {
         return ofy.load().key(k).now();
     }
 
-    public void saveRegistration(Registration registration) {
-        ofy.save().entity(registration).now();
+    public Registration saveRegistration(Registration registration) {
+        Key<Registration> key = ofy.save().entity(registration).now();
+        return ofy.load().key(key).now();
     }
 
     public Registration getRegistration(Registration registration) {
         return ofy.load().entity(registration).now();
     }
 
+    public List<Registration> getRegistrationsForUser(RecipeUser user) {
+        return ofy().load().type(Registration.class).ancestor(user).list();
+    }
 }
