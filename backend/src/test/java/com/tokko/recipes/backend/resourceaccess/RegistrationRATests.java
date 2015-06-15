@@ -24,7 +24,6 @@ public class RegistrationRATests extends TestsWithObjectifyStorage {
 
     private static final String email = "angus@fife.sc";
     private RegistrationRA registrationRa;
-    private MessageSender messageSender;
 
     @Before
     public void setup() {
@@ -36,7 +35,6 @@ public class RegistrationRATests extends TestsWithObjectifyStorage {
             }
         });
         registrationRa = injector.getInstance(RegistrationRA.class);
-        messageSender = injector.getInstance(MessageSender.class);
     }
 
     @Test

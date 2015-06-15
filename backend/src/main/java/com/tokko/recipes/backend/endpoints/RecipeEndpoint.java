@@ -89,7 +89,7 @@ public class RecipeEndpoint {
     public Recipe insert(Recipe recipe, User user) {
         ofy().save().entity(recipe).now();
         logger.info("Created Recipe.");
-        messageSender.sendMessage(recipe, user);
+        messageSender.sendMessage(recipe, user.getEmail());
         return ofy().load().entity(recipe).now();
     }
 
