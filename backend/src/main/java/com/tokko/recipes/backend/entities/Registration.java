@@ -14,12 +14,10 @@ import static com.tokko.recipes.backend.resourceaccess.OfyService.ofy;
 @Entity
 public class Registration {
 
-    @Id
-    Long id;
     @Parent
     Key<RecipeUser> parent;
     // you can add more fields...
-    @Index
+    @Id
     private String regId;
 
     public Registration() {
@@ -39,5 +37,14 @@ public class Registration {
 
     public void setRegId(String regId) {
         this.regId = regId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        try {
+            return ((Registration) obj).getRegId().equals(regId);
+        } catch (Exception ignored) {
+            return false;
+        }
     }
 }

@@ -43,6 +43,18 @@ public class RegistrationServiceTests extends TestsWithObjectifyStorage {
         verify(mockRegistrationRa).saveUser(new RecipeUser(email));
     }
 
+    @Test
+    public void registration_RegIdIsSaved() {
+        when(mockRegistrationRa.getUser(email)).thenReturn(new RecipeUser(email));
+
+        Registration registration = new Registration();
+        registration.setRegId(regid);
+
+        registrationService.register(registration, email);
+
+        verify(mockRegistrationRa).saveRegistration(registration);
+    }
+
     private class TestModule extends AbstractModule {
         @Override
         protected void configure() {
