@@ -14,9 +14,9 @@
         <init-param>
             <param-name>services</param-name>
             <param-value>
-                com.tokko.recipes.backend.recipes.RecipeEndpoint,
-                com.tokko.recipes.backend.ingredients.IngredientEndpoint,,
-                com.tokko.recipes.backend.registration.RegistrationEndpoint
+                com.tokko.recipes.backend.endpoints.RecipeEndpoint,
+                com.tokko.recipes.backend.endpoints.IngredientEndpoint,,
+                com.tokko.recipes.backend.endpoints.RegistrationEndpoint
             </param-value>
         </init-param>
     </servlet>
@@ -24,8 +24,20 @@
         <servlet-name>SystemServiceServlet</servlet-name>
         <url-pattern>/_ah/spi/*</url-pattern>
     </servlet-mapping>
-
+    <listener>
+        <listener-class>de.mypkg.MyGSCL</listener-class>
+    </listener>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+
+    <!-- GUICE -->
+    <filter>
+        <filter-name>guiceFilter</filter-name>
+        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>guiceFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>

@@ -1,4 +1,4 @@
-package com.tokko.recipes.backend.ingredients;
+package com.tokko.recipes.backend.endpoints;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -9,6 +9,7 @@ import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
+import com.tokko.recipes.backend.ingredients.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;

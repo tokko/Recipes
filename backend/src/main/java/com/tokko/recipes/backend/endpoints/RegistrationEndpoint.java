@@ -1,4 +1,4 @@
-package com.tokko.recipes.backend.registration;
+package com.tokko.recipes.backend.endpoints;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -6,6 +6,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 import com.tokko.recipes.backend.recipes.RecipeUser;
+import com.tokko.recipes.backend.registration.Registration;
 import com.tokko.recipes.backend.util.Constants;
 
 import java.util.logging.Logger;

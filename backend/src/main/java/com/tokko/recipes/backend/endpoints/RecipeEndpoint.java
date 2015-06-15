@@ -1,4 +1,4 @@
-package com.tokko.recipes.backend.recipes;
+package com.tokko.recipes.backend.endpoints;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -11,6 +11,7 @@ import com.google.appengine.api.users.User;
 import com.google.inject.Inject;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
+import com.tokko.recipes.backend.recipes.Recipe;
 import com.tokko.recipes.backend.registration.MessageSender;
 import com.tokko.recipes.backend.util.Constants;
 
