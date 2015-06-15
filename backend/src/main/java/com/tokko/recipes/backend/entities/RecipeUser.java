@@ -19,4 +19,13 @@ public class RecipeUser {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        try {
+            return ((RecipeUser) obj).getEmail().equals(email);
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
 }

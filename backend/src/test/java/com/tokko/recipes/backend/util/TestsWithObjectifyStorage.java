@@ -1,4 +1,4 @@
-package com.tokko.recipes.backend;
+package com.tokko.recipes.backend.util;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalMemcacheServiceTestConfig;

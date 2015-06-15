@@ -1,7 +1,8 @@
-package com.tokko.recipes.backend;
+package com.tokko.recipes.backend.collections;
 
 import com.tokko.recipes.backend.entities.Ingredient;
 import com.tokko.recipes.backend.collections.ShoppingList;
+import com.tokko.recipes.backend.util.TestsWithObjectifyStorageAndRecipeMocks;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,7 +10,7 @@ import org.junit.Test;
 import java.util.HashSet;
 import java.util.List;
 
-public class ShoppingListTest extends TestsWithObjectifyStorageAndRecipeMocks{
+public class ShoppingListTest extends TestsWithObjectifyStorageAndRecipeMocks {
 
     @Test
     public void getShoppingList_AggregationSuccessful() {

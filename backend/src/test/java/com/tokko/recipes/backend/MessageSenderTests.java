@@ -2,10 +2,11 @@ package com.tokko.recipes.backend;
 
 import com.tokko.recipes.backend.entities.RecipeUser;
 import com.tokko.recipes.backend.entities.Registration;
+import com.tokko.recipes.backend.util.TestsWithObjectifyStorage;
 
 import org.junit.Before;
 
-public class MessageSenderTests extends TestsWithObjectifyStorage{
+public class MessageSenderTests extends TestsWithObjectifyStorage {
 
     @Before
     public void setup(){

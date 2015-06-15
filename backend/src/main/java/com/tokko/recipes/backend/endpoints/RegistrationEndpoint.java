@@ -5,8 +5,10 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
+import com.google.inject.Inject;
 import com.tokko.recipes.backend.entities.RecipeUser;
 import com.tokko.recipes.backend.entities.Registration;
+import com.tokko.recipes.backend.services.RegistrationService;
 import com.tokko.recipes.backend.util.Constants;
 
 import java.util.logging.Logger;
@@ -39,22 +41,14 @@ public class RegistrationEndpoint {
 
     private static final Logger logger = Logger.getLogger(RegistrationEndpoint.class.getName());
 
+    @Inject
+    RegistrationService registrationService;
     @ApiMethod(
             name = "insert",
             path = "registration",
             httpMethod = ApiMethod.HttpMethod.POST)
     public Registration insert(Registration registration, User user) {
-        RecipeUser recipeUser = ofy().load().type(RecipeUser.class).filter("email", user.getEmail()).first().now();
-
-        if (recipeUser == null) {
-            recipeUser = new RecipeUser(user.getEmail());
-            ofy().save().entity(recipeUser).now();
-        }
-        registration.setParent(recipeUser);
-        ofy().save().entity(registration).now();
-        logger.info("Created Registration.");
-
-        return ofy().load().entity(registration).now();
+        return registrationService.register(registration, user.getEmail());
     }
 
     @ApiMethod(

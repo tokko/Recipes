@@ -1,4 +1,4 @@
-package com.tokko.recipes.backend;
+package com.tokko.recipes.backend.util;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;

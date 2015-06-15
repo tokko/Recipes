@@ -1,4 +1,4 @@
-package com.tokko.recipes.backend;
+package com.tokko.recipes.backend.util;
 
 import com.google.inject.Inject;
 import com.googlecode.objectify.Objectify;
