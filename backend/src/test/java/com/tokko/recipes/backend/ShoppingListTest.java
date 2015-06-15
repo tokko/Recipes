@@ -18,25 +18,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
-public class ShoppingListTest {
-
-    private final LocalServiceTestHelper helper =
-            new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig(),
-                    new LocalMemcacheServiceTestConfig());
-    Objectify ofy;
-    private Mocks mocks;
-
-    @Before
-    public void setup() {
-        helper.setUp();
-        ofy = OfyService.ofy();
-        mocks = new Mocks(ofy);
-    }
-
-    @After
-    public void tearDown() throws IOException {
-        helper.tearDown();
-    }
+public class ShoppingListTest extends TestsWithObjectifyStorage{
 
     @Test
     public void getShoppingList_AggregationSuccessful() {
