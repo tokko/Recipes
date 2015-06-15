@@ -19,7 +19,6 @@ public class Mocks {
     private final List<Grocery> groceries;
     private final List<Ingredient> ingredients;
     @Inject
-    private Objectify ofy;
     public Mocks(Objectify ofy) {
         this(ofy, 1);
     }
