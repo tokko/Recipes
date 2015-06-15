@@ -40,4 +40,8 @@ public class RegistrationRA {
     public List<Registration> getRegistrationsForUser(RecipeUser user) {
         return ofy().load().type(Registration.class).ancestor(user).list();
     }
+
+    public void deleteRegistration(Registration record) {
+        ofy().delete().entity(record).now();
+    }
 }

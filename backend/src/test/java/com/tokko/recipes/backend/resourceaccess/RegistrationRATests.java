@@ -2,10 +2,12 @@ package com.tokko.recipes.backend.resourceaccess;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.googlecode.objectify.Objectify;
 import com.tokko.recipes.backend.entities.Recipe;
 import com.tokko.recipes.backend.entities.RecipeUser;
 import com.tokko.recipes.backend.entities.Registration;
+import com.tokko.recipes.backend.registration.MessageSender;
 import com.tokko.recipes.backend.util.TestsWithObjectifyStorage;
 
 
@@ -14,7 +16,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.*;
@@ -23,16 +24,19 @@ public class RegistrationRATests extends TestsWithObjectifyStorage {
 
     private static final String email = "angus@fife.sc";
     private RegistrationRA registrationRa;
+    private MessageSender messageSender;
 
     @Before
     public void setup() {
         super.setup();
-        registrationRa = Guice.createInjector(new AbstractModule() {
+        Injector injector = Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
                 bind(Objectify.class).toInstance(ofy);
             }
-        }).getInstance(RegistrationRA.class);
+        });
+        registrationRa = injector.getInstance(RegistrationRA.class);
+        messageSender = injector.getInstance(MessageSender.class);
     }
 
     @Test
@@ -68,5 +72,18 @@ public class RegistrationRATests extends TestsWithObjectifyStorage {
         List<Registration> registrations = registrationRa.getRegistrationsForUser(user);
         Assert.assertEquals(2, registrations.size());
         Assert.assertThat(registrations, containsInAnyOrder(reg, reg1));
+    }
+
+    @Test
+    public void deleteRegistration_removesRegistration() {
+        RecipeUser user = new RecipeUser(email);
+        user = registrationRa.saveUser(user);
+        String regid = "12341";
+        Registration reg = new Registration(regid);
+        reg.setParent(user);
+        reg = registrationRa.saveRegistration(reg);
+        registrationRa.deleteRegistration(reg);
+        Registration postDelete = registrationRa.getRegistration(reg);
+        Assert.assertNull(postDelete);
     }
 }
