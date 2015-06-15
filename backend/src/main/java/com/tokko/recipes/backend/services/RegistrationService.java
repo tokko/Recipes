@@ -23,7 +23,7 @@ public class RegistrationService {
 
         if (recipeUser == null) {
             recipeUser = new RecipeUser(email);
-            registrationRA.saveUser(recipeUser);
+            recipeUser = registrationRA.saveUser(recipeUser);
         }
         registration.setParent(recipeUser);
         registrationRA.saveRegistration(registration);

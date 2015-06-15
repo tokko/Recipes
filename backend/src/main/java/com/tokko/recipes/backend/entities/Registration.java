@@ -16,11 +16,14 @@ public class Registration {
 
     @Parent
     Key<RecipeUser> parent;
-    // you can add more fields...
     @Id
     private String regId;
 
     public Registration() {
+    }
+
+    public Registration(String regId) {
+        this.regId = regId;
     }
 
     public RecipeUser getParent() {

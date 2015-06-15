@@ -2,10 +2,13 @@ package com.tokko.recipes.backend.entities;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class RecipeUser {
     @Id
+    private Long id;
+    @Index
     private String email;
 
     public RecipeUser(String email) {
@@ -27,5 +30,10 @@ public class RecipeUser {
         } catch (Exception ignored) {
             return false;
         }
+    }
+
+    public RecipeUser setId(int id) {
+        this.id = (long) id;
+        return this;
     }
 }

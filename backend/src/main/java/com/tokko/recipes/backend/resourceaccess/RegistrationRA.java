@@ -1,6 +1,8 @@
 package com.tokko.recipes.backend.resourceaccess;
 
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.inject.Inject;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.tokko.recipes.backend.entities.RecipeUser;
 import com.tokko.recipes.backend.entities.Registration;
@@ -17,8 +19,9 @@ public class RegistrationRA {
         return ofy.load().type(RecipeUser.class).filter("email", email).first().now();
     }
 
-    public void saveUser(RecipeUser recipeUser) {
-        ofy.save().entity(recipeUser).now();
+    public RecipeUser saveUser(RecipeUser recipeUser) {
+        Key<RecipeUser> k = ofy.save().entity(recipeUser).now();
+        return ofy.load().key(k).now();
     }
 
     public void saveRegistration(Registration registration) {
@@ -28,4 +31,5 @@ public class RegistrationRA {
     public Registration getRegistration(Registration registration) {
         return ofy.load().entity(registration).now();
     }
+
 }

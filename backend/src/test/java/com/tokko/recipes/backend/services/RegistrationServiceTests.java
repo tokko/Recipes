@@ -36,7 +36,7 @@ public class RegistrationServiceTests extends TestsWithObjectifyStorage {
     @Test
     public void registration_UserDoesNotExists_UserIsCreated() {
         when(mockRegistrationRa.getUser(any(String.class))).thenReturn(null);
-
+        when(mockRegistrationRa.saveUser(any(RecipeUser.class))).thenReturn(new RecipeUser(email).setId(1));
         Registration registration = new Registration();
         registration.setRegId(regid);
         registrationService.register(registration, email);
@@ -46,7 +46,7 @@ public class RegistrationServiceTests extends TestsWithObjectifyStorage {
 
     @Test
     public void registration_UserExists_UserIsNotCreatedAgain() {
-        when(mockRegistrationRa.getUser(email)).thenReturn(new RecipeUser(email));
+        when(mockRegistrationRa.getUser(email)).thenReturn(new RecipeUser(email).setId(1));
 
         Registration registration = new Registration();
         registration.setRegId(regid);
@@ -57,7 +57,7 @@ public class RegistrationServiceTests extends TestsWithObjectifyStorage {
 
     @Test
     public void registration_RegIdIsSaved() {
-        when(mockRegistrationRa.getUser(email)).thenReturn(new RecipeUser(email));
+        when(mockRegistrationRa.getUser(email)).thenReturn(new RecipeUser(email).setId(1));
 
         Registration registration = new Registration();
         registration.setRegId(regid);
