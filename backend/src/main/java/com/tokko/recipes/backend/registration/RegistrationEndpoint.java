@@ -5,7 +5,6 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
-import com.googlecode.objectify.Key;
 import com.tokko.recipes.backend.recipes.RecipeUser;
 import com.tokko.recipes.backend.util.Constants;
 

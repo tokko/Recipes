@@ -8,6 +8,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.google.appengine.api.users.User;
+import com.google.inject.Inject;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
 import com.tokko.recipes.backend.registration.MessageSender;
@@ -52,6 +53,11 @@ public class RecipeEndpoint {
         ObjectifyService.register(Recipe.class);
     }
 
+    @Inject
+    private MessageSender messageSender;
+
+    public RecipeEndpoint(){
+    }
     /**
      * Returns the {@link Recipe} with the corresponding ID.
      *
@@ -80,14 +86,9 @@ public class RecipeEndpoint {
             path = "recipe",
             httpMethod = ApiMethod.HttpMethod.POST)
     public Recipe insert(Recipe recipe, User user) {
-        // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
-        // You should validate that recipe.id has not been set. If the ID type is not supported by the
-        // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
-        //
-        // If your client provides the ID then you should probably use PUT instead.
         ofy().save().entity(recipe).now();
         logger.info("Created Recipe.");
-        MessageSender.sendMessage(recipe, user);
+        messageSender.sendMessage(recipe, user);
         return ofy().load().entity(recipe).now();
     }
 

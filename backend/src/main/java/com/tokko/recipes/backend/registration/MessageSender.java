@@ -15,7 +15,7 @@ import static com.tokko.recipes.backend.resourceaccess.OfyService.ofy;
 public class MessageSender {
     private static final String API_KEY = "AIzaSyAcfYjzlHQaAuroVdB26hczjVkZ0PKqDNc";
 
-    public static <T> void sendMessage(T entity, User user) {
+    public <T> void sendMessage(T entity, User user) {
         Sender sender = new Sender(API_KEY);
         Message msg = new Message.Builder().addData("message", new Gson().toJson(entity)).build();
         RecipeUser recipeUser = ofy().load().type(RecipeUser.class).filterKey(user.getEmail()).first().now();
