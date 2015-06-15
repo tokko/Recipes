@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,6 +42,17 @@ public class RegistrationServiceTests extends TestsWithObjectifyStorage {
         registrationService.register(registration, email);
 
         verify(mockRegistrationRa).saveUser(new RecipeUser(email));
+    }
+
+    @Test
+    public void registration_UserExists_UserIsNotCreatedAgain() {
+        when(mockRegistrationRa.getUser(email)).thenReturn(new RecipeUser(email));
+
+        Registration registration = new Registration();
+        registration.setRegId(regid);
+        registrationService.register(registration, email);
+
+        verify(mockRegistrationRa, never()).saveUser(any(RecipeUser.class));
     }
 
     @Test
