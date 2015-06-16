@@ -18,10 +18,10 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
@@ -41,39 +41,40 @@ public class MessageSenderTests extends TestsWithObjectifyStorage {
         super.setup();
         mockRegistrationRa = mock(RegistrationRA.class);
         mockSender = mock(Sender.class);
-        Injector injector = Guice.createInjector(new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(RegistrationRA.class).toInstance(mockRegistrationRa);
-                bind(Sender.class).toInstance(mockSender);
-            }
-        });
-        messageSender = injector.getInstance(MessageSender.class);
-        injector.injectMembers(messageSender);
+        messageSender = new MessageSender(mockRegistrationRa, mockSender);
     }
 
     @Test
-    public void sendMessage_NoRegisteredDevices_NoMessageSent() {
+    public void sendMessage_NoRegisteredDevices_NoMessageSent() throws IOException {
         when(mockRegistrationRa.getRegistrationsForUser(any(RecipeUser.class))).thenReturn(new LinkedList<Registration>());
         messageSender.sendMessage(new Recipe(), "");
-        try {
-            verify(mockSender, never()).send(any(Message.class), anyString(), anyInt());
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
+        verify(mockSender, never()).send(any(Message.class), anyString(), anyInt());
     }
 
     @Test
-    public void sendMessage_RegistrationsExist_MessageSentToAllDevices() throws IllegalAccessException, InstantiationException {
-        try {
-            List<Registration> registrations = Arrays.asList(new Registration("regid1"), new Registration("regid2"));
-            when(mockRegistrationRa.getRegistrationsForUser(any(RecipeUser.class))).thenReturn(registrations);
-            messageSender.sendMessage(new Recipe(), "");
+    public void sendMessage_RegistrationsExist_MessageSentToAllDevices() throws IllegalAccessException, InstantiationException, IOException {
+        List<Registration> registrations = Arrays.asList(new Registration("regid1"), new Registration("regid2"));
+        when(mockRegistrationRa.getRegistrationsForUser(any(RecipeUser.class))).thenReturn(registrations);
+        messageSender.sendMessage(new Recipe(), "");
 
-            verify(mockSender).send(any(Message.class), eq(registrations.get(0).getRegId()), anyInt());
-            verify(mockSender).send(any(Message.class), eq(registrations.get(1).getRegId()), anyInt());
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
+        verify(mockSender).send(any(Message.class), eq(registrations.get(0).getRegId()), anyInt());
+        verify(mockSender).send(any(Message.class), eq(registrations.get(1).getRegId()), anyInt());
+    }
+
+    @Test
+    public void sendMessage_canonicalRegistrationIsUpdated_RegisteredIsUpdated() throws IOException {
+        String oldRegid = "regid";
+        String newRegid = "regid1";
+
+        Registration reg = new Registration(oldRegid);
+        when(mockRegistrationRa.getRegistrationsForUser(any(RecipeUser.class))).thenReturn(Collections.singletonList(reg));
+        Result res = mock(Result.class);
+        when(res.getCanonicalRegistrationId()).thenReturn(newRegid);
+        when(mockSender.send(any(Message.class), anyString(), anyInt())).thenReturn(res);
+
+        messageSender.sendMessage(new Recipe(), "");
+
+        verify(mockRegistrationRa).deleteRegistration(reg);
+        verify(mockRegistrationRa).saveRegistration(new Registration(newRegid));
     }
 }
