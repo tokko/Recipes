@@ -24,14 +24,14 @@
         <servlet-name>SystemServiceServlet</servlet-name>
         <url-pattern>/_ah/spi/*</url-pattern>
     </servlet-mapping>
-    <listener>
-        <listener-class>de.mypkg.MyGSCL</listener-class>
-    </listener>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
-    <!-- GUICE -->
+    <listener>
+        <listener-class>com.tokko.recipes.backend.util.MyGSCL</listener-class>
+    </listener>
+
     <filter>
         <filter-name>guiceFilter</filter-name>
         <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
