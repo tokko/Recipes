@@ -34,6 +34,7 @@ public class MessageSender {
         try {
             for (Registration record : records) {
                 Result res = sender.send(msg, record.getRegId(), 5);
+                if(res == null) continue;
                 if (res.getCanonicalRegistrationId() == null)
                     registrationRA.deleteRegistration(record);
                 else if (!record.getRegId().equals(res.getCanonicalRegistrationId())) {
