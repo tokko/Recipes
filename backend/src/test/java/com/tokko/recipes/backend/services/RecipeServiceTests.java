@@ -2,6 +2,7 @@ package com.tokko.recipes.backend.services;
 
 import com.google.api.server.spi.response.NotFoundException;
 import com.tokko.recipes.backend.entities.Recipe;
+import com.tokko.recipes.backend.entities.RecipeUser;
 import com.tokko.recipes.backend.registration.MessageSender;
 import com.tokko.recipes.backend.resourceaccess.RecipeRa;
 import com.tokko.recipes.backend.resourceaccess.RegistrationRA;
@@ -11,9 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -21,7 +20,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -60,6 +58,7 @@ public class RecipeServiceTests extends TestsWithObjectifyStorage {
 
     @Test
     public void insertRecipe_insertSucceeds_MessageIsSent(){
+        given(registrationRa.getUser(anyString())).willReturn(new RecipeUser("email", 1L));
         Recipe recipe = new Recipe("title");
         recipe.setId(0L);
         String email = "email";
@@ -70,6 +69,7 @@ public class RecipeServiceTests extends TestsWithObjectifyStorage {
 
     @Test
     public void insertRecipe_insertFails_MessageIsNotSent(){
+        given(registrationRa.getUser(anyString())).willReturn(new RecipeUser("email", 1L));
         Recipe recipe = new Recipe("title");
         String email = "email";
         recipeService.insertRecipe(recipe, email);

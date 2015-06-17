@@ -1,5 +1,6 @@
 package com.tokko.recipes.backend.entities;
 
+import com.google.appengine.repackaged.org.codehaus.jackson.annotate.JsonIgnore;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
@@ -17,6 +18,7 @@ public class Recipe implements Iterable<Ingredient> {
     Long id;
     private String title;
     @Parent
+    @JsonIgnore
     Key<RecipeUser> user;
     private List<Ref<Ingredient>> ingredients = new ArrayList<>();
 

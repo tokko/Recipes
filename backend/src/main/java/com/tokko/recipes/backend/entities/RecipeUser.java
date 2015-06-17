@@ -15,6 +15,11 @@ public class RecipeUser {
         this.email = email;
     }
 
+    public RecipeUser(String email, long id) {
+        this(email);
+        this.id = id;
+    }
+
     public String getEmail() {
         return email;
     }
