@@ -13,6 +13,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
 import com.tokko.recipes.backend.entities.Recipe;
 import com.tokko.recipes.backend.registration.MessageSender;
+import com.tokko.recipes.backend.services.RecipeService;
 import com.tokko.recipes.backend.util.Constants;
 
 import java.util.ArrayList;
@@ -24,13 +25,6 @@ import javax.inject.Named;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-/**
- * WARNING: This generated code is intended as a sample or starting point for using a
- * Google Cloud Endpoints RESTful API with an Objectify entity. It provides no data access
- * restrictions and no data validation.
- * <p/>
- * DO NOT deploy this code unchanged as part of a real application to real users.
- */
 @Api(
         name = "recipeApi",
         version = "v1",
@@ -49,6 +43,8 @@ public class RecipeEndpoint {
 
     private static final int DEFAULT_LIST_LIMIT = 20;
 
+    @Inject
+    private RecipeService recipeService;
     static {
         // Typically you would register this inside an OfyServive wrapper. See: https://code.google.com/p/objectify-appengine/wiki/BestPractices
         ObjectifyService.register(Recipe.class);
@@ -59,24 +55,14 @@ public class RecipeEndpoint {
 
     public RecipeEndpoint(){
     }
-    /**
-     * Returns the {@link Recipe} with the corresponding ID.
-     *
-     * @param id the ID of the entity to be retrieved
-     * @return the entity with the corresponding ID
-     * @throws NotFoundException if there is no {@code Recipe} with the provided ID.
-     */
+
     @ApiMethod(
             name = "get",
             path = "recipe/{id}",
             httpMethod = ApiMethod.HttpMethod.GET)
     public Recipe get(@Named("id") Long id) throws NotFoundException {
         logger.info("Getting Recipe with ID: " + id);
-        Recipe recipe = ofy().load().type(Recipe.class).id(id).now();
-        if (recipe == null) {
-            throw new NotFoundException("Could not find Recipe with ID: " + id);
-        }
-        return recipe;
+        return recipeService.getRecipe(id);
     }
 
     /**
