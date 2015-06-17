@@ -1,18 +1,21 @@
 apply plugin: 'com.android.application'
 
+Properties props = new Properties()
+props.load(new FileInputStream("C:\\AndroidStudioProjects\\gradle.properties"))
+
 android {
     signingConfigs {
         debug {
-            keyAlias 'debug'
             storeFile file('C:/AndroidStudioProjects/keystore.jks')
-            storePassword 'tit1rstsT/f'
-            keyPassword 'tit1rstsT/f'
+            storePassword props["storePass"]
+            keyAlias props["debugAlias"]
+            keyPassword props["debugPass"]
         }
         release {
-            keyAlias 'release'
             storeFile file('C:/AndroidStudioProjects/keystore.jks')
-            storePassword 'tit1rstsT/f'
-            keyPassword 'tit1rstsT/f'
+            storePassword props["storePass"]
+            keyAlias props["releaseAlias"]
+            keyPassword props["releasePass"]
         }
     }
     compileSdkVersion 22
