@@ -8,7 +8,7 @@ import com.tokko.recipes.backend.registration.MessageSender;
 import com.tokko.recipes.backend.resourceaccess.RecipeRa;
 import com.tokko.recipes.backend.resourceaccess.RegistrationRA;
 
-import static com.googlecode.objectify.ObjectifyService.ofy;
+import java.util.List;
 
 public class RecipeService {
 
@@ -32,11 +32,17 @@ public class RecipeService {
     }
 
     public Recipe insertRecipe(Recipe recipe, String email) {
-        //RecipeUser user = registrationRA.getUser(email); //TODO: set user parent for recipe
-        recipeRa.saveRecipe(recipe, email);
+        RecipeUser user = registrationRA.getUser(email);
+        recipe.setUser(user);
+        recipeRa.saveRecipe(recipe);
         if(recipe.getId() != null)
             messageSender.sendMessage(recipe, email);
         return recipeRa.getRecipe(recipe.getId());
 
+    }
+
+    public List<Recipe> getRecipesForUser(String email) {
+        RecipeUser user = registrationRA.getUser(email);
+        return recipeRa.getRecipesForUser(user);
     }
 }

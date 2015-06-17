@@ -1,9 +1,10 @@
 package com.tokko.recipes.backend.entities;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.tokko.recipes.backend.entities.Ingredient;
+import com.googlecode.objectify.annotation.Parent;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,6 +16,8 @@ public class Recipe implements Iterable<Ingredient> {
     @Id
     Long id;
     private String title;
+    @Parent
+    Key<RecipeUser> user;
     private List<Ref<Ingredient>> ingredients = new ArrayList<>();
 
     public Recipe() {
@@ -38,6 +41,14 @@ public class Recipe implements Iterable<Ingredient> {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Key<RecipeUser> getUser() {
+        return user;
+    }
+
+    public void setUser(RecipeUser user) {
+        this.user = Key.create(user);
     }
 
     public void addIngredient(Ingredient ingredient) {
