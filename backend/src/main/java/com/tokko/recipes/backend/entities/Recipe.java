@@ -65,4 +65,14 @@ public class Recipe implements Iterable<Ingredient> {
     public String toString() {
         return getTitle();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        try{
+            return ((Recipe)obj).getId().equals(id);
+        }
+        catch (ClassCastException ignored){
+            return false;
+        }
+    }
 }
