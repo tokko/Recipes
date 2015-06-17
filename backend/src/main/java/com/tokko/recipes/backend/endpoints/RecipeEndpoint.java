@@ -73,10 +73,8 @@ public class RecipeEndpoint {
             path = "recipe",
             httpMethod = ApiMethod.HttpMethod.POST)
     public Recipe insert(Recipe recipe, User user) {
-        ofy().save().entity(recipe).now();
         logger.info("Created Recipe.");
-        messageSender.sendMessage(recipe, user.getEmail());
-        return ofy().load().entity(recipe).now();
+        return recipeService.insertRecipe(recipe, user.getEmail());
     }
 
     /**
