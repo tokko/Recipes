@@ -10,11 +10,13 @@ import java.util.Set;
 public class GuiceSSSModule extends GuiceSystemServiceServletModule {
 
     protected void configureServlets() {
-
-        Set<Class<?>> serviceClasses = new HashSet<Class<?>>();
+        super.configureServlets();
+        /*
+        Set<Class<?>> serviceClasses = new HashSet<>();
         serviceClasses.add(RecipeEndpoint.class);
         serviceClasses.add(RegistrationEndpoint.class);
         this.serveGuiceSystemServiceServlet("/_ah/api/*", serviceClasses);
+        */
     }
 }
 

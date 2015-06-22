@@ -28,10 +28,10 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
+
     <listener>
         <listener-class>com.tokko.recipes.backend.util.MyGSCL</listener-class>
     </listener>
-
     <filter>
         <filter-name>guiceFilter</filter-name>
         <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>

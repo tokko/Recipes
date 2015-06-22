@@ -6,12 +6,14 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
+import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.googlecode.objectify.ObjectifyService;
 import com.tokko.recipes.backend.entities.Recipe;
 import com.tokko.recipes.backend.registration.MessageSender;
 import com.tokko.recipes.backend.services.RecipeService;
 import com.tokko.recipes.backend.util.Constants;
+import com.tokko.recipes.backend.util.MyGuiceModule;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -19,6 +21,7 @@ import java.util.logging.Logger;
 import javax.inject.Named;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
+import static com.tokko.recipes.backend.util.InjectStore.inject;
 
 @Api(
         name = "recipeApi",
@@ -36,19 +39,11 @@ public class RecipeEndpoint {
 
     private static final Logger logger = Logger.getLogger(RecipeEndpoint.class.getName());
 
-    private static final int DEFAULT_LIST_LIMIT = 20;
-
     @Inject
     private RecipeService recipeService;
-    static {
-        // Typically you would register this inside an OfyServive wrapper. See: https://code.google.com/p/objectify-appengine/wiki/BestPractices
-        ObjectifyService.register(Recipe.class);
-    }
-
-    @Inject
-    private MessageSender messageSender;
-
     public RecipeEndpoint(){
+        inject(this);
+        //      recipeService = Guice.createInjector(new MyGuiceModule()).getInstance(RecipeService.class);
     }
 
     @ApiMethod(
@@ -124,13 +119,6 @@ public class RecipeEndpoint {
         return CollectionResponse.<Recipe>builder().setItems(recipeList).build();
     }
 
-    /*
-    public CollectionResponse<Recipe> list() {
-            List<Recipe> list = ofy().load().type(Recipe.class).list();
-            return CollectionResponse.<Recipe>builder().setItems(list).build();
-        }
-
-        */
     private void checkExists(Long id) throws NotFoundException {
         try {
             ofy().load().type(Recipe.class).id(id).safe();

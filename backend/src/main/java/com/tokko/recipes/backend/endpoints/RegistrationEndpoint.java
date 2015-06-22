@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import javax.inject.Named;
 
 import static com.tokko.recipes.backend.resourceaccess.OfyService.ofy;
+import static com.tokko.recipes.backend.util.InjectStore.inject;
 
 
 /**
@@ -40,9 +41,13 @@ import static com.tokko.recipes.backend.resourceaccess.OfyService.ofy;
 public class RegistrationEndpoint {
 
     private static final Logger logger = Logger.getLogger(RegistrationEndpoint.class.getName());
-
     @Inject
     RegistrationService registrationService;
+
+    public RegistrationEndpoint() {
+        inject(this);
+    }
+
     @ApiMethod(
             name = "insert",
             path = "registration",
