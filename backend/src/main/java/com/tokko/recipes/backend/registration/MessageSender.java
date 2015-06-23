@@ -13,8 +13,6 @@ import com.tokko.recipes.backend.resourceaccess.RegistrationRA;
 import java.io.IOException;
 import java.util.List;
 
-import static com.tokko.recipes.backend.resourceaccess.OfyService.ofy;
-
 public class MessageSender {
     public static final String API_KEY = "AIzaSyAcfYjzlHQaAuroVdB26hczjVkZ0PKqDNc";
     private RegistrationRA registrationRA;
