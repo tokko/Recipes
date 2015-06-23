@@ -1,11 +1,13 @@
-package com.tokko.recipes.utils;
+package com.tokko.recipes.recipes;
 
 import com.tokko.recipes.backend.recipeApi.model.Recipe;
+import com.tokko.recipes.utils.AbstractWrapper;
 
 public class RecipeWrapper extends AbstractWrapper<Recipe> {
 
     private Long id;
     private String title;
+    private String description;
 
     public RecipeWrapper() {
         this(null);
@@ -30,6 +32,14 @@ public class RecipeWrapper extends AbstractWrapper<Recipe> {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

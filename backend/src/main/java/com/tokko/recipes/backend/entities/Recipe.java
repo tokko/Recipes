@@ -13,13 +13,14 @@ import java.util.List;
 
 @Entity
 public class Recipe implements Iterable<Ingredient> {
+    @Parent
+    @JsonIgnore
+    Key<RecipeUser> user;
     private
     @Id
     Long id;
     private String title;
-    @Parent
-    @JsonIgnore
-    Key<RecipeUser> user;
+    private String description;
     private List<Ref<Ingredient>> ingredients = new ArrayList<>();
 
     public Recipe() {
@@ -27,6 +28,14 @@ public class Recipe implements Iterable<Ingredient> {
 
     public Recipe(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getId() {

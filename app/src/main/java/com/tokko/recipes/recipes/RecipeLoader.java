@@ -1,10 +1,12 @@
-package com.tokko.recipes.utils;
+package com.tokko.recipes.recipes;
 
 import android.content.Context;
 
 import com.google.inject.Inject;
 import com.tokko.recipes.backend.recipeApi.RecipeApi;
 import com.tokko.recipes.backend.recipeApi.model.Recipe;
+import com.tokko.recipes.utils.AbstractLoader;
+import com.tokko.recipes.utils.ApiFactory;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,8 +3,8 @@ package com.tokko.recipes.abstractdetails;
 import com.tokko.recipes.genericlists.GenericListFragment;
 import com.tokko.recipes.recipes.RecipeDetailFragment;
 import com.tokko.recipes.utils.AbstractWrapper;
-import com.tokko.recipes.utils.RecipeLoader;
-import com.tokko.recipes.utils.RecipeWrapper;
+import com.tokko.recipes.recipes.RecipeLoader;
+import com.tokko.recipes.recipes.RecipeWrapper;
 
 public class ResourceResolver {
     public static final String RESOURCE_EXTRA = "resource";
