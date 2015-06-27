@@ -13,6 +13,8 @@ import android.widget.ViewSwitcher;
 import com.google.gson.Gson;
 import com.tokko.recipes.R;
 import com.tokko.recipes.utils.AbstractWrapper;
+import com.tokko.recipes.views.EditTextViewSwitchable;
+import com.tokko.recipes.views.Editable;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -65,13 +67,13 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         if (savedInstanceState != null) {
             //todo: restore save state
         } else if (getArguments().getBoolean("edit"))
-            switchMode();
+            doIt(Editable::edit);
     }
 
     @OnClick(R.id.edit_ok)
     public final void onOk_Private() {
         onOk();
-        switchMode();
+        doIt(Editable::accept);
     }
 
     protected abstract void onOk();
@@ -86,7 +88,7 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
 
     @OnClick(R.id.edit_cancel)
     public final void onCancel() {
-        switchMode();
+        doIt(Editable::discard);
     }
 
     @Override
@@ -105,30 +107,32 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_edit:
-                switchMode();
+                doIt(Editable::edit);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void switchMode(){
-        switchMode((ViewGroup) getView());
+    private void doIt(EditableAction action) {
+        doIt((ViewGroup) getView(), action);
     }
 
-    private void switchMode(ViewGroup viewgroup) {
-        if (viewgroup == null) return;
-        for (int i = 0; i < viewgroup.getChildCount(); i++) {
-            View v = viewgroup.getChildAt(i);
-            if (v instanceof ViewSwitcher) {
-                ((ViewSwitcher) v).showNext();
+    private void doIt(ViewGroup viewGroup, EditableAction action) {
+        if (viewGroup == null) return;
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View v = viewGroup.getChildAt(i);
+            if (v instanceof Editable) {
+                action.Action((Editable) v);
             }
             else if(v instanceof ViewGroup)
-                switchMode((ViewGroup)v);
+                doIt((ViewGroup) v, action);
         }
         buttonBar.setVisibility(buttonBar.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-        onSwitchMode();
     }
 
-    protected abstract void onSwitchMode();
+    private interface EditableAction {
+        void Action(Editable editable);
+    }
+
 }

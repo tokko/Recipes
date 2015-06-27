@@ -43,18 +43,28 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
+
 //apply plugin: 'com.google.gms.google-services'
 dependencies {
     compile project(path: ':backend', configuration: 'android-endpoints')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     provided 'org.roboguice:roboblender:3.0.1'
     compile 'org.roboguice:roboguice:3.0.1'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.0-rc2'
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:support-v4:22.2.0'
+    //  compile 'com.android.support:appcompat-v7:22.2.0'
+//    compile 'com.android.support:support-v4:22.2.0'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.jakewharton:butterknife:6.1.0'
+    // compile 'net.orfjackal.retrolambda:retrolambda:1.8.0'
+    compile 'me.tatarka:gradle-retrolambda:3.1.0'
+    compile 'net.sourceforge.streamsupport:streamsupport:1.2.1'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.0-rc2'
 }

@@ -12,20 +12,17 @@ import com.tokko.recipes.R;
 import com.tokko.recipes.abstractdetails.AbstractDetailFragment;
 import com.tokko.recipes.backend.recipeApi.RecipeApi;
 import com.tokko.recipes.backend.recipeApi.model.Recipe;
+import com.tokko.recipes.views.EditTextViewSwitchable;
 
 import java.io.IOException;
 
 import roboguice.inject.InjectView;
 
 public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> {
-    @InjectView(R.id.detail_title)
-    TextView title;
-    @InjectView(R.id.edit_title)
-    EditText edit_title;
-    @InjectView(R.id.edit_description)
-    EditText edit_description;
-    @InjectView(R.id.detail_description)
-    TextView description;
+    @InjectView(R.id.recipe_title)
+    EditTextViewSwitchable title;
+    @InjectView(R.id.recipe_description)
+    EditTextViewSwitchable description;
 
     @Inject
     private RecipeApi api;
@@ -38,16 +35,14 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        title.setText(entity.getTitle());
-        edit_title.setText(entity.getTitle());
-        description.setText(entity.getDescription());
-        edit_description.setText(entity.getDescription());
+        title.setText(entity.getTitle()).setHint("Title");
+        description.setText(entity.getDescription()).setHint("Description");
     }
 
     @Override
     protected void onOk() {
-        entity.setTitle(edit_title.getText().toString());
-        entity.setDescription(edit_description.getText().toString());
+        entity.setTitle(title.getText());
+        entity.setDescription(description.getText());
         final Recipe entity = this.entity.getEntity();
         if (entity == null) return;
         new Thread() {
@@ -76,9 +71,11 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
 
     @Override
     protected void onSwitchMode() {
+        /*
         edit_title.setText(entity.getTitle());
         title.setText(edit_title.getText().toString());
         edit_description.setText(entity.getDescription());
         description.setText(edit_description.getText().toString());
+        */
     }
 }

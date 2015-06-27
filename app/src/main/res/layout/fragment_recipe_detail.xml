@@ -15,6 +15,18 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <com.tokko.recipes.views.EditTextViewSwitchable
+            android:id="@+id/recipe_title"
+            hint="Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.tokko.recipes.views.EditTextViewSwitchable
+            android:id="@+id/recipe_description"
+            hint="Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <!--
         <ViewSwitcher
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -48,6 +60,7 @@
                 android:hint="description"
                 android:inputType="textCapSentences" />
         </ViewSwitcher>
+        -->
     </LinearLayout>
 
     <LinearLayout

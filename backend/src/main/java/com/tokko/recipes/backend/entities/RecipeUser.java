@@ -11,6 +11,8 @@ public class RecipeUser {
     @Index
     private String email;
 
+    public RecipeUser() {
+    }//mandatory no-args constructor
     public RecipeUser(String email) {
         this.email = email;
     }
