@@ -69,7 +69,6 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
         }
     }
 
-    @Override
     protected void onSwitchMode() {
         /*
         edit_title.setText(entity.getTitle());

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 Properties props = new Properties()
 props.load(new FileInputStream("C:\\AndroidStudioProjects\\gradle.properties"))
 
@@ -47,10 +46,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
 }
-
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'me.tatarka.retrolambda'
 dependencies {
     compile project(path: ':backend', configuration: 'android-endpoints')
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -61,10 +58,8 @@ dependencies {
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.jakewharton:butterknife:6.1.0'
-    // compile 'net.orfjackal.retrolambda:retrolambda:1.8.0'
-    compile 'me.tatarka:gradle-retrolambda:3.1.0'
     compile 'net.sourceforge.streamsupport:streamsupport:1.2.1'
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.0-rc2'
+    testCompile 'org.robolectric:robolectric:3.0-rc3'
 }
