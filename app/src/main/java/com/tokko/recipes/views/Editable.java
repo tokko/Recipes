@@ -41,13 +41,13 @@ public abstract class Editable<W1 extends View, W2 extends View, D> extends Line
 
     protected abstract void onDiscard();
 
-    public void discard() {
+    public final void discard() {
         label.setVisibility(View.VISIBLE);
         edit.setVisibility(View.GONE);
         onDiscard();
     }
 
-    public void accept() {
+    public final void accept() {
         label.setVisibility(View.VISIBLE);
         edit.setVisibility(View.GONE);
         onAccept();

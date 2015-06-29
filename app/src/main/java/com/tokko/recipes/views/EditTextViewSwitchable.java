@@ -32,16 +32,6 @@ public class EditTextViewSwitchable extends Editable<TextView, EditText, String>
     }
 
     @Override
-    public void discard() {
-        edit.setText(label.getText());
-    }
-
-    @Override
-    public void accept() {
-        label.setText(edit.getText());
-    }
-
-    @Override
     protected void onAccept() {
         label.setText(edit.getText());
     }
