@@ -49,6 +49,9 @@ android {
     }
 }
 apply plugin: 'me.tatarka.retrolambda'
+retrolambda {
+    jdk System.getenv("JAVA8_HOME")
+}
 dependencies {
     compile project(path: ':backend', configuration: 'android-endpoints')
     compile fileTree(include: ['*.jar'], dir: 'libs')
