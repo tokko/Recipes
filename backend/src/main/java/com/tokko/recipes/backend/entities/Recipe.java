@@ -80,6 +80,11 @@ public class Recipe implements Iterable<Ingredient> {
             public Ingredient next() {
                 return it.next().safe();
             }
+
+            @Override
+            public void remove() {
+                it.remove();
+            }
         };
     }
 
