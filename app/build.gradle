@@ -1,20 +1,21 @@
 apply plugin: 'com.android.application'
-Properties props = new Properties()
-props.load(new FileInputStream("C:\\AndroidStudioProjects\\gradle.properties"))
 
 android {
+    lintOptions {
+        abortOnError false
+    }
     signingConfigs {
-        debug {
-            storeFile file('C:/AndroidStudioProjects/keystore.jks')
-            storePassword props["storePass"]
-            keyAlias props["debugAlias"]
-            keyPassword props["debugPass"]
-        }
         release {
-            storeFile file('C:/AndroidStudioProjects/keystore.jks')
-            storePassword props["storePass"]
-            keyAlias props["releaseAlias"]
-            keyPassword props["releasePass"]
+            try {
+                Properties props = new Properties()
+                props.load(new FileInputStream("C:\\AndroidStudioProjects\\gradle.properties"))
+                storeFile file("storeLocation")
+                storePassword props["storePass"]
+                keyAlias props["debugAlias"]
+                keyPassword props["debugPass"]
+            }
+            catch (FileNotFoundException ignored) {
+            }
         }
     }
     compileSdkVersion 22
