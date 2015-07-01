@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="master_detail_flows">
+        <item>Recipes</item>
+        <item>Groceries</item>
+    </string-array>
+</resources>

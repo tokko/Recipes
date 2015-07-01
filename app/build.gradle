@@ -54,8 +54,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     provided 'org.roboguice:roboblender:3.0.1'
     compile 'org.roboguice:roboguice:3.0.1'
-    //  compile 'com.android.support:appcompat-v7:22.2.0'
-//    compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:support-v4:22.2.0'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.jakewharton:butterknife:6.1.0'
