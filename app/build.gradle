@@ -62,7 +62,7 @@ android {
 }
 apply plugin: 'me.tatarka.retrolambda'
 retrolambda {
-    jdk System.getenv("JAVA8_HOME")
+    // jdk System.getenv("JAVA8_HOME")
     oldJdk System.getenv("JAVA6_HOME")
     //javaVersion JavaVersion.VERSION_1_6
     //jvmArgs '-noverify'
