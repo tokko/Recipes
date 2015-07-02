@@ -26,6 +26,10 @@ public abstract class Editable<W1 extends View, W2 extends View, D> extends Line
         super(context, attrs);
         label = w1;
         edit = w2;
+        label.setSaveEnabled(true);
+        label.setSaveFromParentEnabled(true);
+        edit.setSaveFromParentEnabled(true);
+        edit.setSaveEnabled(true);
         w1.setId(UUID.randomUUID().hashCode());
         w2.setId(UUID.randomUUID().hashCode());
         setOrientation(VERTICAL);

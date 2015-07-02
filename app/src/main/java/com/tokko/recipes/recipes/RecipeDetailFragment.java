@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.inject.Inject;
 import com.tokko.recipes.R;
 import com.tokko.recipes.abstractdetails.AbstractDetailFragment;
 import com.tokko.recipes.backend.recipeApi.RecipeApi;
 import com.tokko.recipes.backend.recipeApi.model.Recipe;
+import com.tokko.recipes.utils.AbstractWrapper;
 import com.tokko.recipes.views.EditTextViewSwitchable;
 
 import java.io.IOException;
@@ -37,6 +36,11 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
         super.onViewCreated(view, savedInstanceState);
         title.setText(entity.getTitle()).setHint("Title");
         description.setText(entity.getDescription()).setHint("Description");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -69,12 +73,16 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
         }
     }
 
-    protected void onSwitchMode() {
-        /*
-        edit_title.setText(entity.getTitle());
-        title.setText(edit_title.getText().toString());
-        edit_description.setText(entity.getDescription());
-        description.setText(edit_description.getText().toString());
-        */
+    @Override
+    protected void populateForm(RecipeWrapper entity) {
+        title.setText(entity.getTitle());
+        description.setText(entity.getDescription());
+    }
+
+    @Override
+    protected RecipeWrapper populateEntity(RecipeWrapper editingEntity) {
+        editingEntity.setTitle(title.getText());
+        editingEntity.setDescription(description.getText());
+        return editingEntity;
     }
 }

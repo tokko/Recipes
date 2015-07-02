@@ -8,12 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ViewSwitcher;
 
 import com.google.gson.Gson;
 import com.tokko.recipes.R;
 import com.tokko.recipes.utils.AbstractWrapper;
-import com.tokko.recipes.views.EditTextViewSwitchable;
 import com.tokko.recipes.views.Editable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,8 +24,9 @@ import roboguice.inject.InjectView;
 public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> extends RoboFragment {
     private static final String EXTRA_ENTITY_KEY = "entity";
     private static final String EXTRA_ENTITY_CLASS_KEY = "clazz";
+    private static final String EXTRA_ENTITY_EDITING__KEY = "editing_entity";
     protected T entity;
-
+    private Class<T> clz;
     @InjectView(R.id.edit_buttonBar)
     private LinearLayout buttonBar;
     @InjectView(R.id.edit_delete)
@@ -55,9 +54,10 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         Bundle b = savedInstanceState != null ? savedInstanceState : getArguments();
         if (b != null && b.containsKey(EXTRA_ENTITY_KEY)) {
             //noinspection unchecked
-            Class<T> clz = (Class<T>) getArguments().getSerializable(EXTRA_ENTITY_CLASS_KEY);
-            entity = new Gson().fromJson(getArguments().getString(EXTRA_ENTITY_KEY), clz);
+            clz = (Class<T>) b.getSerializable(EXTRA_ENTITY_CLASS_KEY);
+            entity = new Gson().fromJson(b.getString(EXTRA_ENTITY_KEY), clz);
         }
+
     }
 
     @Override
@@ -65,6 +65,9 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_ENTITY_CLASS_KEY, entity.getClass());
         outState.putString(EXTRA_ENTITY_KEY, new Gson().toJson(entity));
+        @SuppressWarnings("unchecked") T editingEntity = (T) entity.cloneEntity();
+        editingEntity = populateEntity(editingEntity);
+        outState.putString(EXTRA_ENTITY_EDITING__KEY, new Gson().toJson(editingEntity));
     }
 
     @Override
@@ -74,18 +77,31 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         if (entity.getId() == null)
             deleteButton.setEnabled(false);
         if (savedInstanceState != null) {
-            //todo: restore save state
-        } else if (getArguments().getBoolean("edit"))
-            doIt(Editable::edit);
+            populateForm(entity);
+            T editingEntity = new Gson().fromJson(savedInstanceState.getString(EXTRA_ENTITY_EDITING__KEY), clz);
+            populateForm(editingEntity);
+        }
+        if (getArguments().getBoolean("edit") || entity.getId() == null) {
+            populateForm(entity);
+            swapMode();
+        }
     }
+
+    protected abstract void populateForm(T entity);
+
+    protected abstract T populateEntity(T editingEntity);
+
+    protected abstract void onOk();
+
+    protected abstract void onDelete();
 
     @OnClick(R.id.edit_ok)
     public final void onOk_Private() {
+        traverseHierarchy(getView(), Editable::accept);
+        entity = populateEntity(entity);
         onOk();
-        doIt(Editable::accept);
     }
 
-    protected abstract void onOk();
 
     @OnClick(R.id.edit_delete)
     public final void onDelete_Private() {
@@ -93,12 +109,12 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         onDelete();
     }
 
-    protected abstract void onDelete();
 
     @OnClick(R.id.edit_cancel)
     public final void onCancel() {
-        doIt(Editable::discard);
+        traverseHierarchy(getView(), Editable::discard);
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -116,32 +132,35 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_edit:
-                doIt(Editable::edit);
+                swapMode();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void doIt(EditableAction action) {
-        doIt((ViewGroup) getView(), action);
-    }
-
-    private void doIt(ViewGroup viewGroup, EditableAction action) {
-        if (viewGroup == null) return;
-        for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            View v = viewGroup.getChildAt(i);
-            if (v instanceof Editable) {
-                action.Action((Editable) v);
-            }
-            else if(v instanceof ViewGroup)
-                doIt((ViewGroup) v, action);
-        }
+    private void swapMode() {
+        traverseHierarchy((ViewGroup) getView(), Editable::edit);
         buttonBar.setVisibility(buttonBar.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
     }
 
-    private interface EditableAction {
-        void Action(Editable editable);
+    private void traverseHierarchy(View root, EditableAction action) {
+        traverseHierarchy((ViewGroup) root, action);
     }
 
+    private void traverseHierarchy(ViewGroup root, EditableAction action) {
+        if (root == null) return;
+        for (int i = 0; i < root.getChildCount(); i++) {
+            View v = root.getChildAt(i);
+            if (v instanceof Editable) {
+                action.action((Editable) v);
+            }
+            else if(v instanceof ViewGroup)
+                traverseHierarchy(v, action);
+        }
+    }
+
+    private interface EditableAction {
+        void action(Editable editable);
+    }
 }

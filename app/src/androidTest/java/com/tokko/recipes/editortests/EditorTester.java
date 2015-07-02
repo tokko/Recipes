@@ -14,7 +14,10 @@ import com.tokko.recipes.recipes.RecipeWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
+
+import java8.util.stream.Stream;
 
 public class EditorTester extends ActivityInstrumentationTestCase2<GenericDetailActivity> {
     private Solo solo;
@@ -34,25 +37,24 @@ public class EditorTester extends ActivityInstrumentationTestCase2<GenericDetail
 
     @Override
     protected void tearDown() throws Exception {
-        solo.setActivityOrientation(Solo.LANDSCAPE);
+        solo.setActivityOrientation(Solo.PORTRAIT);
         super.tearDown();
     }
 
     public void testDeviceRotation_EditTexts_SavesAndRestoresState() {
         ArrayList<View> views = solo.getViews();
-        HashMap<Integer, String> map = new HashMap<>();
+        List<String> map = new ArrayList<>();
         for (View view : views) {
             if (view instanceof EditText) {
                 String s = UUID.randomUUID().toString();
-                map.put(view.getId(), s);
-                solo.enterText((EditText) view, s);
+                map.add(s);
+                solo.typeText((EditText) view, s);
             }
         }
         assertTrue(map.size() > 0);
         solo.setActivityOrientation(Solo.LANDSCAPE);
-        for (Integer id : map.keySet()) {
-            EditText et = (EditText) solo.getView(id);
-            assertEquals(map.get(id), et.getText().toString());
+        for (String s : map) {
+            assertTrue(solo.searchText(s));
         }
     }
 }

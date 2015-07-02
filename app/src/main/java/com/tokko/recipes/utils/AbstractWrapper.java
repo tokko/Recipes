@@ -25,6 +25,19 @@ public abstract class AbstractWrapper<T> {
 
     protected abstract Class<?> getClazz(); //TODO: think about this, is this really necessary?
 
+
+    public AbstractWrapper<T> cloneEntity() {
+        try {
+            Class<?> clazz = this.getClass();
+            @SuppressWarnings("unchecked") AbstractWrapper<T> ret = (AbstractWrapper<T>) clazz.newInstance();
+            populate(ret, this);
+            return ret;
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private void populate(Object o, Object o1) {
         Field[] entityFields = o1.getClass().getDeclaredFields();
         Field[] thisFields = o.getClass().getDeclaredFields();
