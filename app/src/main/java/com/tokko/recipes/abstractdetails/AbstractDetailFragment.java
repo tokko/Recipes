@@ -24,7 +24,7 @@ import roboguice.inject.InjectView;
 public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> extends RoboFragment {
     private static final String EXTRA_ENTITY_KEY = "entity";
     private static final String EXTRA_ENTITY_CLASS_KEY = "clazz";
-    private static final String EXTRA_ENTITY_EDITING__KEY = "editing_entity";
+    private static final String EXTRA_ENTITY_EDITING_KEY = "editing_entity";
     protected T entity;
     private Class<T> clz;
     @InjectView(R.id.edit_buttonBar)
@@ -65,9 +65,10 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_ENTITY_CLASS_KEY, entity.getClass());
         outState.putString(EXTRA_ENTITY_KEY, new Gson().toJson(entity));
+
         @SuppressWarnings("unchecked") T editingEntity = (T) entity.cloneEntity();
         editingEntity = populateEntity(editingEntity);
-        outState.putString(EXTRA_ENTITY_EDITING__KEY, new Gson().toJson(editingEntity));
+        outState.putString(EXTRA_ENTITY_EDITING_KEY, new Gson().toJson(editingEntity));
     }
 
     @Override
@@ -77,11 +78,12 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         if (entity.getId() == null)
             deleteButton.setEnabled(false);
         if (savedInstanceState != null) {
-            populateForm(entity);
-            T editingEntity = new Gson().fromJson(savedInstanceState.getString(EXTRA_ENTITY_EDITING__KEY), clz);
-            populateForm(editingEntity);
-        }
-        if (getArguments().getBoolean("edit") || entity.getId() == null) {
+            //populateForm(entity);
+            if (savedInstanceState.containsKey(EXTRA_ENTITY_EDITING_KEY)) {
+                T editingEntity = new Gson().fromJson(savedInstanceState.getString(EXTRA_ENTITY_EDITING_KEY), clz);
+                populateForm(editingEntity);
+            }
+        } else if (getArguments().getBoolean("edit") || entity.getId() == null) {
             populateForm(entity);
             swapMode();
         }

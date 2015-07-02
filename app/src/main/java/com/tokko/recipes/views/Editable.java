@@ -20,16 +20,18 @@ import java.util.UUID;
 public abstract class Editable<W1 extends View, W2 extends View, D> extends LinearLayout {
     protected W1 label;
     protected W2 edit;
-    private boolean isEditing;
+    //  private boolean isEditing;
 
     public Editable(Context context, AttributeSet attrs, W1 w1, W2 w2) {
         super(context, attrs);
         label = w1;
         edit = w2;
+        /*
         label.setSaveEnabled(true);
         label.setSaveFromParentEnabled(true);
         edit.setSaveFromParentEnabled(true);
         edit.setSaveEnabled(true);
+        */
         w1.setId(UUID.randomUUID().hashCode());
         w2.setId(UUID.randomUUID().hashCode());
         setOrientation(VERTICAL);
@@ -40,26 +42,27 @@ public abstract class Editable<W1 extends View, W2 extends View, D> extends Line
         replaceView(R.id.editable_edit, w2);
     }
 
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        Parcelable superState = super.onSaveInstanceState();
-        return new SavedState<>(superState, getData(), isEditing);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        if (!(state instanceof SavedState)) {
-            super.onRestoreInstanceState(state);
-            return;
+    /*
+        @Override
+        protected Parcelable onSaveInstanceState() {
+            Parcelable superState = super.onSaveInstanceState();
+            return new SavedState<>(superState, getData(), isEditing);
         }
-        SavedState ss = (SavedState) state;
-        super.onRestoreInstanceState(ss.getSuperState());
-        isEditing = ss.isEditing;
-        edit();
-        //noinspection unchecked
-        setData((D) ss.getData());
-    }
 
+        @Override
+        protected void onRestoreInstanceState(Parcelable state) {
+            if (!(state instanceof SavedState)) {
+                super.onRestoreInstanceState(state);
+                return;
+            }
+            SavedState ss = (SavedState) state;
+            super.onRestoreInstanceState(ss.getSuperState());
+            isEditing = ss.isEditing;
+            edit();
+            //noinspection unchecked
+            setData((D) ss.getData());
+        }
+    */
     private void replaceView(int id, View n) {
         View v = findViewById(id);
         ViewGroup parent = (ViewGroup) v.getParent();
@@ -71,7 +74,7 @@ public abstract class Editable<W1 extends View, W2 extends View, D> extends Line
     public void edit() {
         label.setVisibility(View.GONE);
         edit.setVisibility(View.VISIBLE);
-        isEditing = true;
+        //    isEditing = true;
     }
 
     protected abstract void onDiscard();
@@ -80,22 +83,23 @@ public abstract class Editable<W1 extends View, W2 extends View, D> extends Line
         label.setVisibility(View.VISIBLE);
         edit.setVisibility(View.GONE);
         onDiscard();
-        isEditing = false;
+        //     isEditing = false;
     }
 
     public final void accept() {
         label.setVisibility(View.VISIBLE);
         edit.setVisibility(View.GONE);
         onAccept();
-        isEditing = false;
+        // isEditing = false;
     }
 
     protected abstract void onAccept();
 
     public abstract D getData();
 
-    protected abstract void setData(D data);
+    public abstract void setData(D data);
 
+    /*
     private static class SavedState<D> extends BaseSavedState {
 
         public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
@@ -141,4 +145,5 @@ public abstract class Editable<W1 extends View, W2 extends View, D> extends Line
             dest.writeInt(isEditing ? 1 : 0);
         }
     }
+    */
 }

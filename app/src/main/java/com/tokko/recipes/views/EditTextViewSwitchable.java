@@ -20,12 +20,6 @@ public class EditTextViewSwitchable extends Editable<TextView, EditText, String>
         return edit.getText().toString();
     }
 
-    public EditTextViewSwitchable setText(String s) {
-        edit.setText(s);
-        label.setText(s);
-        return this;
-    }
-
     @Override
     protected void onDiscard() {
         edit.setText(label.getText());
@@ -42,7 +36,7 @@ public class EditTextViewSwitchable extends Editable<TextView, EditText, String>
     }
 
     @Override
-    protected void setData(String data) {
+    public void setData(String data) {
         edit.setText(data);
         label.setText(data);
     }

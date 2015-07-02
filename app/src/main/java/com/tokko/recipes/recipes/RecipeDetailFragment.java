@@ -34,8 +34,10 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        title.setText(entity.getTitle()).setHint("Title");
-        description.setText(entity.getDescription()).setHint("Description");
+        //title.setData(entity.getTitle());
+        title.setHint("Title");
+        //description.setData(entity.getDescription());
+        description.setHint("Description");
     }
 
     @Override
@@ -67,7 +69,7 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
     @Override
     protected void onDelete() {
         try {
-            api.remove(entity.getId());
+            api.remove(entity.getId()).execute();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,8 +77,8 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
 
     @Override
     protected void populateForm(RecipeWrapper entity) {
-        title.setText(entity.getTitle());
-        description.setText(entity.getDescription());
+        title.setData(entity.getTitle());
+        description.setData(entity.getDescription());
     }
 
     @Override
