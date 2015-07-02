@@ -12,23 +12,31 @@ import roboguice.activity.RoboActivity;
 
 
 public class GenericDetailActivity extends RoboActivity {
+    private AbstractDetailFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getActionBar() != null)
             getActionBar().setDisplayHomeAsUpEnabled(true);
-        Bundle b = savedInstanceState != null ? savedInstanceState : getIntent().getExtras();
-        if (b != null) {
+        if (savedInstanceState != null) {
+            fragment = (AbstractDetailFragment) getFragmentManager().getFragment(savedInstanceState, "frag");
+        } else if (getIntent().getExtras() != null) {
             Class<?> clz = (Class<?>) getIntent().getSerializableExtra("class");
             String json = getIntent().getStringExtra("entity");
             AbstractWrapper<?> entity = (AbstractWrapper<?>) new Gson().fromJson(json, clz);
             int resource = getIntent().getIntExtra(ResourceResolver.RESOURCE_EXTRA, ResourceResolver.RESOURCE_RECIPES);
-            AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource, getIntent().getBooleanExtra("edit", false));
-            getFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, fragment)
-                    .commit();
+            fragment = ResourceResolver.getDetailFragment(entity, resource, getIntent().getBooleanExtra("edit", false));
         }
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, fragment)
+                .commit();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getFragmentManager().putFragment(outState, "frag", fragment);
     }
 
     @Override

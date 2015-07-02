@@ -13,11 +13,8 @@ import com.tokko.recipes.recipes.RecipeWrapper;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
-import java8.util.stream.Stream;
 
 public class EditorTester extends ActivityInstrumentationTestCase2<GenericDetailActivity> {
     private Solo solo;
@@ -38,6 +35,7 @@ public class EditorTester extends ActivityInstrumentationTestCase2<GenericDetail
     @Override
     protected void tearDown() throws Exception {
         solo.setActivityOrientation(Solo.PORTRAIT);
+        solo.waitForActivity(GenericDetailActivity.class);
         super.tearDown();
     }
 
@@ -53,6 +51,7 @@ public class EditorTester extends ActivityInstrumentationTestCase2<GenericDetail
         }
         assertTrue(map.size() > 0);
         solo.setActivityOrientation(Solo.LANDSCAPE);
+        solo.waitForActivity(GenericDetailActivity.class);
         for (String s : map) {
             assertTrue(solo.searchText(s));
         }
