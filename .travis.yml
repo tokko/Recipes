@@ -5,16 +5,18 @@ android:
     - tools
     - build-tools-22.0.1
     - android-22
+    - android-21
+    - android-20
+    - android-19
+    - android-18
     - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
     - addon-google_apis-google-22
 jdk:
   - oraclejdk8
-  - oraclejdk7
-  - oraclejdk6
 before_script:
  - chmod +x gradlew
 
 script:
-  - ./gradlew check --stacktrace
+  - ./gradlew check
