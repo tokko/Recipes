@@ -9,7 +9,19 @@ android {
             try {
                 Properties props = new Properties()
                 props.load(new FileInputStream("C:\\AndroidStudioProjects\\gradle.properties"))
-                storeFile file("storeLocation")
+                storeFile file("C:\\AndroidStudioProjects\\keystore.jks")
+                storePassword props["storePass"]
+                keyAlias props["releaseAlias"]
+                keyPassword props["releasePass"]
+            }
+            catch (FileNotFoundException ignored) {
+            }
+        }
+        debug {
+            try {
+                Properties props = new Properties()
+                props.load(new FileInputStream("C:\\AndroidStudioProjects\\gradle.properties"))
+                storeFile file("C:\\AndroidStudioProjects\\keystore.jks")
                 storePassword props["storePass"]
                 keyAlias props["debugAlias"]
                 keyPassword props["debugPass"]
@@ -50,7 +62,7 @@ android {
 }
 apply plugin: 'me.tatarka.retrolambda'
 retrolambda {
-    jdk "8"
+    jdk = "8"
 }
 dependencies {
     compile project(path: ':backend', configuration: 'android-endpoints')
