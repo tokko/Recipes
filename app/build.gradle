@@ -23,8 +23,8 @@ android {
                 props.load(new FileInputStream("C:\\AndroidStudioProjects\\gradle.properties"))
                 storeFile file("C:\\AndroidStudioProjects\\keystore.jks")
                 storePassword props["storePass"]
-                keyAlias props["debugAlias"]
-                keyPassword props["debugPass"]
+                keyAlias props["releaseAlias"]
+                keyPassword props["releasePass"]
             }
             catch (FileNotFoundException ignored) {
             }
