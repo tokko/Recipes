@@ -24,6 +24,8 @@ import roboguice.fragment.provided.RoboFragment;
 import roboguice.inject.InjectView;
 
 public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> extends RoboFragment {
+    private static final String EXTRA_ENTITY_KEY = "entity";
+    private static final String EXTRA_ENTITY_CLASS_KEY = "clazz";
     protected T entity;
 
     @InjectView(R.id.edit_buttonBar)
@@ -50,13 +52,20 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments().containsKey("entity")) {
+        Bundle b = savedInstanceState != null ? savedInstanceState : getArguments();
+        if (b != null && b.containsKey(EXTRA_ENTITY_KEY)) {
             //noinspection unchecked
-            Class<T> clz = (Class<T>) getArguments().getSerializable("clazz");
-            entity = new Gson().fromJson(getArguments().getString("entity"), clz);
+            Class<T> clz = (Class<T>) getArguments().getSerializable(EXTRA_ENTITY_CLASS_KEY);
+            entity = new Gson().fromJson(getArguments().getString(EXTRA_ENTITY_KEY), clz);
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(EXTRA_ENTITY_CLASS_KEY, entity.getClass());
+        outState.putString(EXTRA_ENTITY_KEY, new Gson().toJson(entity));
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

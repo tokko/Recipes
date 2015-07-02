@@ -16,11 +16,13 @@ public class GenericDetailActivity extends RoboActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
-        if (savedInstanceState == null) {
+        if (getActionBar() != null)
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        Bundle b = savedInstanceState != null ? savedInstanceState : getIntent().getExtras();
+        if (b != null) {
             Class<?> clz = (Class<?>) getIntent().getSerializableExtra("class");
-            AbstractWrapper<?> entity = (AbstractWrapper<?>) new Gson().fromJson(getIntent().getStringExtra("entity"), clz);
+            String json = getIntent().getStringExtra("entity");
+            AbstractWrapper<?> entity = (AbstractWrapper<?>) new Gson().fromJson(json, clz);
             int resource = getIntent().getIntExtra(ResourceResolver.RESOURCE_EXTRA, ResourceResolver.RESOURCE_RECIPES);
             AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource, getIntent().getBooleanExtra("edit", false));
             getFragmentManager().beginTransaction()
