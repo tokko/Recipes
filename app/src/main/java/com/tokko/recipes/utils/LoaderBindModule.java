@@ -18,12 +18,7 @@ public class LoaderBindModule extends AbstractModule {
         bind(new TypeLiteral<Class<? extends AbstractLoader<RecipeWrapper>>>() {
         }).toInstance(RecipeLoader.class);
 
-        bind(RecipeApi.class).toProvider(new Provider<RecipeApi>() {
-            @Override
-            public RecipeApi get() {
-                return ApiFactory.createRecipeApi();
-            }
-        });
+        bind(RecipeApi.class).toProvider(ApiFactory::createRecipeApi);
 
         bind(new TypeLiteral<Class<? extends AbstractWrapper<Recipe>>>() {
         }).toInstance(RecipeWrapper.class);
