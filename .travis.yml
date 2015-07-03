@@ -1,28 +1,27 @@
 language: android
 android:
   components:
-    - platform-tools
-    - tools
-    - build-tools-22.0.1
-    - android-22
-    - android-21
-    - android-20
-    - android-19
-    - android-18
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - extra-android-m2repository
-    - addon-google_apis-google-22
-#    - sys-img-armeabi-v7a-android-18
-#    - sys-img-armeabi-v7a-android-19
-#    - sys-img-armeabi-v7a-android-20
-#    - sys-img-armeabi-v7a-android-21
-    - sys-img-armeabi-v7a-android-22
+  - platform-tools
+  - tools
+  - build-tools-22.0.1
+  - android-22
+  - android-21
+  - android-20
+  - android-19
+  - android-18
+  - extra-google-google_play_services
+  - extra-google-m2repository
+  - extra-android-m2repository
+  - addon-google_apis-google-22
+  - sys-img-armeabi-v7a-android-22
 jdk:
-  - oraclejdk8
+- oraclejdk8
 before_script:
- - chmod +x gradlew
-
+- chmod +x gradlew
 script:
-  - ./gradlew check
-  - ./gradlew connectedCheck
+- "./gradlew check"
+- "./gradlew connectedCheck"
+'':
+  travis:
+    yml:
+      secure: UpNJfVW9HLNthMaiOZOfdSB3YsbU6G/4fDnqzT0v7dW2xh9o0Cv0zV4XDq9lv979ycKtmFBzAzPdqEMh2ifHwu0sX3fcXK2E49MpqDezUZlheYpRJwc2KRn+KGdgET4KW84CQm5tP2QJQNQniY8oFZmw2uvn9HdwVusJTvPkFZDUUa5wibTb3FUSIduZFACrm86DwCoh4y5PqSUJlxbaPh4E5b6qmj8hVrBcZX6t30UAo/SB8VPwXxsXDAxKXyGMZKHL2ODLU1/e0gFbS5pt/lISgv9dumf7GxtMKiwPgVKyZYT4i5ku9CoQxgDWeY+ELRXYniPWmzTO1SuN0zli9CHhvLsLL+bupCIs2PdkWfdarEjI85a1Cg2k9h4q5hi4fsIvWRlKaTfe5MlMqKY/1CNnMLxga0MxUH5fuXfijwFwiNkrB63YdMtA7/IF+iz8vLZIO46HtjWIdNbDBxEeq7w3Qn4kmJy7P+MbJGnnFCOzoK+csckWClLL6mbBRsTNvXEfVVJ4n3slS7olQO4gO63zrqhywZC14tsis5MfoKwaiz2Ovv7FMaV5geopRMAG78JvY1ZQyzQnCVmDpK4jBLiEb14ptco4Y34vymI+u4UqyfuC51FEfVOGY3+uHT+fGGiZkQC2cpga7lF4Qx9WiMGizajw9vL63boQQQSq+zE=

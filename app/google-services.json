@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_id": "river-pillar-94516",
+    "project_number": "826803278070",
+    "name": "Recipes"
+  },
+  "client": [
+    {
+      "client_info": {
+        "client_id": "android:com.tokko.recipes",
+        "client_type": 1,
+        "android_client_info": {"package_name": "com.tokko.recipes"}
+      },
+      "oauth_client": [
+        {
+          "client_id": "826803278070-3doj1qincauskjc7hktd1v23d6r7h5hv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tokko.recipes",
+            "certificate_hash": "8611e28166ac45e835005b3a60544e7325867cce"
+          }
+        }
+      ],
+      "services": {
+        "analytics_service": {"status": 1},
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {"status": 2},
+        "ads_service": {"status": 1}
+      }
+    }
+  ]
+}
