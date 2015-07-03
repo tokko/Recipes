@@ -27,7 +27,7 @@ public abstract class EditorTester extends ActivityInstrumentationTestCase2<Gene
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        Intent startIntent = new Intent(getInstrumentation().getContext(), GenericDetailActivity.class).putExtra("class", RecipeWrapper.class).putExtra(ResourceResolver.RESOURCE_EXTRA, getResource()).putExtra("entity", new Gson().toJson(new RecipeWrapper()));
+        Intent startIntent = new Intent(getInstrumentation().getContext(), GenericDetailActivity.class).putExtra("class", ResourceResolver.getResourceClass(getResource())).putExtra(ResourceResolver.RESOURCE_EXTRA, getResource()).putExtra("entity", new Gson().toJson(ResourceResolver.getResourceInstance(getResource())));
         setActivityIntent(startIntent);
         solo = new Solo(getInstrumentation(), getActivity());
         solo.waitForActivity(GenericDetailActivity.class);

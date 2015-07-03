@@ -37,4 +37,14 @@ public class ResourceResolver {
                 return null;
         }
     }
+
+    public static AbstractWrapper<?> getResourceInstance(int resource) {
+        Class<? extends AbstractWrapper<?>> clz = getResourceClass(resource);
+        try {
+            return clz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
