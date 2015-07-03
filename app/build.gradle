@@ -17,6 +17,7 @@ android {
             catch (FileNotFoundException ignored) {
             }
         }
+        /*
         debug {
             try {
                 Properties props = new Properties()
@@ -29,6 +30,7 @@ android {
             catch (FileNotFoundException ignored) {
             }
         }
+        */
     }
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
