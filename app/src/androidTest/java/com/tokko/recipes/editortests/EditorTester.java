@@ -16,17 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class EditorTester extends ActivityInstrumentationTestCase2<GenericDetailActivity> {
+public abstract class EditorTester extends ActivityInstrumentationTestCase2<GenericDetailActivity> {
     private Solo solo;
 
     public EditorTester() {
         super(GenericDetailActivity.class);
     }
 
+    protected abstract int getResource();
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        Intent startIntent = new Intent(getInstrumentation().getContext(), GenericDetailActivity.class).putExtra("class", RecipeWrapper.class).putExtra(ResourceResolver.RESOURCE_EXTRA, 0).putExtra("entity", new Gson().toJson(new RecipeWrapper()));
+        Intent startIntent = new Intent(getInstrumentation().getContext(), GenericDetailActivity.class).putExtra("class", RecipeWrapper.class).putExtra(ResourceResolver.RESOURCE_EXTRA, getResource()).putExtra("entity", new Gson().toJson(new RecipeWrapper()));
         setActivityIntent(startIntent);
         solo = new Solo(getInstrumentation(), getActivity());
         solo.waitForActivity(GenericDetailActivity.class);
