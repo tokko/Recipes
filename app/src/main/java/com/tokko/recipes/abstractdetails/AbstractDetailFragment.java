@@ -85,7 +85,7 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
             }
         } else if (getArguments().getBoolean("edit") || entity.getId() == null) {
             populateForm(entity);
-            swapMode();
+            edit();
         }
     }
 
@@ -99,8 +99,8 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
 
     @OnClick(R.id.edit_ok)
     public final void onOk_Private() {
-        traverseHierarchy(getView(), Editable::accept);
         entity = populateEntity(entity);
+        accept();
         onOk();
     }
 
@@ -111,10 +111,9 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         onDelete();
     }
 
-
     @OnClick(R.id.edit_cancel)
     public final void onCancel() {
-        traverseHierarchy(getView(), Editable::discard);
+        discard();
     }
 
 
@@ -134,16 +133,26 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_edit:
-                swapMode();
+                edit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void swapMode() {
+    private void discard() {
+        buttonBar.setVisibility(View.GONE);
+        traverseHierarchy((ViewGroup) getView(), Editable::discard);
+    }
+
+    private void edit() {
+        buttonBar.setVisibility(View.VISIBLE);
         traverseHierarchy((ViewGroup) getView(), Editable::edit);
-        buttonBar.setVisibility(buttonBar.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+    }
+
+    private void accept() {
+        buttonBar.setVisibility(View.GONE);
+        traverseHierarchy((ViewGroup) getView(), Editable::accept);
     }
 
     private void traverseHierarchy(View root, EditableAction action) {
