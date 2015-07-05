@@ -12,6 +12,11 @@ public class RecipeWrapper extends AbstractWrapper<Recipe> {
     public RecipeWrapper() {
         this(null);
     }
+
+    public RecipeWrapper(long id) {
+        this();
+        this.id = id;
+    }
     public RecipeWrapper(Recipe recipe) {
         super(recipe);
     }
