@@ -10,7 +10,6 @@ import com.tokko.recipes.R;
 import com.tokko.recipes.abstractdetails.AbstractDetailFragment;
 import com.tokko.recipes.backend.recipeApi.RecipeApi;
 import com.tokko.recipes.backend.recipeApi.model.Recipe;
-import com.tokko.recipes.utils.AbstractWrapper;
 import com.tokko.recipes.views.EditTextViewSwitchable;
 
 import java.io.IOException;
@@ -68,11 +67,13 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
 
     @Override
     protected void onDelete() {
-        try {
-            api.remove(entity.getId()).execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread((() -> {
+            try {
+                api.remove(entity.getId()).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        })).start();
     }
 
     @Override

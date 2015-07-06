@@ -45,4 +45,9 @@ public class RecipeService {
         RecipeUser user = registrationRA.getUser(email);
         return recipeRa.getRecipesForUser(user);
     }
+
+    public void removeRecipe(Long id, String email) {
+        RecipeUser recipeUser = registrationRA.getUser(email);
+        recipeRa.removeRecipe(id, recipeUser);
+    }
 }

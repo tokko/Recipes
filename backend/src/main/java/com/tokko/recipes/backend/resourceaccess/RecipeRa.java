@@ -29,4 +29,8 @@ public class RecipeRa {
     public List<Recipe> getRecipesForUser(RecipeUser user) {
         return ofy.load().type(Recipe.class).ancestor(user).list();
     }
+
+    public void removeRecipe(Long id, RecipeUser recipeUser) {
+        ofy().delete().type(Recipe.class).parent(recipeUser).id(id).now();
+    }
 }

@@ -6,14 +6,10 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.googlecode.objectify.ObjectifyService;
 import com.tokko.recipes.backend.entities.Recipe;
-import com.tokko.recipes.backend.registration.MessageSender;
 import com.tokko.recipes.backend.services.RecipeService;
 import com.tokko.recipes.backend.util.Constants;
-import com.tokko.recipes.backend.util.MyGuiceModule;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -99,10 +95,8 @@ public class RecipeEndpoint {
             name = "remove",
             path = "recipe/{id}",
             httpMethod = ApiMethod.HttpMethod.DELETE)
-    public void remove(@Named("id") Long id) throws NotFoundException {
-        checkExists(id);
-        ofy().delete().type(Recipe.class).id(id).now();
-        logger.info("Deleted Recipe with ID: " + id);
+    public void remove(@Named("id") Long id, User user) throws NotFoundException {
+        recipeService.removeRecipe(id, user.getEmail());
     }
 
     /**

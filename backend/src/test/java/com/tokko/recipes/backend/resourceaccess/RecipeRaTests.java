@@ -52,6 +52,16 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
 
         List<Recipe> recipes1 = Arrays.asList(new Recipe("recipe1"), new Recipe("recipe2"));
         List<Recipe> recipes2 = Arrays.asList(new Recipe("recipe2"), new Recipe("recipe2"));
-        //TODO: finish this test
+
+        recipes1.forEach(recipeRa::saveRecipe);
+        recipes2.forEach(recipeRa::saveRecipe);
+
+        List<Recipe> recipes = recipeRa.getRecipesForUser(user1);
+        recipes.forEach(recipes1::contains);
+    }
+
+    @Test
+    public void removeRecipeFromUser_RecipeIsRemoved() {
+
     }
 }
