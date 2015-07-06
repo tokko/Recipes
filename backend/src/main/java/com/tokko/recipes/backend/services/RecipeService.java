@@ -49,5 +49,6 @@ public class RecipeService {
     public void removeRecipe(Long id, String email) {
         RecipeUser recipeUser = registrationRA.getUser(email);
         recipeRa.removeRecipe(id, recipeUser);
+        messageSender.sendMessage(null, email);
     }
 }

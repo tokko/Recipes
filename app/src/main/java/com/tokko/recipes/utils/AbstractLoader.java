@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.google.gson.Gson;
-
 import java.util.List;
 
 
@@ -103,6 +101,8 @@ public abstract class AbstractLoader<T extends AbstractWrapper<?>> extends Async
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            forceLoad();
+            /*
             String message = intent.getStringExtra("message");
             T t = null;
             try {
@@ -113,6 +113,7 @@ public abstract class AbstractLoader<T extends AbstractWrapper<?>> extends Async
             if (t != null) {
                 onNewData(t);
             }
+            */
         }
     }
 }
