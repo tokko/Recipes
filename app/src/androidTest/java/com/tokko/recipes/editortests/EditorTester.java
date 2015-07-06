@@ -10,10 +10,6 @@ import com.robotium.solo.Solo;
 import com.tokko.recipes.R;
 import com.tokko.recipes.abstractdetails.GenericDetailActivity;
 import com.tokko.recipes.abstractdetails.ResourceResolver;
-import com.tokko.recipes.recipes.RecipeWrapper;
-
-
-import org.junit.Ignore;
 
 import java.util.ArrayList;
 import java.util.List;
