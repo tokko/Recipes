@@ -7,15 +7,21 @@ import com.tokko.recipes.backend.util.TestsWithObjectifyStorage;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertNotNull;
 
 public class RecipeRaTests extends TestsWithObjectifyStorage {
 
 
+    RecipeUser user1 = new RecipeUser("user1");
+    RecipeUser user2 = new RecipeUser("user2");
+    List<Recipe> recipes1 = Arrays.asList(new Recipe("recipe1"), new Recipe("recipe2"));
+    List<Recipe> recipes2 = Arrays.asList(new Recipe("recipe2"), new Recipe("recipe2"));
     private RecipeRa recipeRa;
     private RegistrationRA registrationRa;
 
@@ -24,6 +30,20 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
         super.setup();
         recipeRa = new RecipeRa(ofy);
         registrationRa = new RegistrationRA(ofy);
+
+        registrationRa.saveUser(user1);
+        registrationRa.saveUser(user2);
+
+        recipes1.forEach(r -> r.setUser(user1));
+        recipes2.forEach(r -> r.setUser(user2));
+
+        recipes1.forEach(recipeRa::saveRecipe);
+        recipes2.forEach(recipeRa::saveRecipe);
+    }
+
+    @Override
+    public void tearDown() throws IOException {
+        super.tearDown();
     }
 
     @Test
@@ -37,31 +57,25 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
 
     @Test
     public void getRecipesForUser_UserDoesNotExists_ListIsEmpty(){
-        List<Recipe> recipes = recipeRa.getRecipesForUser(new RecipeUser("56436", 1L));
+        List<Recipe> recipes = recipeRa.getRecipesForUser(new RecipeUser("56436", 900L));
         assertNotNull(recipes);
         assertEquals(0, recipes.size());
     }
 
     @Test
-    public void getRecipesForUse_OnlyUsersRecipesAreFetched(){
-        final RecipeUser user1 = new RecipeUser("user1");
-        RecipeUser user2 = new RecipeUser("user2");
-
-        registrationRa.saveUser(user1);
-        registrationRa.saveUser(user2);
-
-        List<Recipe> recipes1 = Arrays.asList(new Recipe("recipe1"), new Recipe("recipe2"));
-        List<Recipe> recipes2 = Arrays.asList(new Recipe("recipe2"), new Recipe("recipe2"));
-
-        recipes1.forEach(recipeRa::saveRecipe);
-        recipes2.forEach(recipeRa::saveRecipe);
-
+    public void getRecipesForUser_OnlyUsersRecipesAreFetched() {
         List<Recipe> recipes = recipeRa.getRecipesForUser(user1);
-        recipes.forEach(recipes1::contains);
+        assertEquals(recipes1.size(), recipes.size());
+        recipes.forEach(r -> assertTrue(recipes1.contains(r)));
+
     }
 
     @Test
     public void removeRecipeFromUser_RecipeIsRemoved() {
+        recipeRa.removeRecipe(recipes1.get(0).getId(), user1);
 
+        List<Recipe> recipes = recipeRa.getRecipesForUser(user1);
+        assertEquals(1, recipes.size());
+        assertEquals(recipes1.get(1).getId(), recipes.get(0).getId());
     }
 }
