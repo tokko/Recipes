@@ -11,7 +11,7 @@ import com.tokko.recipes.utils.AbstractWrapper;
 import roboguice.activity.RoboActivity;
 
 
-public class GenericDetailActivity extends RoboActivity {
+public class GenericDetailActivity extends RoboActivity implements AbstractDetailFragment.AbstractDetailFragmentCallbacks {
     private AbstractDetailFragment fragment;
 
     @Override
@@ -48,5 +48,10 @@ public class GenericDetailActivity extends RoboActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDetailFragmentFinished() {
+        finish();
     }
 }
