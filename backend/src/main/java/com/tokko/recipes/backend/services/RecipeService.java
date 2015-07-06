@@ -37,7 +37,7 @@ public class RecipeService {
         recipeRa.saveRecipe(recipe);
         if(recipe.getId() != null)
             messageSender.sendMessage(recipe, email);
-        return recipeRa.getRecipe(recipe.getId());
+        return recipe;
 
     }
 

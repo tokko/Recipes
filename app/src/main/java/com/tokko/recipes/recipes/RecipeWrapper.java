@@ -27,6 +27,12 @@ public class RecipeWrapper extends AbstractWrapper<Recipe> {
     }
 
     @Override
+    public void setId(Long id) {
+        if (this.id == null)
+            this.id = id;
+    }
+
+    @Override
     protected Class<?> getClazz() {
         return Recipe.class;
     }

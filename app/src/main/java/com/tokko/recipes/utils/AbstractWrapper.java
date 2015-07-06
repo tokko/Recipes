@@ -23,6 +23,8 @@ public abstract class AbstractWrapper<T> {
 
     public abstract Long getId();
 
+    public abstract void setId(Long id);
+
     protected abstract Class<?> getClazz(); //TODO: think about this, is this really necessary?
 
 
