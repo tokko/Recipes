@@ -1,5 +1,6 @@
 package com.tokko.recipes.abstractdetails;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +32,8 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     private LinearLayout buttonBar;
     @InjectView(R.id.edit_delete)
     private Button deleteButton;
+    private AbstractDetailFragmentCallbacks host;
+
     public AbstractDetailFragment() {
     }
 
@@ -61,6 +64,21 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            host = (AbstractDetailFragmentCallbacks) activity;
+        } catch (ClassCastException e) {
+            throw new IllegalStateException("Parent activity must implement callbacks");
+        }
+    }
+
+    public void swapEntity(T entity) {
+        this.entity = entity;
+        populateForm(entity);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_ENTITY_CLASS_KEY, entity.getClass());
@@ -75,6 +93,7 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
+        populateForm(entity);
         if (entity.getId() == null)
             deleteButton.setEnabled(false);
         if (savedInstanceState != null) {
@@ -82,9 +101,9 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
             if (savedInstanceState.containsKey(EXTRA_ENTITY_EDITING_KEY)) {
                 T editingEntity = new Gson().fromJson(savedInstanceState.getString(EXTRA_ENTITY_EDITING_KEY), clz);
                 populateForm(editingEntity);
+                edit();
             }
         } else if (getArguments().getBoolean("edit") || entity.getId() == null) {
-            populateForm(entity);
             edit();
         }
     }
@@ -104,18 +123,19 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         onOk();
     }
 
-
     @OnClick(R.id.edit_delete)
     public final void onDelete_Private() {
         //TODO: callback to list to remove fragment from parent container
         onDelete();
+        host.onDetailFragmentFinished();
     }
 
     @OnClick(R.id.edit_cancel)
     public final void onCancel() {
         discard();
+        if (entity.getId() == null)
+            host.onDetailFragmentFinished();
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -169,6 +189,10 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
             else if(v instanceof ViewGroup)
                 traverseHierarchy(v, action);
         }
+    }
+
+    public interface AbstractDetailFragmentCallbacks {
+        void onDetailFragmentFinished();
     }
 
     private interface EditableAction {

@@ -13,7 +13,7 @@ import com.tokko.recipes.utils.AbstractWrapper;
 import roboguice.activity.RoboActivity;
 
 public class GenericListActivity extends RoboActivity
-        implements GenericListFragment.Callbacks<AbstractWrapper<?>> {
+        implements GenericListFragment.Callbacks<AbstractWrapper<?>>, AbstractDetailFragment.AbstractDetailFragmentCallbacks {
 
     private boolean mTwoPane;
     private GenericListFragment listFragment;
@@ -38,7 +38,6 @@ public class GenericListActivity extends RoboActivity
     protected void onStart() {
         super.onStart();
         getFragmentManager().beginTransaction().replace(R.id.recipe_list, listFragment).commit();
-//        genericListFragment.setActivateOnItemClick(true);
     }
 
     @Override
@@ -46,7 +45,7 @@ public class GenericListActivity extends RoboActivity
         AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource, edit); // AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
         if (mTwoPane) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.recipe_detail_container, fragment)
+                    .replace(R.id.recipe_detail_container, fragment).addToBackStack("name")
                     .commit();
 
         } else {
@@ -72,6 +71,12 @@ public class GenericListActivity extends RoboActivity
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() <= 1) finish();
         else getFragmentManager().popBackStack();
+    }
+
+    @Override
+    public void onDetailFragmentFinished() {
+        if (getFragmentManager().getBackStackEntryCount() > 0)
+            getFragmentManager().popBackStack();
     }
 
     // public abstract <T> Class<GenericListFragment<T>> getAbstractListFragmentClass();

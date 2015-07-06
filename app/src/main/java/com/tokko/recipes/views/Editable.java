@@ -28,6 +28,7 @@ public abstract class Editable<W1 extends View, W2 extends View, D> extends Line
         inflater.inflate(R.layout.editable, this, true);
         replaceView(R.id.editable_label, w1);
         replaceView(R.id.editable_edit, w2);
+        edit.setVisibility(View.GONE);
     }
 
     private void replaceView(int id, View n) {
