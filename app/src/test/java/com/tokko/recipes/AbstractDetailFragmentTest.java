@@ -13,7 +13,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowActivity;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -28,9 +30,6 @@ public class AbstractDetailFragmentTest {
                 .putExtra("class", ResourceResolver.getResourceClass(0)).putExtra(ResourceResolver.RESOURCE_EXTRA, 0)
                 .putExtra("entity", new Gson().toJson(ResourceResolver.getResourceInstance(0)));
         activity = Robolectric.buildActivity(GenericDetailActivity.class).withIntent(startIntent).create().start().resume().get();
-    }
-
-    @Test
-    public void dummy() {
+        ShadowActivity shadow = Shadows.shadowOf(activity);
     }
 }
