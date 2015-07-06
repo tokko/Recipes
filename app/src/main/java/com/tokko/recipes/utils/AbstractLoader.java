@@ -12,6 +12,7 @@ import java.util.List;
 
 
 public abstract class AbstractLoader<T extends AbstractWrapper<?>> extends AsyncTaskLoader<List<T>> {
+    public final static String GCM_ACTION = "com.google.android.c2dm.intent.RECEIVE";
 
     private final IntentFilter intentFilter;
     protected List<T> data;
@@ -24,7 +25,7 @@ public abstract class AbstractLoader<T extends AbstractWrapper<?>> extends Async
         this.context = context;
         this.clz = clz;
         onContentChanged();
-        intentFilter = new IntentFilter("com.google.android.c2dm.intent.RECEIVE");
+        intentFilter = new IntentFilter(GCM_ACTION);
         onChangeReceiver = new OnChangeReceiver();
     }
 
