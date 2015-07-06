@@ -94,8 +94,6 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
         populateForm(entity);
-        if (entity.getId() == null)
-            deleteButton.setEnabled(false);
         if (savedInstanceState != null) {
             //populateForm(entity);
             if (savedInstanceState.containsKey(EXTRA_ENTITY_EDITING_KEY)) {
@@ -166,6 +164,7 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     }
 
     private void edit() {
+        deleteButton.setEnabled(entity.getId() != null);
         buttonBar.setVisibility(View.VISIBLE);
         traverseHierarchy((ViewGroup) getView(), Editable::edit);
     }
