@@ -42,8 +42,9 @@ public class Recipe implements Iterable<Ingredient> {
         return id;
     }
 
-    public void setId(Long id) {
+    public Recipe setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getTitle() {
@@ -101,5 +102,10 @@ public class Recipe implements Iterable<Ingredient> {
         catch (ClassCastException ignored){
             return false;
         }
+    }
+
+    public void populate(Recipe recipe) {
+        setTitle(recipe.getTitle());
+        setDescription(recipe.getDescription());
     }
 }

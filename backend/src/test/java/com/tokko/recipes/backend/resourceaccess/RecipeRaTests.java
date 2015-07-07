@@ -50,8 +50,9 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
     public void saveRecipe_savedRecipeIsGettable(){
         String title = "title";
         Recipe r = new Recipe(title);
+        r.setUser(user1);
         recipeRa.saveRecipe(r);
-        Recipe r1 = recipeRa.getRecipe(r.getId());
+        Recipe r1 = recipeRa.getRecipe(r.getId(), user1);
         assertEquals(r, r1);
     }
 
@@ -77,5 +78,17 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
         List<Recipe> recipes = recipeRa.getRecipesForUser(user1);
         assertEquals(1, recipes.size());
         assertEquals(recipes1.get(1).getId(), recipes.get(0).getId());
+    }
+
+    @Test
+    public void updateRecipe_RecipeIsUpdated() {
+        Recipe recipe = recipes1.get(0);
+        String title = "faaaaack";
+        recipe.setTitle(title);
+        recipeRa.saveRecipe(recipe);
+        Recipe recipe1 = recipeRa.getRecipe(recipe.getId(), user1);
+        assertEquals(recipe.getId(), recipe1.getId());
+        assertEquals(recipe.getDescription(), recipe1.getDescription());
+        assertEquals(title, recipe1.getTitle());
     }
 }

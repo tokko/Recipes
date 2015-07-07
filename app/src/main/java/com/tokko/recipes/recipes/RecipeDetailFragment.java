@@ -55,12 +55,9 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
             public void run() {
                 super.run();
                 try {
-                    if (entity.getId() == null) {
-                        Recipe execute = api.insert(entity).execute();
-                        if (execute != null)
-                            RecipeDetailFragment.this.entity.setId(execute.getId());
-                    }
-                    else api.update(entity.getId(), entity).execute();
+                    Recipe execute = api.insert(entity).execute();
+                    if (execute != null)
+                        RecipeDetailFragment.this.entity.setId(execute.getId());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

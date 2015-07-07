@@ -46,9 +46,9 @@ public class RecipeEndpoint {
             name = "get",
             path = "recipe/{id}",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public Recipe get(@Named("id") Long id) throws NotFoundException {
+    public Recipe get(@Named("id") Long id, User user) throws NotFoundException {
         logger.info("Getting Recipe with ID: " + id);
-        return recipeService.getRecipe(id);
+        return recipeService.getRecipe(id, user.getEmail());
     }
 
     /**
@@ -76,12 +76,8 @@ public class RecipeEndpoint {
             name = "update",
             path = "recipe/{id}",
             httpMethod = ApiMethod.HttpMethod.PUT)
-    public Recipe update(@Named("id") Long id, Recipe recipe) throws NotFoundException {
-        // TODO: You should validate your ID parameter against your resource's ID here.
-        checkExists(id);
-        ofy().save().entity(recipe).now();
-        logger.info("Updated Recipe: " + recipe);
-        return ofy().load().entity(recipe).now();
+    public Recipe update(@Named("id") Long id, Recipe recipe, User user) throws NotFoundException {
+        return recipeService.insertRecipe(recipe, user.getEmail());
     }
 
     /**

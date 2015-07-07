@@ -1,6 +1,7 @@
 package com.tokko.recipes.backend.resourceaccess;
 
 import com.google.inject.Inject;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.tokko.recipes.backend.entities.Recipe;
 import com.tokko.recipes.backend.entities.RecipeUser;
@@ -18,12 +19,14 @@ public class RecipeRa {
         this.ofy = ofy;
     }
 
-    public Recipe getRecipe(Long id) {
-        return ofy.load().type(Recipe.class).id(id).now();
+    public Recipe getRecipe(Long id, RecipeUser user) {
+        return ofy.load().key(Key.create(Key.create(RecipeUser.class, user.getId()), Recipe.class, id)).now();
+        //return ofy.load().type(Recipe.class).id(id).now();
     }
 
-    public void saveRecipe(Recipe recipe) {
-        ofy().save().entity(recipe).now();
+    public Recipe saveRecipe(Recipe recipe) {
+        Key<Recipe> now = ofy().save().entity(recipe).now();
+        return ofy().load().key(now).now();
     }
 
     public List<Recipe> getRecipesForUser(RecipeUser user) {

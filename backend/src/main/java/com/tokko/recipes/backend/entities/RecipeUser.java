@@ -39,6 +39,10 @@ public class RecipeUser {
         }
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public RecipeUser setId(int id) {
         this.id = (long) id;
         return this;
