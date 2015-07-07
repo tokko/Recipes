@@ -33,6 +33,7 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     @InjectView(R.id.edit_delete)
     private Button deleteButton;
     private AbstractDetailFragmentCallbacks host;
+    private boolean isEditing;
 
     public AbstractDetailFragment() {
     }
@@ -84,9 +85,11 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         outState.putSerializable(EXTRA_ENTITY_CLASS_KEY, entity.getClass());
         outState.putString(EXTRA_ENTITY_KEY, new Gson().toJson(entity));
 
-        @SuppressWarnings("unchecked") T editingEntity = (T) entity.cloneEntity();
-        editingEntity = populateEntity(editingEntity);
-        outState.putString(EXTRA_ENTITY_EDITING_KEY, new Gson().toJson(editingEntity));
+        if (isEditing) {
+            @SuppressWarnings("unchecked") T editingEntity = (T) entity.cloneEntity();
+            editingEntity = populateEntity(editingEntity);
+            outState.putString(EXTRA_ENTITY_EDITING_KEY, new Gson().toJson(editingEntity));
+        }
     }
 
     @Override
@@ -161,15 +164,18 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     private void discard() {
         buttonBar.setVisibility(View.GONE);
         traverseHierarchy((ViewGroup) getView(), Editable::discard);
+        isEditing = false;
     }
 
     private void edit() {
+        isEditing = true;
         deleteButton.setEnabled(entity.getId() != null);
         buttonBar.setVisibility(View.VISIBLE);
         traverseHierarchy((ViewGroup) getView(), Editable::edit);
     }
 
     private void accept() {
+        isEditing = false;
         buttonBar.setVisibility(View.GONE);
         traverseHierarchy((ViewGroup) getView(), Editable::accept);
     }
