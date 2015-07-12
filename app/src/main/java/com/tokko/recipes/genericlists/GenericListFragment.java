@@ -164,6 +164,7 @@ public class GenericListFragment<T extends AbstractWrapper<?>> extends RoboListF
     public void onLoadFinished(Loader<List<T>> loader, List<T> data) {
         adapter.clear();
         adapter.addAll(data);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
