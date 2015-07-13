@@ -10,30 +10,26 @@ import java.util.List;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-public class RecipeRa {
-
-    private Objectify ofy;
+public class RecipeRa extends CrudRa<Recipe, RecipeUser>{
 
     @Inject
-    public RecipeRa(Objectify ofy) {
-        this.ofy = ofy;
+    public RecipeRa(Objectify ofy, Class<Recipe> recipeClass, Class<RecipeUser> recipeUserClass) {
+        super(ofy, recipeClass, recipeUserClass);
     }
 
     public Recipe getRecipe(Long id, RecipeUser user) {
-        return ofy.load().key(Key.create(Key.create(RecipeUser.class, user.getId()), Recipe.class, id)).now();
-        //return ofy.load().type(Recipe.class).id(id).now();
+        return super.get(id, user.getId());
     }
 
     public Recipe saveRecipe(Recipe recipe) {
-        Key<Recipe> now = ofy().save().entity(recipe).now();
-        return ofy().load().key(now).now();
+        return super.save(recipe);
     }
 
     public List<Recipe> getRecipesForUser(RecipeUser user) {
-        return ofy.load().type(Recipe.class).ancestor(user).list();
+        return super.getForAncestor(user);
     }
 
     public void removeRecipe(Long id, RecipeUser recipeUser) {
-        ofy().delete().type(Recipe.class).parent(recipeUser).id(id).now();
+        super.remove(id, recipeUser);
     }
 }

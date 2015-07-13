@@ -22,13 +22,13 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
     RecipeUser user2 = new RecipeUser("user2");
     List<Recipe> recipes1 = Arrays.asList(new Recipe("recipe1"), new Recipe("recipe2"));
     List<Recipe> recipes2 = Arrays.asList(new Recipe("recipe2"), new Recipe("recipe2"));
-    private RecipeRa recipeRa;
+    private CrudRa<Recipe, RecipeUser> recipeRa;
     private RegistrationRA registrationRa;
 
     @Before
     public void setup(){
         super.setup();
-        recipeRa = new RecipeRa(ofy);
+        recipeRa = new CrudRa<>(ofy, Recipe.class, RecipeUser.class);
         registrationRa = new RegistrationRA(ofy);
 
         registrationRa.saveUser(user1);
@@ -37,8 +37,8 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
         recipes1.forEach(r -> r.setUser(user1));
         recipes2.forEach(r -> r.setUser(user2));
 
-        recipes1.forEach(recipeRa::saveRecipe);
-        recipes2.forEach(recipeRa::saveRecipe);
+        recipes1.forEach(recipeRa::save);
+        recipes2.forEach(recipeRa::save);
     }
 
     @Override
@@ -51,21 +51,21 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
         String title = "title";
         Recipe r = new Recipe(title);
         r.setUser(user1);
-        recipeRa.saveRecipe(r);
-        Recipe r1 = recipeRa.getRecipe(r.getId(), user1);
+        recipeRa.save(r);
+        Recipe r1 = recipeRa.get(r.getId(), user1.getId());
         assertEquals(r, r1);
     }
 
     @Test
     public void getRecipesForUser_UserDoesNotExists_ListIsEmpty(){
-        List<Recipe> recipes = recipeRa.getRecipesForUser(new RecipeUser("56436", 900L));
+        List<Recipe> recipes = recipeRa.getForAncestor(new RecipeUser("56436", 900L));
         assertNotNull(recipes);
         assertEquals(0, recipes.size());
     }
 
     @Test
     public void getRecipesForUser_OnlyUsersRecipesAreFetched() {
-        List<Recipe> recipes = recipeRa.getRecipesForUser(user1);
+        List<Recipe> recipes = recipeRa.getForAncestor(user1);
         assertEquals(recipes1.size(), recipes.size());
         recipes.forEach(r -> assertTrue(recipes1.contains(r)));
 
@@ -73,9 +73,9 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
 
     @Test
     public void removeRecipeFromUser_RecipeIsRemoved() {
-        recipeRa.removeRecipe(recipes1.get(0).getId(), user1);
+        recipeRa.remove(recipes1.get(0).getId(), user1);
 
-        List<Recipe> recipes = recipeRa.getRecipesForUser(user1);
+        List<Recipe> recipes = recipeRa.getForAncestor(user1);
         assertEquals(1, recipes.size());
         assertEquals(recipes1.get(1).getId(), recipes.get(0).getId());
     }
@@ -85,8 +85,8 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
         Recipe recipe = recipes1.get(0);
         String title = "faaaaack";
         recipe.setTitle(title);
-        recipeRa.saveRecipe(recipe);
-        Recipe recipe1 = recipeRa.getRecipe(recipe.getId(), user1);
+        recipeRa.save(recipe);
+        Recipe recipe1 = recipeRa.get(recipe.getId(), user1.getId());
         assertEquals(recipe.getId(), recipe1.getId());
         assertEquals(recipe.getDescription(), recipe1.getDescription());
         assertEquals(title, recipe1.getTitle());

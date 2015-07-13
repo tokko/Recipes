@@ -4,6 +4,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.tokko.recipes.backend.entities.Recipe;
 import com.tokko.recipes.backend.entities.RecipeUser;
 import com.tokko.recipes.backend.registration.MessageSender;
+import com.tokko.recipes.backend.resourceaccess.CrudRa;
 import com.tokko.recipes.backend.resourceaccess.RecipeRa;
 import com.tokko.recipes.backend.resourceaccess.RegistrationRA;
 import com.tokko.recipes.backend.util.TestsWithObjectifyStorage;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class RecipeServiceTests extends TestsWithObjectifyStorage {
     @Mock
-    private RecipeRa recipeRa;
+    private CrudRa<Recipe, RecipeUser> recipeRa;
     @Mock private MessageSender messageSender;
     @Mock private RegistrationRA registrationRa;
     private RecipeService recipeService;
@@ -35,12 +36,12 @@ public class RecipeServiceTests extends TestsWithObjectifyStorage {
     public void setup(){
         super.setup();
         recipeService = new RecipeService(recipeRa, messageSender, registrationRa);
-        given(registrationRa.getUser(anyString())).willReturn(new RecipeUser("email"));
+        given(registrationRa.getUser(anyString())).willReturn(new RecipeUser("email", 1L));
     }
 
     @Test(expected=NotFoundException.class)
     public void getRecipe_recipeDoesNotExists_ThrowsNotFoundException() throws com.google.api.server.spi.response.NotFoundException {
-        given(recipeRa.getRecipe(anyLong(), any(RecipeUser.class))).willReturn(null);
+        given(recipeRa.get(anyLong(), anyLong())).willReturn(null);
         recipeService.getRecipe(0L, "email");
     }
 
@@ -48,7 +49,7 @@ public class RecipeServiceTests extends TestsWithObjectifyStorage {
     public void getRecipe_RecipeExists_ReturnsExists(){
         Recipe recipe = new Recipe("title");
         recipe.setId(0L);
-        given(recipeRa.getRecipe(eq(0L), any(RecipeUser.class))).willReturn(recipe);
+        given(recipeRa.get(eq(0L), anyLong())).willReturn(recipe);
         try {
             Recipe getRecipe = recipeService.getRecipe(0L, "email");
             assertEquals(recipe, getRecipe);
@@ -62,7 +63,7 @@ public class RecipeServiceTests extends TestsWithObjectifyStorage {
         given(registrationRa.getUser(anyString())).willReturn(new RecipeUser("email", 1L));
         Recipe recipe = new Recipe("title");
         Recipe recipe1 = new Recipe(recipe.getTitle()).setId(1L);
-        given(recipeRa.saveRecipe(any(Recipe.class))).willReturn(recipe1);
+        given(recipeRa.save(any(Recipe.class))).willReturn(recipe1);
         String email = "email";
         recipeService.insertRecipe(recipe, email);
 
