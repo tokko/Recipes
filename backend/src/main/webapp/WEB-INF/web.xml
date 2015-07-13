@@ -13,11 +13,10 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>
-                com.tokko.recipes.backend.endpoints.RecipeEndpoint,
+            <param-value>com.tokko.recipes.backend.endpoints.RecipeEndpoint,
                 com.tokko.recipes.backend.endpoints.IngredientEndpoint,,
-                com.tokko.recipes.backend.endpoints.RegistrationEndpoint
-            </param-value>
+                com.tokko.recipes.backend.endpoints.RegistrationEndpoint,
+                com.tokko.recipes.backend.endpoints.GroceryEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

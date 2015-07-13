@@ -1,15 +1,20 @@
 package com.tokko.recipes.backend.entities;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Parent;
+import com.tokko.recipes.backend.services.RecipeEntity;
 
 @Entity
-public class Grocery {
+public class Grocery implements RecipeEntity<Long, RecipeUser> {
 
     @Id
     private Long id;
     private String title;
 
+    @Parent
+    private Key<RecipeUser> user;
     public Grocery() {
     }
 
@@ -18,8 +23,17 @@ public class Grocery {
         this.title = title;
     }
 
+    public Grocery(String title) {
+        this(null, title);
+    }
+
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public void setAncestor(RecipeUser recipeUser) {
+        user = Key.create(RecipeUser.class, recipeUser.getId());
     }
 
     public void setId(Long id) {
@@ -48,4 +62,5 @@ public class Grocery {
     public int hashCode() {
         return title.hashCode();
     }
+
 }

@@ -74,6 +74,7 @@ dependencies {
     compile 'net.sourceforge.streamsupport:streamsupport:1.2.1'
 
     compile project(path: ':backend', configuration: 'android-endpoints')
+    compile project(path: ':toolbox')
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
 }

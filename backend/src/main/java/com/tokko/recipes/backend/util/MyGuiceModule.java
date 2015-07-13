@@ -4,6 +4,7 @@ import com.google.android.gcm.server.Sender;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.googlecode.objectify.Objectify;
+import com.tokko.recipes.backend.entities.Grocery;
 import com.tokko.recipes.backend.entities.Recipe;
 import com.tokko.recipes.backend.entities.RecipeUser;
 import com.tokko.recipes.backend.entities.Registration;
@@ -20,5 +21,6 @@ public class MyGuiceModule extends AbstractModule {
         bind(new TypeLiteral<Class<RecipeUser>>(){}).toInstance(RecipeUser.class);
 
         bind(new TypeLiteral<Class<Registration>>(){}).toInstance(Registration.class);
+        bind(new TypeLiteral<Class<Grocery>>(){}).toInstance(Grocery.class);
     }
 }
