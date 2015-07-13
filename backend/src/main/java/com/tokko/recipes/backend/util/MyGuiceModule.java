@@ -6,6 +6,7 @@ import com.google.inject.TypeLiteral;
 import com.googlecode.objectify.Objectify;
 import com.tokko.recipes.backend.entities.Recipe;
 import com.tokko.recipes.backend.entities.RecipeUser;
+import com.tokko.recipes.backend.entities.Registration;
 import com.tokko.recipes.backend.registration.MessageSender;
 import com.tokko.recipes.backend.resourceaccess.OfyService;
 
@@ -17,5 +18,7 @@ public class MyGuiceModule extends AbstractModule {
 
         bind(new TypeLiteral<Class<Recipe>>(){}).toInstance(Recipe.class);
         bind(new TypeLiteral<Class<RecipeUser>>(){}).toInstance(RecipeUser.class);
+
+        bind(new TypeLiteral<Class<Registration>>(){}).toInstance(Registration.class);
     }
 }

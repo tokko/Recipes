@@ -5,7 +5,7 @@ import com.tokko.recipes.backend.entities.Recipe;
 import com.tokko.recipes.backend.entities.RecipeUser;
 import com.tokko.recipes.backend.registration.MessageSender;
 import com.tokko.recipes.backend.resourceaccess.CrudRa;
-import com.tokko.recipes.backend.resourceaccess.RecipeRa;
+import com.tokko.recipes.backend.resourceaccess.CrudRaAncestor;
 import com.tokko.recipes.backend.resourceaccess.RegistrationRA;
 import com.tokko.recipes.backend.util.TestsWithObjectifyStorage;
 
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class RecipeServiceTests extends TestsWithObjectifyStorage {
     @Mock
-    private CrudRa<Recipe, RecipeUser> recipeRa;
+    private CrudRaAncestor<Recipe, RecipeUser> recipeRa;
     @Mock private MessageSender messageSender;
     @Mock private RegistrationRA registrationRa;
     private RecipeService recipeService;

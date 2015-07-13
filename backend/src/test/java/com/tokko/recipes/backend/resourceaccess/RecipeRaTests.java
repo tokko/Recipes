@@ -22,13 +22,13 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
     RecipeUser user2 = new RecipeUser("user2");
     List<Recipe> recipes1 = Arrays.asList(new Recipe("recipe1"), new Recipe("recipe2"));
     List<Recipe> recipes2 = Arrays.asList(new Recipe("recipe2"), new Recipe("recipe2"));
-    private CrudRa<Recipe, RecipeUser> recipeRa;
+    private CrudRaAncestor<Recipe, RecipeUser> recipeRa;
     private RegistrationRA registrationRa;
 
     @Before
     public void setup(){
         super.setup();
-        recipeRa = new CrudRa<>(ofy, Recipe.class, RecipeUser.class);
+        recipeRa = new CrudRaAncestor<>(ofy, Recipe.class, RecipeUser.class);
         registrationRa = new RegistrationRA(ofy);
 
         registrationRa.saveUser(user1);
@@ -73,7 +73,7 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
 
     @Test
     public void removeRecipeFromUser_RecipeIsRemoved() {
-        recipeRa.remove(recipes1.get(0).getId(), user1);
+        recipeRa.remove(recipes1.get(0).getId(), user1.getId());
 
         List<Recipe> recipes = recipeRa.getForAncestor(user1);
         assertEquals(1, recipes.size());

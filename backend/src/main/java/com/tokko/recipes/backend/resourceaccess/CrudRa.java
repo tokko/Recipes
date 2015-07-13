@@ -3,28 +3,26 @@ package com.tokko.recipes.backend.resourceaccess;
 import com.google.inject.Inject;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
-import com.tokko.recipes.backend.entities.Recipe;
-import com.tokko.recipes.backend.entities.RecipeUser;
-
-import java.util.List;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-public class CrudRa<TEntity, TAncestor> {
+public class CrudRa<TEntity> {
 
-    private Objectify ofy;
-    private Class<TEntity> entityClass;
-    private Class<TAncestor> ancestorClass;
+    protected Objectify ofy;
+    protected Class<TEntity> entityClass;
 
     @Inject
-    public CrudRa(Objectify ofy, Class<TEntity> entityClass, Class<TAncestor> ancestorClass) {
+    public CrudRa(Objectify ofy, Class<TEntity> entityClass) {
         this.ofy = ofy;
         this.entityClass = entityClass;
-        this.ancestorClass = ancestorClass;
     }
 
-    public TEntity get(long id, long ancestorId){
-        return ofy.load().key(Key.create(Key.create(ancestorClass, ancestorId), entityClass, id)).now();
+    public TEntity get(long id){
+        return get(Key.create(entityClass, id));
+    }
+
+    protected TEntity get(Key<TEntity> key){
+        return ofy.load().key(key).now();
     }
 
     public TEntity save(TEntity entity){
@@ -32,11 +30,10 @@ public class CrudRa<TEntity, TAncestor> {
         return ofy.load().key(now).now();
     }
 
-    public List<TEntity> getForAncestor(TAncestor ancestor) {
-        return ofy.load().type(entityClass).ancestor(ancestor).list();
+    protected void remove(Key<TEntity> key){
+        ofy.delete().key(key).now();
     }
-
-    public void remove(Long id, TAncestor ancestor) {
-        ofy.delete().type(entityClass).parent(ancestor).id(id).now();
+    public void remove(Long id) {
+        remove(Key.create(entityClass, id));
     }
 }

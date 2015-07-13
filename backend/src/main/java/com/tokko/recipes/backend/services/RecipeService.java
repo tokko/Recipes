@@ -5,8 +5,7 @@ import com.google.inject.Inject;
 import com.tokko.recipes.backend.entities.Recipe;
 import com.tokko.recipes.backend.entities.RecipeUser;
 import com.tokko.recipes.backend.registration.MessageSender;
-import com.tokko.recipes.backend.resourceaccess.CrudRa;
-import com.tokko.recipes.backend.resourceaccess.RecipeRa;
+import com.tokko.recipes.backend.resourceaccess.CrudRaAncestor;
 import com.tokko.recipes.backend.resourceaccess.RegistrationRA;
 
 import java.util.List;
@@ -16,12 +15,12 @@ import java.util.logging.Logger;
 public class RecipeService {
     private static final Logger logger = Logger.getLogger(RecipeService.class.getName());
 
-    private CrudRa<Recipe, RecipeUser> recipeRa;
+    private CrudRaAncestor<Recipe, RecipeUser> recipeRa;
     private MessageSender messageSender;
     private RegistrationRA registrationRA;
 
     @Inject
-    public RecipeService(CrudRa<Recipe, RecipeUser> recipeRa, MessageSender messageSender, RegistrationRA registrationRA) {
+    public RecipeService(CrudRaAncestor<Recipe, RecipeUser> recipeRa, MessageSender messageSender, RegistrationRA registrationRA) {
         this.recipeRa = recipeRa;
         this.messageSender = messageSender;
         this.registrationRA = registrationRA;
@@ -61,7 +60,7 @@ public class RecipeService {
 
     public void removeRecipe(Long id, String email) {
         RecipeUser recipeUser = registrationRA.getUser(email);
-        recipeRa.remove(id, recipeUser);
+        recipeRa.remove(id, recipeUser.getId());
         messageSender.sendMessage(null, email);
     }
 
