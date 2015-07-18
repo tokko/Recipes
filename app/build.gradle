@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     lintOptions {
@@ -48,13 +49,16 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-apply plugin: 'me.tatarka.retrolambda'
+/*
 retrolambda {
-    oldJdk System.getenv("JAVA6_HOME") //TODO: necessary?
+    oldJdk System.getenv("JAVA7_HOME") //TODO: necessary?
+    jdk System.getenv("JAVA8_HOME")
+    javaVersion JavaVersion.VERSION_1_6
 }
+*/
 dependencies {
     testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.0-rc3'
+    testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'org.mockito:mockito-all:2.0.2-beta'
     androidTestCompile 'junit:junit:4.12'
     // androidTestCompile 'org.mockito:mockito-all:2.0.2-beta'
@@ -65,13 +69,13 @@ dependencies {
 
     provided 'org.roboguice:roboblender:3.0.1'
     compile 'org.roboguice:roboguice:3.0.1'
-    //compile 'com.android.support:appcompat-v7:22.2.0'
-    // compile 'com.android.support:support-v4:22.2.0'
-    //compile 'com.google.code.findbugs:jsr305:2.0.1'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'net.sourceforge.streamsupport:streamsupport:1.2.1'
+//    compile 'org.robobinding:robobinding:0.8.9'
+
+    //compile 'com.android.support:appcompat-v7:22.2.0'
+    // compile 'com.android.support:support-v4:22.2.0'
 
     compile project(path: ':backend', configuration: 'android-endpoints')
     compile project(path: ':toolbox')

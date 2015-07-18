@@ -21,13 +21,15 @@ public class SimpleService<TEntity extends RecipeEntity<Long, RecipeUser>> {
         this.messageSender = messageSender;
     }
 
+    public void remove(long id, String email){
+        if(get(id, email) == null) throw new IllegalArgumentException("Entity must exist to remove");
+        RecipeUser user = registrationRA.getUser(email);
+        crudRa.remove(id, user.getId());
+    }
+
     public TEntity get(long id, String email){
         RecipeUser user = registrationRA.getUser(email);
         return crudRa.get(id, user.getId());
-    }
-
-    public void remove(long id, String email){
-        crudRa.remove(id, registrationRA.getUser(email).getId());
     }
 
     public List<TEntity> getForAncestor(String email){

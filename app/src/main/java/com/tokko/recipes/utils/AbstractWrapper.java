@@ -1,8 +1,6 @@
 package com.tokko.recipes.utils;
 
 
-import java.lang.reflect.Field;
-
 import static com.tokko.Util.populate;
 
 public abstract class AbstractWrapper<T> {
@@ -14,7 +12,7 @@ public abstract class AbstractWrapper<T> {
 
     public final T getEntity() {
         try {
-            @SuppressWarnings("unchecked") T entity = (T) getClazz().newInstance();
+            @SuppressWarnings("unchecked") T entity = (T) getWrappedClass().newInstance();
             populate(entity, this);
             return entity;
         } catch (InstantiationException | IllegalAccessException e) {
@@ -23,12 +21,11 @@ public abstract class AbstractWrapper<T> {
         return null;
     }
 
+    protected abstract Class<?> getWrappedClass(); //TODO: think about this, is this really necessary?
+
     public abstract Long getId();
 
     public abstract void setId(Long id);
-
-    protected abstract Class<?> getClazz(); //TODO: think about this, is this really necessary?
-
 
     public AbstractWrapper<T> cloneEntity() {
         try {

@@ -21,6 +21,7 @@ public abstract class TestsWithObjectifyStorage {
     public void setup() {
         helper.setUp();
         ofy = OfyService.ofy();
+        ofy.clear();
     }
 
     @After

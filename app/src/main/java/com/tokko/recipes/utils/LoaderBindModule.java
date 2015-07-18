@@ -4,7 +4,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import com.tokko.recipes.backend.recipeApi.RecipeApi;
 import com.tokko.recipes.backend.recipeApi.model.Recipe;

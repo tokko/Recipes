@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.googlecode.objectify.Objectify;
-import com.tokko.recipes.backend.resourceaccess.OfyService;
 
 import org.junit.Before;
 
@@ -29,7 +28,7 @@ public abstract class TestsWithObjectifyStorageAndRecipeMocks extends TestsWithO
             bind(Objectify.class).toProvider(new Provider<Objectify>() {
                 @Override
                 public Objectify get() {
-                    return OfyService.ofy();
+                    return ofy;
                 }
             });
         }

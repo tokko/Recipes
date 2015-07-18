@@ -1,6 +1,6 @@
 package com.tokko.recipes.backend.entities;
 
-import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
@@ -12,7 +12,7 @@ import com.googlecode.objectify.annotation.Parent;
 public class Registration {
 
     @Parent
-    Key<RecipeUser> parent;
+    Ref<RecipeUser> parent;
     @Id
     private String regId;
 
@@ -24,15 +24,7 @@ public class Registration {
     }
 
     public void setParent(RecipeUser parent) {
-        this.parent = Key.create(parent);
-    }
-
-    public String getRegId() {
-        return regId;
-    }
-
-    public void setRegId(String regId) {
-        this.regId = regId;
+        this.parent = Ref.create(parent);
     }
 
     @Override
@@ -42,5 +34,13 @@ public class Registration {
         } catch (Exception ignored) {
             return false;
         }
+    }
+
+    public String getRegId() {
+        return regId;
+    }
+
+    public void setRegId(String regId) {
+        this.regId = regId;
     }
 }

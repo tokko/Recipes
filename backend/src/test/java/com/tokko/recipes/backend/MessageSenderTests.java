@@ -3,9 +3,6 @@ package com.tokko.recipes.backend;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.tokko.recipes.backend.entities.Recipe;
 import com.tokko.recipes.backend.entities.RecipeUser;
 import com.tokko.recipes.backend.entities.Registration;
@@ -63,7 +60,7 @@ public class MessageSenderTests extends TestsWithObjectifyStorage {
     }
 
     @Test
-    @Ignore //is this even possible without mocking result?
+    @Ignore("Is this necessary??") //is this even possible without mocking result?
     public void sendMessage_canonicalRegistrationIsUpdated_RegisteredIsUpdated() throws IOException {
         String oldRegid = "regid";
         String newRegid = "regid1";
