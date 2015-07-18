@@ -25,6 +25,8 @@ targetCompatibility = JavaVersion.VERSION_1_8
 retrolambda {
     oldJdk System.getenv("JAVA7_HOME") //TODO: necessary?
     jdk System.getenv("JAVA8_HOME")
+    //javaVersion JavaVersion.VERSION_1_6
+    //include 'Tests'
 }
 dependencies {
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'

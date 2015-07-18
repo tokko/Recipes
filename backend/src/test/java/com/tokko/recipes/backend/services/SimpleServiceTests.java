@@ -11,9 +11,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -90,14 +93,14 @@ public class SimpleServiceTests extends TestsWithObjectifyStorage {
         Grocery g1 = new Grocery(2L, "2");
         g1.setAncestor(user1);
         given(registrationRA.getUser(user1.getEmail())).willReturn(user1);
-        given(groceryRa.getForAncestor(user)).willReturn(Arrays.asList(g));
-        given(groceryRa.getForAncestor(user1)).willReturn(Arrays.asList(g1));
+        given(groceryRa.getForAncestor(user)).willReturn(Collections.singletonList(g));
+        given(groceryRa.getForAncestor(user1)).willReturn(Collections.singletonList(g1));
 
         List<Grocery> list = service.getForAncestor(email);
 
         assertNotNull(list);
         assertEquals(1, list.size());
-        assertEquals(g, list.stream().findFirst().get());
+        assertEquals(g, list.get(0));
     }
 
     @Test
@@ -106,9 +109,13 @@ public class SimpleServiceTests extends TestsWithObjectifyStorage {
         Grocery g = new Grocery(title);
         Grocery spy = spy(g);
 
-        given(groceryRa.save(spy)).willAnswer(invocation -> {
-            spy.setId(1L);
-            return spy;
+        given(groceryRa.save(spy)).willAnswer(new Answer<Grocery>(){
+            @Override
+            public Grocery answer(InvocationOnMock invocation) throws Throwable{
+                spy.setId(1L);
+                return spy;
+            }
+
         });
         Grocery newGrocery = service.insert(spy, email);
 

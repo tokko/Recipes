@@ -12,8 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class RecipeRaTests extends TestsWithObjectifyStorage {
 
@@ -34,11 +34,25 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
         registrationRa.saveUser(user1);
         registrationRa.saveUser(user2);
 
-        recipes1.forEach(r -> r.setUser(user1));
-        recipes2.forEach(r -> r.setUser(user2));
+        for(Recipe recipe : recipes1){
+            recipe.setUser(user1);
+        }
+        for(Recipe recipe : recipes2){
+            recipe.setUser(user2);
+        }
+        //recipes1.forEach(r -> r.setUser(user1));
+        //recipes2.forEach(r -> r.setUser(user2));
 
+        for(Recipe recipe : recipes1){
+            recipeRa.save(recipe);
+        }
+        for(Recipe recipe : recipes2){
+            recipeRa.save(recipe);
+        }
+        /*
         recipes1.forEach(recipeRa::save);
         recipes2.forEach(recipeRa::save);
+        */
     }
 
     @Override
@@ -67,7 +81,10 @@ public class RecipeRaTests extends TestsWithObjectifyStorage {
     public void getRecipesForUser_OnlyUsersRecipesAreFetched() {
         List<Recipe> recipes = recipeRa.getForAncestor(user1);
         assertEquals(recipes1.size(), recipes.size());
-        recipes.forEach(r -> assertTrue(recipes1.contains(r)));
+        //recipes.forEach(r -> assertTrue(recipes1.contains(r)));
+        for(Recipe recipe : recipes1){
+            assertTrue(recipes1.contains(recipe));
+        }
 
     }
 

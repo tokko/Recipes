@@ -49,13 +49,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-/*
 retrolambda {
     oldJdk System.getenv("JAVA7_HOME") //TODO: necessary?
     jdk System.getenv("JAVA8_HOME")
-    javaVersion JavaVersion.VERSION_1_6
 }
-*/
 dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.0'
