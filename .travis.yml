@@ -10,7 +10,7 @@ android:
  # - android-19
 #  - android-18
   - extra-google-google_play_services
- # - extra-google-m2repository
+  - extra-google-m2repository
   - extra-android-m2repository
 #  - addon-google_apis-google-22
  # - sys-img-armeabi-v7a-android-22
