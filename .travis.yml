@@ -9,7 +9,7 @@ android:
 #  - android-20
  # - android-19
 #  - android-18
- # - extra-google-google_play_services
+  - extra-google-google_play_services
  # - extra-google-m2repository
   - extra-android-m2repository
 #  - addon-google_apis-google-22
