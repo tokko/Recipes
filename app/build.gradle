@@ -85,6 +85,6 @@ dependencies {
 
     compile project(path: ':backend', configuration: 'android-endpoints')
     compile project(path: ':toolbox')
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    // compile fileTree(include: ['*.jar'], dir: 'libs')
 
 }
