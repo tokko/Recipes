@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import com.google.inject.Inject;
 import com.tokko.recipes.R;
 import com.tokko.recipes.abstractdetails.AbstractDetailFragment;
+import com.tokko.recipes.backend.ingredients.ingredientApi.model.Ingredient;
 import com.tokko.recipes.backend.recipeApi.RecipeApi;
 import com.tokko.recipes.backend.recipeApi.model.Recipe;
 import com.tokko.recipes.views.EditTextViewSwitchable;
+import com.tokko.recipes.views.EditableListView;
 
 import java.io.IOException;
 
@@ -21,6 +23,8 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
     EditTextViewSwitchable title;
     @InjectView(R.id.recipe_description)
     EditTextViewSwitchable description;
+    @InjectView(R.id.recipe_ingredients)
+    EditableListView<Ingredient> ingredients;
 
     @Inject
     private RecipeApi api;
@@ -37,6 +41,7 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
         title.setHint("Title");
         //description.setData(entity.getDescription());
         description.setHint("Description");
+        ingredients.setToStringer(i -> i.toString());
     }
 
     @Override

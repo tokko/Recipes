@@ -81,6 +81,8 @@ dependencies {
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.annimon:stream:1.0.1'
+
 //    compile 'org.robobinding:robobinding:0.8.9'
 
     //compile 'com.android.support:appcompat-v7:22.2.0'

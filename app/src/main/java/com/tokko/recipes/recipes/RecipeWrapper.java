@@ -1,5 +1,6 @@
 package com.tokko.recipes.recipes;
 
+import com.tokko.recipes.backend.ingredients.ingredientApi.model.Ingredient;
 import com.tokko.recipes.backend.recipeApi.model.Recipe;
 import com.tokko.recipes.utils.AbstractWrapper;
 
@@ -8,7 +9,6 @@ public class RecipeWrapper extends AbstractWrapper<Recipe> {
     private Long id;
     private String title;
     private String description;
-
     public RecipeWrapper(long id) {
         this();
         this.id = id;

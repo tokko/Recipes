@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class EditTextViewSwitchable extends Editable<TextView, EditText, String> {
+public class EditTextViewSwitchable extends EditableViewSwitcher<TextView, EditText, String> {
 
     public EditTextViewSwitchable(Context context, AttributeSet attrs) {
         super(context, attrs, new TextView(context, attrs), new EditText(context, attrs));
