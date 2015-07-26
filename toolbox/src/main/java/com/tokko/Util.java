@@ -20,4 +20,15 @@ public class Util {
             e.printStackTrace();
         }
     }
+
+    public <T> T cloneEntity(T src, Class<T> clx){
+        try {
+            T tnew = clx.newInstance();
+            populate(tnew, src);
+            return tnew;
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
