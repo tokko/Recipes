@@ -18,12 +18,12 @@ import java.io.IOException;
 
 import roboguice.inject.InjectView;
 
-public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> {
+public class RecipeDetailFragment extends AbstractDetailFragment<Recipe> {
     @InjectView(R.id.recipe_title)
     EditTextViewSwitchable title;
     @InjectView(R.id.recipe_description)
     EditTextViewSwitchable description;
-    @InjectView(R.id.recipe_ingredients)
+   // @InjectView(R.id.recipe_ingredients)
     EditableListView<Ingredient> ingredients;
 
     @Inject
@@ -45,6 +45,11 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
     }
 
     @Override
+    protected Long getEntityId() {
+        return entity.getId();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
@@ -53,7 +58,7 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
     protected void onOk() {
         entity.setTitle(title.getText());
         entity.setDescription(description.getText());
-        final Recipe entity = this.entity.getEntity();
+        final Recipe entity = this.entity;
         if (entity == null) return;
         new Thread() {
             @Override
@@ -82,13 +87,13 @@ public class RecipeDetailFragment extends AbstractDetailFragment<RecipeWrapper> 
     }
 
     @Override
-    protected void populateForm(RecipeWrapper entity) {
+    protected void populateForm(Recipe entity) {
         title.setData(entity.getTitle());
         description.setData(entity.getDescription());
     }
 
     @Override
-    protected RecipeWrapper populateEntity(RecipeWrapper editingEntity) {
+    protected Recipe populateEntity(Recipe editingEntity) {
         editingEntity.setTitle(title.getText());
         editingEntity.setDescription(description.getText());
         return editingEntity;

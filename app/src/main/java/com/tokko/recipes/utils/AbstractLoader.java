@@ -8,17 +8,19 @@ import android.content.IntentFilter;
 
 import java.util.List;
 
+import static com.tokko.Util.populate;
 
-public abstract class AbstractLoader<T extends AbstractWrapper<?>> extends AsyncTaskLoader<List<T>> {
+
+public abstract class AbstractLoader<T> extends AsyncTaskLoader<List<T>> {
     public final static String GCM_ACTION = "com.google.android.c2dm.intent.RECEIVE";
 
     private final IntentFilter intentFilter;
     protected List<T> data;
     private BroadcastReceiver onChangeReceiver;
     private Context context;
-    private Class<? extends AbstractWrapper<?>> clz;
+    private Class<T> clz;
 
-    public AbstractLoader(Context context, Class<? extends AbstractWrapper<?>> clz) {
+    public AbstractLoader(Context context, Class<T> clz) {
         super(context);
         this.context = context;
         this.clz = clz;
@@ -89,7 +91,7 @@ public abstract class AbstractLoader<T extends AbstractWrapper<?>> extends Async
     protected void onNewData(T t) {
         for (T t1 : data) {
             if (t.equals(t1)) {
-                t1.populateWith(t);
+                populate(t1, t);
                 return;
             }
         }

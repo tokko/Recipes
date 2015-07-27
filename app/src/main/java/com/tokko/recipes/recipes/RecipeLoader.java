@@ -8,29 +8,24 @@ import com.tokko.recipes.backend.recipeApi.model.Recipe;
 import com.tokko.recipes.utils.AbstractLoader;
 import com.tokko.recipes.utils.ApiFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeLoader extends AbstractLoader<RecipeWrapper> {
+public class RecipeLoader extends AbstractLoader<Recipe> {
     private final RecipeApi api;
 
     @Inject
     public RecipeLoader(Context context) {
-        super(context, RecipeWrapper.class);
+        super(context, Recipe.class);
         api = ApiFactory.createRecipeApi();
     }
 
     @Override
-    public List<RecipeWrapper> loadInBackground() {
-        List<RecipeWrapper> wrappers = new ArrayList<>();
+    public List<Recipe> loadInBackground() {
         try {
-            List<Recipe> list = api.list().execute().getItems();
-            for (Recipe recipe : list) {
-                wrappers.add(new RecipeWrapper(recipe));
-            }
+            return api.list().execute().getItems();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return wrappers;
+        return null;
     }
 }

@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.tokko.recipes.R;
-import com.tokko.recipes.utils.AbstractWrapper;
 import com.tokko.recipes.views.Editable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -22,7 +21,9 @@ import butterknife.OnClick;
 import roboguice.fragment.provided.RoboFragment;
 import roboguice.inject.InjectView;
 
-public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> extends RoboFragment {
+import static com.tokko.Util.cloneTo;
+
+public abstract class AbstractDetailFragment<T> extends RoboFragment {
     private static final String EXTRA_ENTITY_KEY = "entity";
     private static final String EXTRA_ENTITY_CLASS_KEY = "clazz";
     private static final String EXTRA_ENTITY_EDITING_KEY = "editing_entity";
@@ -38,7 +39,7 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     public AbstractDetailFragment() {
     }
 
-    public static <T extends AbstractWrapper<?>> AbstractDetailFragment newInstance(T entity, Class<? extends AbstractDetailFragment<?>> cls, boolean edit) {
+    public static <T> AbstractDetailFragment newInstance(T entity, Class<? extends AbstractDetailFragment<?>> cls, boolean edit) {
         try {
             AbstractDetailFragment<?> f = cls.getConstructor().newInstance();
             Bundle b = new Bundle();
@@ -86,7 +87,7 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
         outState.putString(EXTRA_ENTITY_KEY, new Gson().toJson(entity));
 
         if (isEditing) {
-            @SuppressWarnings("unchecked") T editingEntity = (T) entity.cloneEntity();
+            T editingEntity = cloneTo(entity, clz);
             editingEntity = populateEntity(editingEntity);
             outState.putString(EXTRA_ENTITY_EDITING_KEY, new Gson().toJson(editingEntity));
         }
@@ -104,11 +105,12 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
                 populateForm(editingEntity);
                 edit();
             }
-        } else if (getArguments().getBoolean("edit") || entity.getId() == null) {
+        } else if (getArguments().getBoolean("edit") || getEntityId() == null) {
             edit();
         }
     }
 
+    protected abstract Long getEntityId();
     protected abstract void populateForm(T entity);
 
     protected abstract T populateEntity(T editingEntity);
@@ -134,7 +136,7 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
     @OnClick(R.id.edit_cancel)
     public final void onCancel() {
         discard();
-        if (entity.getId() == null)
+        if (getEntityId() == null)
             host.onDetailFragmentFinished();
     }
 
@@ -169,7 +171,7 @@ public abstract class AbstractDetailFragment<T extends AbstractWrapper<?>> exten
 
     private void edit() {
         isEditing = true;
-        deleteButton.setEnabled(entity.getId() != null);
+        deleteButton.setEnabled(getEntityId() != null);
         buttonBar.setVisibility(View.VISIBLE);
         traverseHierarchy((ViewGroup) getView(), Editable::edit);
     }

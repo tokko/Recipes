@@ -21,7 +21,7 @@ public class Util {
         }
     }
 
-    public <T> T cloneEntity(T src, Class<T> clx){
+    public static  <T> T cloneTo(T src, Class<T> clx){
         try {
             T tnew = clx.newInstance();
             populate(tnew, src);

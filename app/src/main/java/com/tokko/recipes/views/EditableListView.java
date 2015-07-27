@@ -30,8 +30,8 @@ public class EditableListView<D> extends LinearLayout implements Editable<List<D
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View inflate = inflater.inflate(R.layout.editablelistview, this, true);
-        lv = (ListView) inflate.findViewById(R.id.editableListView_list);
-        addButton = (Button) inflate.findViewById(R.id.editableListView_addButton);
+       // lv = (ListView) inflate.findViewById(R.id.editableListView_list);
+       // addButton = (Button) inflate.findViewById(R.id.editableListView_addButton);
         setAdapter(android.R.layout.simple_list_item_1);
     }
 

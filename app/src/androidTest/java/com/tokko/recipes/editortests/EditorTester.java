@@ -10,6 +10,7 @@ import com.robotium.solo.Solo;
 import com.tokko.recipes.R;
 import com.tokko.recipes.abstractdetails.GenericDetailActivity;
 import com.tokko.recipes.abstractdetails.ResourceResolver;
+import com.tokko.recipes.backend.recipeApi.model.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public abstract class EditorTester extends ActivityInstrumentationTestCase2<Gene
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        Intent startIntent = new Intent(getInstrumentation().getContext(), GenericDetailActivity.class).putExtra("class", ResourceResolver.getResourceClass(getResource())).putExtra(ResourceResolver.RESOURCE_EXTRA, getResource()).putExtra("entity", new Gson().toJson(ResourceResolver.getResourceInstance(getResource())));
+        Intent startIntent = new Intent(getInstrumentation().getContext(), GenericDetailActivity.class).putExtra("class", Recipe.class).putExtra(ResourceResolver.RESOURCE_EXTRA, getResource()).putExtra("entity", new Gson().toJson(new Recipe()));
         setActivityIntent(startIntent);
         solo = new Solo(getInstrumentation(), getActivity());
         solo.waitForActivity(GenericDetailActivity.class);

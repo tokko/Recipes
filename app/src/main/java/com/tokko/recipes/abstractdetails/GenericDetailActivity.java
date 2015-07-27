@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.api.client.json.GenericJson;
 import com.google.gson.Gson;
 import com.tokko.recipes.genericlists.GenericListActivity;
-import com.tokko.recipes.utils.AbstractWrapper;
 
 import roboguice.activity.RoboActivity;
 
@@ -24,9 +24,9 @@ public class GenericDetailActivity extends RoboActivity implements AbstractDetai
         } else if (getIntent().getExtras() != null) {
             Class<?> clz = (Class<?>) getIntent().getSerializableExtra("class");
             String json = getIntent().getStringExtra("entity");
-            AbstractWrapper<?> entity = (AbstractWrapper<?>) new Gson().fromJson(json, clz);
-            int resource = getIntent().getIntExtra(ResourceResolver.RESOURCE_EXTRA, ResourceResolver.RESOURCE_RECIPES);
-            fragment = ResourceResolver.getDetailFragment(entity, resource, getIntent().getBooleanExtra("edit", false));
+            GenericJson entity = (GenericJson) new Gson().fromJson(json, clz);
+           // int resource = getIntent().getIntExtra(ResourceResolver.RESOURCE_EXTRA, ResourceResolver.RESOURCE_RECIPES);
+            fragment = ResourceResolver.getDetailFragment(entity, getIntent().getBooleanExtra("edit", false));
         }
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, fragment)

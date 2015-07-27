@@ -3,22 +3,25 @@ package com.tokko.recipes.genericlists;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.api.client.json.GenericJson;
 import com.google.gson.Gson;
 import com.tokko.recipes.R;
 import com.tokko.recipes.abstractdetails.AbstractDetailFragment;
 import com.tokko.recipes.abstractdetails.GenericDetailActivity;
 import com.tokko.recipes.abstractdetails.ResourceResolver;
-import com.tokko.recipes.utils.AbstractWrapper;
+import com.tokko.recipes.backend.entities.groceryApi.model.Grocery;
 
 import roboguice.activity.RoboActivity;
 
 public class GenericListActivity extends RoboActivity
-        implements GenericListFragment.Callbacks<AbstractWrapper<?>>, AbstractDetailFragment.AbstractDetailFragmentCallbacks {
+        implements GenericListFragment.Callbacks<GenericJson>, AbstractDetailFragment.AbstractDetailFragmentCallbacks {
+
+    public static final String EXTRA_CLASS = "extra_class";
 
     private boolean mTwoPane;
     private GenericListFragment listFragment;
     private int resource = ResourceResolver.RESOURCE_RECIPES;
-
+    private Class<?> clz;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +31,12 @@ public class GenericListActivity extends RoboActivity
         }
         if (savedInstanceState != null) {
             resource = savedInstanceState.getInt(ResourceResolver.RESOURCE_EXTRA);
+            clz = (Class<?>) savedInstanceState.getSerializable(EXTRA_CLASS);
         } else if (getIntent() != null && getIntent().getExtras() != null) {
             resource = getIntent().getIntExtra(ResourceResolver.RESOURCE_EXTRA, ResourceResolver.RESOURCE_RECIPES);
+            clz = (Class<?>) getIntent().getSerializableExtra(EXTRA_CLASS);
+            if(clz == null)
+                clz = Grocery.class;
         }
         listFragment = ResourceResolver.getListFragment(resource);
     }
@@ -41,8 +48,8 @@ public class GenericListActivity extends RoboActivity
     }
 
     @Override
-    public void onItemSelected(AbstractWrapper entity, boolean edit) {
-        AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, resource, edit); // AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
+    public void onItemSelected(GenericJson entity, boolean edit) {
+        AbstractDetailFragment fragment = ResourceResolver.getDetailFragment(entity, edit); // AbstractDetailFragment.newInstance(id, getAbstractDetailFragmentClass());
         if (mTwoPane) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.recipe_detail_container, fragment).addToBackStack("name")
@@ -59,8 +66,7 @@ public class GenericListActivity extends RoboActivity
     @Override
     public void onAddClicked() {
         try {
-            Class<? extends AbstractWrapper<?>> clz = ResourceResolver.getResourceClass(resource);
-            AbstractWrapper<?> entity = clz.newInstance();
+            GenericJson entity = (GenericJson) clz.newInstance();
             onItemSelected(entity, true);
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();

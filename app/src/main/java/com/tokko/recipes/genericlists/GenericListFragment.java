@@ -14,7 +14,6 @@ import android.widget.ListView;
 import com.google.inject.Key;
 import com.tokko.recipes.R;
 import com.tokko.recipes.utils.AbstractLoader;
-import com.tokko.recipes.utils.AbstractWrapper;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ import roboguice.RoboGuice;
 import roboguice.fragment.provided.RoboListFragment;
 
 
-public class GenericListFragment<T extends AbstractWrapper<?>> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
+public class GenericListFragment<T> extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
 
 
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
@@ -38,7 +37,7 @@ public class GenericListFragment<T extends AbstractWrapper<?>> extends RoboListF
     public GenericListFragment() {
     }
 
-    public static <T extends AbstractWrapper<?>> GenericListFragment<T> newInstance(Class<? extends AbstractLoader<T>> clz) {
+    public static <T> GenericListFragment<T> newInstance(Class<? extends AbstractLoader<T>> clz) {
         GenericListFragment<T> f = new GenericListFragment<>();
         Bundle b = new Bundle();
         b.putSerializable("test", clz);
@@ -177,7 +176,7 @@ public class GenericListFragment<T extends AbstractWrapper<?>> extends RoboListF
      * implement. This mechanism allows activities to be notified of item
      * selections.
      */
-    public interface Callbacks<T extends AbstractWrapper<?>> {
+    public interface Callbacks<T> {
         /**
          * Callback for when an item has been selected.
          */

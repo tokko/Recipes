@@ -1,10 +1,9 @@
 package com.tokko.recipes.abstractdetails;
 
+import com.tokko.recipes.backend.recipeApi.model.Recipe;
 import com.tokko.recipes.genericlists.GenericListFragment;
 import com.tokko.recipes.recipes.RecipeDetailFragment;
-import com.tokko.recipes.utils.AbstractWrapper;
 import com.tokko.recipes.recipes.RecipeLoader;
-import com.tokko.recipes.recipes.RecipeWrapper;
 
 public class ResourceResolver {
     public static final String RESOURCE_EXTRA = "resource";
@@ -20,31 +19,9 @@ public class ResourceResolver {
         }
     }
 
-    public static Class<? extends AbstractWrapper<?>> getResourceClass(int resource) {
-        switch (resource) {
-            case RESOURCE_RECIPES:
-                return RecipeWrapper.class;
-            default:
-                return RecipeWrapper.class;
-        }
-    }
-
-    public static <T extends AbstractWrapper<?>> AbstractDetailFragment getDetailFragment(T entity, int resource, boolean edit) {
-        switch (resource) {
-            case RESOURCE_RECIPES:
+    public static <T> AbstractDetailFragment getDetailFragment(T entity, boolean edit) {
+        if(entity instanceof Recipe)
                 return AbstractDetailFragment.newInstance(entity, RecipeDetailFragment.class, edit);
-            default:
-                return null;
-        }
-    }
-
-    public static AbstractWrapper<?> getResourceInstance(int resource) {
-        Class<? extends AbstractWrapper<?>> clz = getResourceClass(resource);
-        try {
-            return clz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
+        else return null;
     }
 }
